@@ -1,11 +1,19 @@
 \chapter{Experiments}\label{sec:experiments}
 
-Describe all details of the experiments in a way that the reader is able to reproduce your experiments.
-Provide an overview table (or multiple tables) with all experiments, data sets and all parameters used.
-Give the different experiment runs a unique name and refer to this name in the results section.
+To inspect the potential benefits of self-supervised pre-training for \gls{ml}-based intrusion detection we chose to take a look at \gls{lstm} and the Transformer networks as they are suited to process data of variable length and have shown promising results in the past \todo{give examples}. Network traffic data can be look at from a multitude of perspectives ranging from aggregate statistical data over different time-frames \cite{kitsune} to looking at a feature representation of single packets which can be looked at in the context of \textit{flows}. Flows are loosely defined as sequences of packets that share a certain property \cite{adversarial_recurrent_ids}. In our case we define flows as packets that share source and destination IP address, source and destination port and the network protocol used. This creates the 5-tuple \textit{<srcIP, dstIP, srcPort, dstPort, protocol>} as the key over which individual packets are aggregated to flows. We used the data pre-processing from \cite{adversarial_recurrent_ids} as it fit the requirements for our experiments and was easily modifiable. The underlying data from which flow data is extracted are the \textit{CIC-IDS-2017} \cite{cic_ids_2017} and \textit{UNSW-NB15} \cite{unsw_nb15} \gls{nids} datasets. After the data pre-processing from \cite{adversarial_recurrent_ids} each packet is represented by source port, destination port, packet length, \gls{iat}, packet direction and all TCP flags (SYN, FIN, RST, PSH, ACK, URG, ECE, CWR, NS) resulting in 15 input features to be used in training the \glspl{nn}. \par
 
-Keep interim data from your experiments (e.g. predicted labels per instance, confusion matrices, etc.) in case you need to come back to the data to calculate further metrics.
+The task of the \glspl{nn} is to classify each flow into either \textit{benign} or \textit{attack} which results into a binary classification problem. Ordinary network traffic that should be ignored by the \gls{ids} is labeled as \textit{benign} and flows that constitute or are part of a cyber-attack are labeled as \textit{attack}. \gls{bce} is used as loss function to determine the distance between the predicted label by the \glspl{nn} and the actual label. For updating weights we use the \textit{Adam} optimizer \cite{adam} which is an extension to the commonly used \gls{sgd} method. Similar to \textit{AdaGrad} \cite{optimizer_comparison} and \textit{RMSProp} \cite{optimizer_comparison} it maintains separate learning rates for each individual weight instead of using the same learning rate for every weight like in classic \gls{sgd}. Among other things, it is appropriate for noisy or sparse gradients which can occur when working with \glspl{rnn} in general.
+
+As a premise for our research we trained the \gls{lstm} and the Transformer network in a solely supervised fashion to get a baseline future results can be compared to. Supervised training was performed for 10 epochs each for 90\%, 5\% and 1\% of available data and a constant 10\% of data for validation which has not been used for training. We specifically wanted to know how the networks would perform in a scenario where very little training data was available as this would best describe a scenario where large amounts of unlabeled data are available for self-supervised pre-training and only a small amount of labeled data for fine tuning. To pre-train a \gls{nn} the network is given a task that is not necessarily connected to the final purpose of the network, often referred to as a \textit{proxy task}. By solving the proxy task the network attempts to find structure in the data and should learn to form a more abstract representation of the data within its latent space. E.g. with \gls{bert} pre-training is performed by masking a certain percentage of the input and having the \gls{nn} predict the missing tokens and additionally letting the network guess whether one sentences precedes another in a text. We defined our own proxy tasks for pre-training the networks as described in the following sections.
 
 
+
+
+always using 89\% of available data for pre-training, 1\% for supervised fine-tuning and 10\% for validation.
+
+
+\section{Long Short-Term Memory} \label{sect.experiments_lstm}
+
+\section{Transformer} \label{sect.experiments_transformer}
 
 \newpage
