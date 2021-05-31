@@ -4,41 +4,43 @@
 
 With the progressing digitalization of evermore aspects of society, cyber security will always be a relevant issue as no system will ever be fully secure. Preventing possible cyber attacks by developing more robust systems is one way to mitigate the issue, the other is preventing already existing faults from being exploited as not every vulnerability can be patched easily as it is the case with e.g. DoS and bruteforce attacks. To stop such attacks it is necessary to identify them within the vast flow of ordinary network traffic which gives rise to the need of \glspl{ids}. State-of-the-art \glspl{ids} apply two methods to detect occurring attacks: Signature-based detection and statistical anomaly-based detection. Signature-based detection looks for known patterns or signatures within packets and data streams to identify incoming attacks \todo{insert reference to state of the art ids}. Statistical anomaly-based detection focuses on differentiating between normal and abnormal behavior in the system and raises an alert if the latter is identified. The problem with signature-based detection is that unknown attacks are ignored and anomaly-based detection is still not sufficiently accurate and prone to false positives \todo{give examples for IDSs lacking accuracy}. The rise of \gls{ml} gave opportunity to use the mighty pattern recognition capabilities of \glspl{nn} for intrusion detection. As \gls{ml} is a rapidly developing field its steady improvement fueled the advance of \gls{nn} based \glspl{ids} 
 which start to show promising results \todo{give examples for NN based IDSs}. \glspl{nn} however are still mostly trained in a supervised fashion, namely by providing labeled examples of cyber attacks for the \gls{nn} to learn from. This again poses the problem, that only known attacks can be identified, but new attacks that are sufficiently similar to old attacks can also be identified, which is not the case with mere signature-based detection. As with every form of supervised training on \glspl{nn}, labeled data is harder to come by while unlabeled data is often abundant and certainly so for network traffic data. For this reason, self-supervised training/pretraining is seeing increased use in the realm of \gls{ml} \todo{give examples of self supervised machine learning}, as unlabeled data can be used to boost the performance without the need for expensive labeled data. One of the most noteworthy examples of the effectiveness of self-supervised pre-training for Neural Networks in the realm of \gls{nlp} is \gls{bert} \cite{bert} developed by Jacob Devlin \textit{et alteri} from Google AI Language. \gls{bert} is based on the state-of-the-art Transformer architecture \cite{attention} and uses a series of proxy tasks like word masking and next sentence prediction to teach the network about syntax and grammar in a self-supervised fashion. The pre-trained network can then be fine-tuned for more specific tasks like question answering or text classification. Analogous, it would be highly beneficial if these or similar pre-training mechanisms could be used to bolster performance of \gls{ml} based \glspl{ids} by improving the classification of network flows, at the most basic level, into cyber attack vs. no cyber attack. \par
-As the technologies mentioned above are fairly recent (Transformers Dec 2017, \gls{bert} May 2019) and the design space for solutions in the context of \gls{ml} for cyber security is substantial, there has not yet been sufficient inquiry into the possibilities of these new methods when applied to the problems posed by Intrusion Detection and cyber attack classification. \gls{nn} performance also improves with the steadily increasing capabilities of modern \glspl{gpu} which makes this a promising concept which can be improved upon by future more powerful hardware. 
+As the technologies mentioned above are fairly recent (Transformers Dec 2017, \gls{bert} May 2019) and the design space for solutions in the context of \gls{ml} for cyber security is substantial, there has not yet been sufficient inquiry into the possibilities of these new methods when applied to the problems posed by Intrusion Detection and cyber attack classification. \gls{nn} performance also improves with the steadily increasing capabilities of modern \glspl{gpu} which makes this a promising concept that can be improved upon by future more powerful hardware. 
 
 %\subsection{Objective} \label{sect.objective} 
 %TEXT
 
 \section{Research Questions} \label{sect.research_questions}
 
-Here state the exact research questions that you try to answer with the thesis
-
-Good research questions are specific and measurable. For example if you want to show that an anomaly detection method is better than anoter one, do not just say "better" but rather provide details of what you mean by better (e.g., higher speed, lower computational complexity, better detection performance, etc)
+In this thesis we inspect if the flow classification performance of \glspl{lstm} and Transformer-Encoder networks can be improved with self-supervised pre-training in a scenario where only little labeled and a lot of labeled data is available. In our context this means a ratio of 1:1000 for labeled to unlabeled data. For performance we are mainly looking at the accuracy of classification, but we are also keeping track of the \gls{far}. The problem to solve is a binary classification problem for which the model is to group flows into \textit{attack} and \textit{no-attack}. 
 
 \begin{itemize}
-	\item R1: 
-	\item R2:
-	\item R3:
+	\item R1: Can self-supervised pre-training improve the flow classification capabilities of an \gls{lstm} model?
+	\item R2: Can self-supervised pre-training improve the flow classification capabilities of a Transformer-Encoder model?
+	\item R3: Which pre-training tasks improve accuracy and which do not?
 \end{itemize}
 
 
 \section{Approach} \label{sect.approach}
 
-Here describe briefly what is your approach to solve the problem or to answer the research questions. What methodology did you choose and why (briefly)? e.g., theoretical work, simulations, experiments,...
+To answer these questions we conduct a series of experiments. In these experiments we devised different proxy tasks for the model to solve in a self-supervised fashion. Solving these proxy tasks serves as pre-training for the network during which it learns the structure of the data and to form abstract representations within its latent space. After the pre-training we train the network with very little labeled training data to teach it how it should classify the flows. These experiments show if pre-training can improve accuracy of the model when compared to only training it with the same amount of labeled data but no pre-training. They also show which pre-training methods are more and which are less beneficial for classification accuracy.
 
 \section{Contribution} \label{sect.contribution}
+
+\begin{itemize}
+	\item Implementation of a pre-trainable \gls{lstm} model and training suite
+	\item Implementation of a pre-trainable Transformer-Encoder model and training suite
+	\item Inquiry into the benefits of pre-training for sequence-to-sequence models in the context of \glspl{nids}
+	\item Development of new pre-training methods for \glspl{lstm} and TransformerEncoder models in the context of \glspl{nids}
+\end{itemize}
 
 Here provide a list of the contributions of your work.
 
 Suggestion (especially for dissertations): provide a table with research questions, methods used to answer each, and major findings and the section in which to find details.
 
 \section{Structure} \label{sect.structure}
-Describe the structure of the thesis in 1-2 paragraphs.
 
-In section XXX I provide state of the art...
+After this introduction section we will provide some background information and define terminology used throughout the thesis \ref{sec:background}. Subsequently we provide an overview of the current state-of-the-art of \glspl{nn} for sequence-to-sequence modeling \ref{sec.state_of_art}, pre-training for such models and \gls{ml} supported \glspl{nids} in general. Reasoning behind our methodology, and other decisions made, can be found in its dedicated section \ref{sec:methodology}. A detailed description of the conducted experiments can 
+be found in the section \textit{Experiments} \ref{sec:experiments} with the goal to make them as reproducible as possible. A structured comprehension of experiments conducted is provided in the section \textit{Results} \ref{sec:results}. Finally, in the sections \textit{Discussion} \ref{sec:discussion} and \textit{Conclusion} \ref{sec:conclusion} we discuss successes and failures and draw conclusions from our findings, including pointers for future research. 
 
-
-\section{Support (optional)   } \label{sect.support}
-In case your research was supported by a project, you can here mention the project and its objectives
 
 \newpage
