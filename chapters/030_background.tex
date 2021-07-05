@@ -25,7 +25,7 @@ A memory cell is comprised of \textit{input node}, \textit{input gate}, \textit{
 	\caption{One \gls{lstm} memory cell \cite{rnn_zachary}}
 	\label{fig:background:lstm}
 \end{figure}
-In contrast to an ordinary \gls{rnn}, an \gls{lstm} has two memory states: the hidden state $h^{(t)}$ and the \textit{cell state} $C^{(t)}$. Three gates enable the cell to control the flow of information and its effects on the cell state. For this purpose, gates in an \gls{lstm} consist of a point-wise multiplication with a vector that holds values between 0 and 1. The three sigma activations seen in \ref{fig:background:lstm} produce the gate vectors. The input gate $i^{(t)} = \sigma(W^i[h^{(t-1)},x^{(t)}] + b^i)$ controls whether the memory cell is updated. The forget gate $f^{(t)} = \sigma(W^f[h^{(t-1)},x^{(t)}] + b^f)$ controls how much of the old state is to be forgotten. The output gate $o^{(t)} = \sigma(W^o[h^{(t-1)},x^{(t)}] + b^o)$ controls whether the current cell state is made visible. The weight matrices $W^i, W^j$ and $W^o$ decide how information is processed by the cell and are learned parameters. The cell state is updated by addition with the vector $\bar{C}=\tanh(W^C[h^{(t-1)},x^{t}]+b^C)$ after multiplication with the input gate vector $i^{(t)}$. The repeated addition of a tanh activation distributes gradients and vanishing/exploding gradients are mitigated.
+In contrast to an ordinary \gls{rnn}, an \gls{lstm} has two memory states: the hidden state $h^{(t)}$ and the \textit{cell state} $C^{(t)}$. Three gates enable the cell to control the flow of information and its effects on the cell state. For this purpose, gates in an \gls{lstm} consist of a point-wise multiplication with a vector that holds values between 0 and 1. The three sigma activations seen in \ref{fig:background:lstm} produce the gate vectors. The input gate $i^{(t)} = \sigma(W^i[h^{(t-1)},x^{(t)}] + b^i)$ controls whether the memory cell is updated. The forget gate $f^{(t)} = \sigma(W^f[h^{(t-1)},x^{(t)}] + b^f)$ controls how much of the old state is to be forgotten. The output gate $o^{(t)} = \sigma(W^o[h^{(t-1)},x^{(t)}] + b^o)$ controls whether the current cell state is made visible. The weight matrices $W^i, W^j$ and $W^o$ decide how information is processed by the cell and are learned parameters. The cell state is updated by addition with the vector $\bar{C}=\tanh(W^C[h^{(t-1)},x^{t}]+b^C)$ after multiplication with the input gate vector $i^{(t)}$. The repeated addition of a $\tanh$ activation distributes gradients and vanishing/exploding gradients are mitigated.
 
 \subsection{Adam Optimizer}
 
@@ -55,17 +55,20 @@ Vaswani et al. proposed the use of Multi-Head Attention mechanism suggesting the
 	MultiHead(Q,K,V) = Concat(head_1, ..., head_h)W^O
 \end{equation}
 
+depicted in figure \ref{fig:attention}. The Multi-Head Attention block from \ref{fig:attention} is
+used in the Transformer encoder block \ref{fig:transformer_encoder} together with a fully-connected feed forward network. After each sub-layer (Multi-Head Attention, Feed Forward) layer normalization is applied and a residual connection originating from the input to the sub-layer is added as can again be seen in figure \ref{fig:transformer_encoder}. The output of each sub-layer is hence defined as $LayerNorm(x + Sublayer(x))$ where $Sublayer$ is either a Feed Forward or a Multi-Head Attention function. While there is more to the Transformer model, for our experiments we are only using the parts described here.
+
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{img/transformer.png}
-	\caption{Complete Transformer Encoder-Decoder Model as proposed by \cite{attention_origin}}
-	\label{fig:transformer}
+	\includegraphics[width=0.4\textwidth]{img/transformer_encoder.png}
+	\caption{Transformer Encoder Model as proposed by \cite{attention_origin}}
+	\label{fig:transformer_encoder}
 \end{figure}
 
 \subsection{Self-supervised Learning}
 
-\subsection{Auto Encoder}
+\subsection{Auto Encoder} \label{subsec.autoencoder}
 
 \subsection{Pre-Training and Fine Tuning}
 
