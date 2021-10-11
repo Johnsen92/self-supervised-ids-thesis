@@ -1,4 +1,4 @@
-\chapter{State of the art} \label{sec.state_of_art}
+\chapter{State of the art} \label{sec:stateofart}
 
 As the topic of this thesis is rather specific, comparable research is hard to find. Overall, the thesis works on the two subjects of unsupervised pre-training for \glspl{nn} and for \gls{ml} supported \gls{nids}. Here we are looking at state-of-the-art research of both aspects individually.
 
@@ -11,9 +11,10 @@ When it comes to machine learning, rapid progress has been made over the past ye
 Google's BERT \cite{bert} by Jacob Devlin et al. effectively uses a Deep Bidirectional Transformer model, often referred to as Transformer Encoder, for various \gls{nlp} tasks, both on sentence and word level, like question answering, natural language inference, sentiment analysis, paraphrasing and others. At the time it was published, it produced the highest recorded GLUE \cite{glue} score of 80.5\% advancing it by 7.7\% over the former top scorer. It uses the WordPiece \cite{wordpiece} embedding resulting in a 30,000 token vocabulary. It was pre-trained in a fully unsupervised fashion on all sentences in the English Wikipedia (2,5 Billion words) and the BooksCorpus \cite{books_corpus} containing 800 Million word. The pre-training consisted of two proxy tasks: \gls{nsp} and \gls{mlm}. For \gls{nsp}, two sections of text, A and B, separated by a [SEP] token are fed into the model at the same time. 50\% of the time, B is the next section that follows A in the original text. 50\% of the time it is a random sentence from the corpus. The model is tasked with predicting, if sentence B follows sentence A. For \gls{mlm}, 15\% of the input tokens are hidden from the model by replacing with a [MASK] tokens. The model is tasked with reconstructing the masked tokens. Both of those pre-training tasks are performed at the same time. The pre-trained model is then fine-tuned to perform a specific down-stream task. \par
 This two stage approach, pre-training and fine-tuning, produces a reusable pre-trained model which can then be fine-tuned relatively swiftly (Jacob Devlin et al. state that it takes at most an hour of fine-tuning on a \gls{gpu} to replicate all results in the paper) to solve various \gls{nlp} tasks. For this thesis, we use the same approach to pre-train our models in an unsupervised fashion and then fine-tune them with a small amount of labeled data to teach them the down-stream task of classifying network flows. We also use the pre-training task of masking parts of the input data for the model to reconstruct for both our \gls{lstm} and Transformer networks. The \gls{nsp} task is not feasible in our situation, as network flows don't have an order other than the time of occurrence, and therefore flows don't have a semantically identifiable successor or predecessor.
 
-\subsection{Unsupervised Learning of Video Representations using LSTMs}
+\subsection{Unsupervised Learning of Video Representations using LSTMs} \label{sec:stateofart:unsupervised_video_lstm}
 
-The use of unsupervised learning is not limited to Transformer networks. As early as 2016, before the rise of Transformers, Nitish Srivastava et al. showed in their paper "Unsupervised Learning of Video Representations using LSTMs" \cite{unsupervised_learning_lstms} that unsupervised learning on \glspl{lstm} can have a positive impact on subsequent classification tasks. The authors use video data to train their models in frame prediction and auto encoding as the proxy tasks with the goal of improving accuracy in human action recognition, based on evaluation with the UCF-101 andHMDB-51 datasets. They experimented with two types of video representations: patches of image pixels and high-level representations ("percepts") of video frames extracted by a convolutional net. They used 13,320 videos with an average length of 6.2 seconds belonging to 101 different action categories. \par
+The use of unsupervised learning is not limited to Transformer networks. As early as 2016, before the rise of Transformers, Nitish Srivastava et al. showed in their paper "Unsupervised Learning of Video Representations using LSTMs" \cite{unsupervised_learning_lstms} that unsupervised learning on \glspl{lstm} can have a positive impact on subsequent classification tasks. The authors use video data to train their models in frame prediction and auto encoding as the proxy tasks with the goal of improving accuracy in human action recognition, based on evaluation with the UCF-101 and
+HMDB-51 datasets. They experimented with two types of video representations: patches of image pixels and high-level representations ("percepts") of video frames extracted by a convolutional net. They used 13,320 videos with an average length of 6.2 seconds belonging to 101 different action categories. \par
 The auto-encoding property of the model is achieved by concatenating two \glspl{lstm}, with one performing the function of encoder and one of decoder. The goal is to produce a sequence2sequence model capable of reconstructing the input sequence after being forced to compress the input data. The input sequence is first processed by the encoder \gls{lstm} to produce an output of constant length (in their case, the hidden size of the encoder \gls{lstm}). The resulting vector is then fed into the decoder which is tasked with reconstructing the input sequence in reverse order. Here, the decoder can be configured to either be \textit{conditioned} or \textit{unconditioned}. A conditioned decoder uses the output of the last \gls{lstm} stage as input for the next stage. An unconditioned decoder uses the corresponding input token (ground truth) as input for the next stage. The latter practice is also called \textit{teacher forcing}. \par
 The second unsupervised task to train the \gls{lstm} consists of predicting multiple future video frames. For this, again two consecutive \gls{lstm} networks are used: an encoder and a predictor \gls{lstm}. The first network is fed the frame representation of part of a short video and again produces a fixed sized output vector to be used by the predictor \gls{lstm}. The second \gls{lstm} is then tasked with producing the remaining frames. Same as with the auto-encoder the predictor \gls{lstm} can either be conditioned or unconditioned. \par
 The authors then proposed a composite model as can be seen in figure \ref{fig:stateofart:unsupervised_lstm_composite} where both proxy tasks, reconstructing the input and predicting the future, are combined to produce a single model.
@@ -25,6 +26,23 @@ The authors then proposed a composite model as can be seen in figure \ref{fig:st
 	\label{fig:stateofart:unsupervised_lstm_composite}
 \end{figure}
 
+With the composite model, the authors achieved an absolute increase of 1.3\% accuracy for both the UCF-101 and the HMDB-51 datasets over a conventional \gls{lstm} classifier as can be seen in table \ref{table:stateofart:unsupervised_learning_results}.
+
+\begin{table}[]
+	\begin{tabular}{l c c c}
+		\thead{Model} & \thead{UCF-101 \\ RGB} & \thead{UCF-101\\ 1-frame flow} & \thead{HMDB-51 \\RGB} \\ \hline
+		\midrule
+		Single Frame & 72.2 & 72.2 & 40.1 \\
+		\midrule
+		LSTM classifier & 74.5 & 74.3 & 42.8 \\
+		\midrule
+		Composite LSTMModel + Finetuning & 75.8 & 74.9 & 44.1 \\
+	\end{tabular}
+	\caption{Summary of results on Action Recognition \cite{unsupervised_learning_lstms}}
+	\label{table:stateofart:unsupervised_learning_results}
+\end{table}
+
+For our thesis we used the same Auto-Encoder and composite model for pre-training as explained in sections \ref{sec:experiments:lstm_auto_encoder} and \ref{sec:experiments:lstm_composite}. We tried with both conditioned and unconditioned models, comparing results in section \ref{sec:results}.
 
 
 \section{Machine Learning for Network Intrusion Detection}
