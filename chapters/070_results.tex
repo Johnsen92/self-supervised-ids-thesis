@@ -8,11 +8,35 @@
 	\item comparison of performance improvements for different amounts of supervised training
 	\item comparison of performance improvements for different compositions of pretraining data
 	\item comparison between multiple datasets
-	\item comparison to orthogonal initialization
-\end{itemize}
+	\item comparison to orthogonal initialization/random initialization/0-initialization
+	\item comparison of validation loss and accuracy convergence for different pretraining tasks
+\end{itemize} 
 
-\section{Long Short-Term Memory Network}
+\section{Long Short-Term Memory Network} \label{sec:results:lstm}
 
+\subsection{Identity Function} \label{sec:results:lstm:identity}
+
+\subsection{Predict Packet} \label{sec:results:lstm:predict_packet}
+
+\subsection{Mask Features} \label{sec:results:lstm:mask_feature}
+
+\begin{itemize}
+	\item compare differences strategies for masking features
+\end{itemize} 
+
+\subsection{Mask Packets} \label{sec:results:lstm:mask_packet}
+
+\subsection{Auto-Encoder} \label{sec:results:lstm:auto_encoder}
+
+\begin{itemize}
+	\item compare differences between conditioned and unconditioned model
+\end{itemize} 
+
+\subsection{Composite model} \label{sec:results:lstm:composite}
+
+\begin{itemize}
+	\item compare differences between conditioned and unconditioned model
+\end{itemize} 
 
 \begin{itemize}
 	\item provide data for maximum results including class stats for both datasets to establish a feel for the maximally possible accuracy with supervised training and 90\% of data
@@ -23,12 +47,19 @@
 
 \section{Transformer Network}
 
+\subsection{Mask Features} \label{sec:results:transformer:mask_features}
+
+\subsection{Autoencoder} \label{sec:results:transformer:autoencoder}
+
+\subsection{Mask Packet} \label{sec:results:transformer:mask_packet}
+
 \section{Explainability}
 
 \begin{itemize}
 	\item close look at differences in performance for different attack classes
 	\item partial dependency plots
 	\item neuron activation
+	\item \gls{dlstm}s already very effective, so improvement is hard
 \end{itemize}
 
 \newpage

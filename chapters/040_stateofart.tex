@@ -26,17 +26,21 @@ The authors then proposed a composite model as can be seen in figure \ref{fig:st
 	\label{fig:stateofart:unsupervised_lstm_composite}
 \end{figure}
 
-With the composite model, the authors achieved an absolute increase of 1.3\% accuracy for both the UCF-101 and the HMDB-51 datasets over a conventional \gls{lstm} classifier as can be seen in table \ref{table:stateofart:unsupervised_learning_results}.
+The pre-trained models are then finetuned for their classification task on the mentioned training datasets.
+With the pre-trained + finetuned composite model, the authors achieved an absolute increase of 1.3\% accuracy for both the UCF-101 and the HMDB-51 datasets over a conventional \gls{lstm} classifier as can be seen in table \ref{table:stateofart:unsupervised_learning_results}.
 
 \begin{table}[]
 	\begin{tabular}{l c c c}
-		\thead{Model} & \thead{UCF-101 \\ RGB} & \thead{UCF-101\\ 1-frame flow} & \thead{HMDB-51 \\RGB} \\ \hline
+		\thead{Model} & \thead{UCF-101 \\ RGB} & \thead{UCF-101
+\\ 1-frame flow} & \thead{HMDB-51 \\
+RGB} \\ \hline
 		\midrule
 		Single Frame & 72.2 & 72.2 & 40.1 \\
 		\midrule
 		LSTM classifier & 74.5 & 74.3 & 42.8 \\
 		\midrule
-		Composite LSTMModel + Finetuning & 75.8 & 74.9 & 44.1 \\
+		Composite LSTM
+Model + Finetuning & 75.8 & 74.9 & 44.1 \\
 	\end{tabular}
 	\caption{Summary of results on Action Recognition \cite{unsupervised_learning_lstms}}
 	\label{table:stateofart:unsupervised_learning_results}
@@ -44,6 +48,66 @@ With the composite model, the authors achieved an absolute increase of 1.3\% acc
 
 For our thesis we used the same Auto-Encoder and composite model for pre-training as explained in sections \ref{sec:experiments:lstm_auto_encoder} and \ref{sec:experiments:lstm_composite}. We tried with both conditioned and unconditioned models, comparing results in section \ref{sec:results}.
 
+\subsection{Unsupervised pre-training ofa Deep LSTM-based StackedAutoencoder for Multivariate timeSeries forecasting problems} \label{sec:stateofart:unsupervised_learning_lstms_timeseries}
+
+In their 2019 paper \cite{unsupervised_learning_lstms_timeseries} Alaa Sagheer et al. explore the benefits of unsupervised pre-training using stacked \gls{lstm} auto encoders with subsequent supervised finetuning. Their goal was to improve the prediction capabilities for \gls{mts} problems. In their previous paper \cite{dlstm_time_series_forecasting}, the authors showed the effectiveness of \gls{dlstm} based models for \gls{mts} prediction tasks. In their 2019 paper, they showed the improvements resulting from pre-training when compared to an initial random initialization of weights when working with \gls{dlstm} models. Compared to shallow \gls{lstm} networks, \gls{dlstm} networks contain multiple layers of \gls{lstm} cells stacked on each other. Information travels the network from left to right and from bottom to top as is depicted in figure \ref{fig:stateofart:unsupervised_learning_with_lstms_dlstm}. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{img/unsupervised_learning_with_lstms_dlstm.png}
+	\caption{Depiction of a \gls{dlstm} with two layers \cite{unsupervised_learning_lstms}}
+	\label{fig:stateofart:unsupervised_learning_with_lstms_dlstm}
+\end{figure}
+
+For pre-training the network, the authors use a \gls{lstmsae} model. In contrast to a conventional auto encoder like described in \ref{sec:backgrund:autoencoder}, a stacked auto encoder model uses multiple encoder and decoder layers as can be seen in figure \ref{fig:stateofart:unsupervised_learning_dlstm_mts_lstmsae}. The different encoder layers are trained individually in a multi phased training procedure: Train the first auto encoder layer like a conventional \gls{lstmae} with the target being the original input data. Cut the decoder part of the first \gls{lstmae}. When training the second \gls{lstmae}, the input is encoded by both the encoder of the first and second \gls{lstmae} block and then decoded only by the decoder of the second \gls{lstmae}. The target data for training the second \gls{lstmae} is again the original input, and not the reconstructed input of the first \gls{lstmae}. The training process is depicted in figure \ref{fig:stateofart:unsupervised_learning_dlstm_mts_lstmsae}. This process is then repeated for arbitrarily many \gls{lstmae} layers. The authors tried both one and two stacked layers of \gls{lstmae}. The trained encoder blocks are then used to initialize a multi layered \gls{dlstm}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\textwidth]{img/unsupervised_learning_dlstm_mts_lstmsae.png}
+	\caption{Layer-wise pre-training of \gls{lstmsae} model. \cite{unsupervised_learning_lstms_timeseries}}
+	\label{fig:stateofart:unsupervised_learning_dlstm_mts_lstmsae}
+\end{figure}
+
+To complete the training phase, the parameters of the pre-trained \gls{dlstm} are then finetuned in a supervised fashion. This is done by adding an output layer which produces values of the dimension of labels of the training set used and of the variables to be predicted. In the case of the authors, the output layer was a single neuron to predict a single variable. For supervised finetuning and validation they used two datasets:
+
+\begin{enumerate}
+	\item \textit{The capital bike sharing dataset}
+	\item \textit{The PM2.5 concentration in the air of CHINA dataset}
+\end{enumerate}
+
+For the first dataset, the model tried to predict how many bike will be rented on a particular day based on parameters like \textit{Season, Holiday, Weekday, Working day}, etc. For the second dataset, the task was to predict PM2.5 concentrations in the air for various Chinese cities based on parameters like \textit{Dew Point, Temperature, Pressure, Combined Wind Direction,} etc. \par
+
+As metric of performance, the authors used \gls{rmse}, \gls{mae} and \gls{smape} (lower is better) which all describe the difference between predicted value and observed value. The results of evaluation with both data sets can be seen in tables \ref{table:stateofart:unsupervised_learning_lstms_timeseries_results1} and \ref{table:stateofart:unsupervised_learning_lstms_timeseries_results2}.
+
+\begin{table}[]
+	\begin{tabular}{l c c c c c c c}
+		\thead{Model} & \thead{No. of \\ hiddenlayer} & \thead{Dropout} & \thead{lag} & \thead{batch} & \thead{RMSE} & \thead{MAE} & \thead{SMAPE} \\ \hline
+		\midrule
+		DLSTM & 1 & 0.4 & 20 & 146 & 52.062 & 32.468 & 12.088 \\
+		DLSTM & 2 & 0.3 & 25 & 219 & 49.811 & 31.524 & 12.183 \\
+		LSTM-SAE & 1 & 0.1 & 30 & 219 & 49.389 & 32.192 & 13.878 \\
+		LSTM-SAE & 2 & 0.1 & 30 & 73 & 46.927 & 30.041 & 11.646 \\
+	\end{tabular}
+	\caption{The results of \gls{dlstm} and \gls{lstmsae} using data set 1 \cite{unsupervised_learning_lstms_timeseries}}
+	\label{table:stateofart:unsupervised_learning_lstms_timeseries_results1}
+\end{table}
+
+\begin{table}[]
+	\begin{tabular}{l c c c c c c c}
+		\thead{Model} & \thead{No. of \\ hiddenlayer} & \thead{Dropout} & \thead{lag} & \thead{batch} & \thead{RMSE} & \thead{MAE} & \thead{SMAPE} \\ \hline
+		\midrule
+		DLSTM & 1 & 0.2 & 30 & 60 & 23.993 & 12.124 & 10.919 \\
+		DLSTM & 2 & 0.2 & 30 & 73 & 23.750 & 12.452 & 12.181 \\
+		LSTM-SAE & 1 & 0.1 & 30 & 219 & 23.907 & 12.509 & 11.052 \\
+		LSTM-SAE & 2 & 0.3 & 25 & 146 & 24.041 & 12.060 & 9.864 \\
+	\end{tabular}
+	\caption{The results of \gls{dlstm} and \gls{lstmsae} using data set 2 \cite{unsupervised_learning_lstms_timeseries}}
+	\label{table:stateofart:unsupervised_learning_lstms_timeseries_results2}
+\end{table}
+
+The results in tables \ref{table:stateofart:unsupervised_learning_lstms_timeseries_results1} and \ref{table:stateofart:unsupervised_learning_lstms_timeseries_results2} show that unsupervised pre-training improved final accuracy and led to better and faster convergence. \par
+
+For this thesis, we used only a single \gls{lstmae} network, but with three layers of \gls{lstm} cells making it a \gls{dlstm} for both encoder and decoder.
 
 \section{Machine Learning for Network Intrusion Detection}
 
