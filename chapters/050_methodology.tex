@@ -8,9 +8,7 @@ Network communication is similar to natural language in the sense that it follow
 
 We used the two \gls{nids} datasets \textit{UNSW-NB15} \cite{unsw_nb15} and \textit{CIC-IDS-2017} \cite{cic_ids_2017}. \par
 
-\subsection{UNSW-NB15} \label{sec:methodology:datasets:unsw_nb15}
-
-The UNSW-NB15 dataset \cite{unsw_nb15}, created by Nour Moustafa et al. from the School of Engineering and Information Technology, University of New South Wales at the Australian Defence Force Academy, Australia, was released as an update for the formerly frequently used but deprecated \cite{unsw_nb15} KDD dataset family. It was designed to reflect most known low foot print attacks at time of publication. The records are bidrectional flows extracted from the raw traffic data and grouped by the commonly used \textit{<srcIP, dstIP, srcPort, dstPort, protocol>} tuple. Each flow is described by 47 derived or measured features e.g. total duration, bytes transmitted, the mean of the flow packet size transmitted by destination IP, etc. The dataset contains a total of 2.54 million records of which 2.22 million are natural transaction data labeled as benign and 0.32 million attack records meaning 87.4\% of data is classified as benign. Attack records can be further divided into nine attack categories as listed in table \ref{table:methodology:datasets:unsw_nb15_categories}.
+The \textbf{UNSW-NB15} dataset \cite{unsw_nb15}, created by Nour Moustafa et al. from the School of Engineering and Information Technology, University of New South Wales at the Australian Defence Force Academy, Australia, was released as an update for the formerly frequently used but deprecated \cite{unsw_nb15} KDD dataset family. It was designed to reflect most known low foot print attacks at time of publication. The records are bidrectional flows extracted from the raw traffic data and grouped by the commonly used \textit{<srcIP, dstIP, srcPort, dstPort, protocol>} tuple. Each flow is described by 47 derived or measured features e.g. total duration, bytes transmitted, the mean of the flow packet size transmitted by destination IP, etc. The dataset contains a total of 2.54 million records of which 2.22 million are natural transaction data labeled as benign and 0.32 million attack records meaning 87.4\% of data is classified as benign. Attack records can be further divided into nine attack categories as listed in table \ref{table:methodology:datasets:unsw_nb15_categories}.
 
 \begin{table}[H]
 	\centering
@@ -33,14 +31,12 @@ The UNSW-NB15 dataset \cite{unsw_nb15}, created by Nour Moustafa et al. from the
 
 The dataset was generated from a synthetic environment comprised of 3 networks and 45 distinct IP addresses using the IXIA PerfectStorm (now keysight PerfectStorm) tool.
 
-\subsection{CIC-IDS-2017}
-
-The CIC-IDS-2017 dataset \cite{cic_ids_2017}, created by Iman Sharafaldin et. al from Canadian Institute for Cybersecurity (CIC), University of New Brunswick (UNB), Canada constitutes another updated representation of known attack types at the time of publication. Compared to the UNSW-NB15 dataset it contains records of more modern cyber attacks like Heartbleed, HULK DoS but leaves out e.g. worm attacks. It contains a total of 2.83 million records of which 2.36 million are labeled as benign and 0.47 million are attack records. In other words, 83.35\% of the dataset are benign records and 16.61\% attack records. Attack records can be further classified as shown in table \ref{table:methodology:datasets:cic_ids_2017_categories}.
+The \textbf{CIC-IDS-2017} dataset \cite{cic_ids_2017}, created by Iman Sharafaldin et. al from Canadian Institute for Cybersecurity (CIC), University of New Brunswick (UNB), Canada constitutes another updated representation of known attack types at the time of publication. Compared to the UNSW-NB15 dataset it contains records of more modern cyber attacks like Heartbleed, HULK DoS but leaves out e.g. worm attacks. It contains a total of 2.83 million records of which 2.36 million are labeled as benign and 0.47 million are attack records. In other words, 83.35\% of the dataset are benign records and 16.61\% attack records. Attack records can are further classified as shown in table \ref{table:methodology:datasets:cic_ids_2017_categories}.
 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{c c c c c}
-		\thead{\textbf{Type}} & \thead{\textbf{\textbf{No. Records}}} & \thead{\textbf{\% w.r.t.} \\ \textbf{majority class}} & \thead{\textbf{\% w.r.t.} \\ \textbf{majority attack class}} & \thead{\textbf{\% w.r.t.} \\ \textbf{total instances}}\\ \hline \midrule
+		\thead{\textbf{Type}} & \thead{\textbf{No. Records}} & \thead{\textbf{\% w.r.t.} \\ \textbf{majority class}} & \thead{\textbf{\% w.r.t.} \\ \textbf{majority attack class}} & \thead{\textbf{\% w.r.t.} \\ \textbf{total instances}}\\ \hline \midrule
 		Benign                     & 2359087 & 100.000 & 1020.932 & 83.363 \\ \midrule
 		Bot                        & 1966    & 0.083   & 0.851    & 0.069  \\ \midrule
 		DDoS                       & 41835   & 1.773   & 18.105   & 1.478  \\ \midrule
@@ -60,9 +56,62 @@ The CIC-IDS-2017 dataset \cite{cic_ids_2017}, created by Iman Sharafaldin et. al
 	\label{table:methodology:datasets:cic_ids_2017_categories}
 \end{table}
 
+In contrast to the UNSW-NB15 network simulation environment, the network topology consists of two networks: A highly secured victim network with firewall, router, switches and most common operating systems. The attack network is a separate network, containing a set of PCs with public IPs and running Windows 8.1 and Kali Linux.
+
+To reduce variance in results and to keep comparability high we use the same random seed for all experiments and use stratified sampling when we divide the data sets into smaller chunks for pretraining, training and validation to assure the each attack category is represented in the subset proportionally to the whole dataset. This is especially important if we use very small subsets (10 flows per attack category) for finetuning as described in section \ref{sec:experiments}. 
+
 \section{Data Representation}
 
-Network traffic data can be looked at from a multitude of perspectives ranging from aggregate statistical data over different time-frames \cite{kitsune} to looking at feature representations of single packets which can be viewed in the context of \textit{flows}. Flows are loosely defined as sequences of packets that share a certain property \cite{adversarial_recurrent_ids}.  In our case we define flows as packets that share source and destination IP address, source and destination port, and the network protocol used. This creates the quintuple \textit{<srcIP, dstIP, srcPort, dstPort, protocol>} as the key over which individual packets are aggregated to flows, which is a very common approach \cite{caia_vector}, \cite{unsw_nb15}, \cite{feature_vectors}. We used the data pre-processing from \cite{adversarial_recurrent_ids} as it fit the requirements for our experiments and was easily modifiable. After data pre-processing each packet is represented by source port, destination port, packet length, \gls{iat}, packet direction and all TCP flags (SYN, FIN, RST, PSH, ACK, URG, ECE, CWR, NS) resulting in 15 features to be used in training the \glspl{nn}. We chose a flow representation since this approach has shown good results frequently, is easy to obtain, requires no domain knowledge and is also feasible for encrypted traffic \cite{feature_vectors}. The downside of this approach is that the packet payload is ignored, which leads to poor classification performance for \gls{u2r} and \gls{r2l} \cite{nsl_kdd} like SQL injection, SnmpGetAttack and other payload based attacks. This is also shown by our results as can be seen in section \ref{sec:results}
+Network traffic data can be viewed from a multitude of perspectives ranging from aggregate statistical data over different time-frames \cite{kitsune} to looking at feature representations of single packets. These can be viewed in the context of \textit{flows}.
+Flows are loosely defined as sequences of packets that share a certain property \cite{adversarial_recurrent_ids}. In our case we define flows as packets that share source and destination IP address, source and destination port, and the network protocol used. This creates the quintuple \textit{<srcIP, dstIP, srcPort, dstPort, protocol>} as the key over which individual packets are aggregated to flows, which is a very common approach \cite{caia_vector}, \cite{unsw_nb15}, \cite{feature_vectors}. We chose a flow representation since this approach has shown good results frequently, is easy to obtain, requires no domain knowledge, and is feasible for encrypted traffic \cite{feature_vectors}. The downside of this approach is that the packet payload is ignored, which leads to poor classification performance for \gls{u2r} and \gls{r2l} \cite{nsl_kdd} like SQL injection, XSS and other payload based attacks. This is also shown by our results as can be seen in section \ref{sec:results}.
+Commonly, flows are represented as a single feature vector in the database, containing aggregated statistical data of the completed flow like e.g. the mean of the flow packet size transmitted by the source IP, source to destination packet count or bits per second or total duration of the transmission. The downside of this is that flows can be processed only once they are completed \cite{adversarial_recurrent_ids}. In a real world scenario, this approach has major downsides since the \gls{ids} can only inspect communications in retrospect and never in real time. This was one of the reasons we decided to represent our flows as a sequence of packets instead of a single aggregated feature vector. Each packet is represented by the 15 features in table \ref{table:methodology:data_representation:features}.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c c c c l}
+		\thead{\textbf{\#}} & \thead{\textbf{Name}} & \thead{\textbf{Type}} & \thead{\textbf{Constant} \\ \textbf{over flow}} & \thead{\textbf{Description}} \\ \hline \midrule
+		0 & srcPort & Int & yes & Source port number \\ \midrule
+		1 & dstPort & Int & yes & Destination port number \\ \midrule
+		2 & protocol & Int & yes & Protocol identifier \\ \midrule
+		3 & pktLength & Int & no & Destination port number \\ \midrule
+		4 & pktIat & Int & no & \gls{iat} \\ \midrule
+		5 & pktDirection & Bool & no & Sending direction of the packet \\ \midrule
+		6 & synFlag & Bool & no & TCP SYN Flag \\ \midrule
+		7 & finFlag & Bool & no & TCP FIN Flag \\ \midrule
+		8 & rstPort & Bool & no & TCP RST Flag \\ \midrule
+		9 & pshFlag & Bool & no & TCP PSH Flag \\ \midrule
+		10 & ackFlag & Bool & no & TCP ACK Flag \\ \midrule
+		11 & urgFlag & Bool & no & TCP URG Flag \\ \midrule
+		12 & eceFlag & Bool & no & TCP ECE Flag \\ \midrule
+		13 & cwrFlag & Bool & no & TCP CWR Flag \\ \midrule
+		14 & nsFlag & Bool & no & TCP NS Flag \\ \midrule
+	\end{tabular}
+	\caption{Packet features \cite{cic_ids_2017_analysis}.}
+	\label{table:methodology:data_representation:features}
+\end{table}
+
+Another reason why we used a packet sequence instead of an aggregate flow representation is its similarity to natural language as mentioned before, which enables us to apply state-of-the-art methods from \gls{dl} based \gls{nlp}. We used the data pre-processing from \cite{adversarial_recurrent_ids} as it fit the requirements for our experiments and was easily modifiable.
+
+To keep gradient paths shorter and to improve training stability, packet sequences are truncated to be at most 100 packets long. As last step of pre-processing features are normalized to be within a range of $[-1,1]$ to make gradient descent converge quicker.
+
+\section{Machine Learning Models}
+
+To inspect the potential benefits of self-supervised pretraining for \gls{ml}-based intrusion detection we chose to take a look at \gls{lstm} and Transformer networks as they are suited to process sequences of variable length and have shown promising results in the past in the domains of \gls{ids} and/or \gls{nlp} \todo{give examples}. Both types of networks are generally susceptible to improvements through self-supervised pretraining as prior research has shown \cite{bert} \cite{unsupervised_learning_lstms} \cite{unsupervised_learning_lstms_timeseries}. Whether pretraining improves performance in the context of \gls{nids} remains to be shown and is subject of this thesis.
+
+For our \textbf{\gls{lstm} network} we chose a three layer \gls{dlstm} with a \textit{hidden size} of 512. While a larger network might be slightly more effective, this configuration proved to be swiftly trainable while also producing results close to those achieved by other researchers using \gls{lstm} models applied to the same datasets \cite{fog_based_detection_survey_2020}. Since our main focus is on comparisons between different training methods applied to the same model, it is not necessary to achieve optimal results as this would unnecessarily increase the training time needed until the model converges. For training the \gls{lstm} model, each flow is considered one sample and each packet is one token. The tokens are processed by the model in chronological order, meaning packets with an earlier timestamp will be processed first. The timestamp however is not part of the feature representation but is considered for data pre-processing to order packets within flows. Independent of the context, \gls{lstm} models have shown to be sensible to initialization of their weights and hidden state. This can be seen as a drawback but also as an opportunity to increase performance or decrease learning time. While there are many ways to initialize the parameters of an \gls{lstm} network, the most common ones are 0-initialization, random initialization and some form of transfer learning which in our case is self-supervised pretraining. For pretraining, the output layer is a linear layer with 15 nodes, equal to the number of features, and no activation function. For binary classification the output layer is replaced with a linear layer with a single node and no activation function because the objective function \gls{bce} Loss operates on logits.
+
+\todo{insert image of lstm model}
+
+The Transformer model as proposed by Vaswani et. al \cite{attention} and its derivative score high on the leader boards of \gls{nlp} benchmarks like GLUE \cite{glue} or SQuAD \cite{bibid} and are still considered state-of-the-art in many regards. Following the example of \gls{bert} we only used the encoder part of the \textit{Transformer network} since the decoder does not provide any benefits for classification problems. We tuned the model parameters to be 10 Transformer layers, each layer consisting of a 3-headed Multi-Head Attention block and a feed-forward network with no forward expansion, meaning an internal representation size equal to the number of features per packet (15). For pretraining, the output layer is a linear layer with 15 nodes, equal to the number of features, and no activation function. For binary classification the output layer is replaced with a linear layer with a single node and no activation function because the objective function \gls{bce} Loss operates on logits.
+
+\todo{insert image of transformer model}
+
+\section{Framework and Training}
+
+To conduct our experiments we used PyTorch \cite{pytorch} to implement and train our proposed models. To save labor and to keep results comparable we used the standard implementations \textit{torch.nn.LSTM} and \textit{torch.nn.TransformerEncoder}. Training is conducted by a standard training loop going through forward and back propagation, calculating losses and updating weights for each batch. Noteworthy is the use of gradient clipping to a maximum of 1 and the use of a learning rate scheduler witch decreases the learning rate by a factor of 0.1 if mean batch loss is plateauing during training. As optimization criterion for pretraining we use L1 loss, i.e. \gls{mae} (\textit{nn.L1Loss}). For supervised training we use \gls{bce} loss with mean reduction on logits directly (\textit{nn.BCEWithLogitsLoss}).
+For updating weights we use the \textit{Adam} optimizer \cite{adam} which is an extension to the commonly used \gls{sgd} method. Similar to \textit{AdaGrad} \cite{optimizer_comparison} and \textit{RMSProp} \cite{optimizer_comparison} it maintains separate learning rates for each individual weight instead of using the same learning rate for every weight like in classic \gls{sgd}. Compared to other optimizers \textit{Adam} was shown to be more effective in improving training efficiency \cite{adam} and is appropriate for noisy or sparse gradients which can occur when working with \glspl{rnn} in general.
+We developed and implemented a framework in Python to automate the experiments, generate statistics, plots and metrics. \par
+The models were trained on two NVidia GeForce RTX 2070 Super GPUs with a combined performance of 19.4 Teraflops per second for 32bit float (FP32) values. We tried using 16bit float (FP16) values during training together with the \textit{torch.cuda.amp.GradScaler}. This significantly decreased training time but introduced numerical instability in some cases and we went back to training with FP32 values. Training was performed with a batch size of 128 for the \gls{lstm} model and 1024 for the TransformerEncoder model. Further increasing batch size did neither improve final accuracy nor did it decrease the time in which training converges. \par
 
 \begin{itemize}
 	\item explain why these experiments are used

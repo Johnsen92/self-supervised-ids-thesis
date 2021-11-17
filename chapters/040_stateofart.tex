@@ -2,11 +2,72 @@
 
 As the topic of this thesis is rather specific, comparable research is hard to find. Overall, the thesis works on the two subjects of unsupervised pre-training for \glspl{nn} and for \gls{ml} supported \gls{nids}. Here we are looking at state-of-the-art research of both aspects individually.
 
+\section{Machine Learning for Network Intrusion Detection}
+
+Machine learning techniques have shown to be competitive to signature based expert systems when it comes to \gls{nid}. Hence there have been many attempts over the past years to implement various types of machine learning algorithms with considerable success. The design space for such systems is vast as Hongyu Liu and Bo Lang show in their 2019 paper \cite{nid_ml_survey_2019} "Machine Learning and Deep Learning Methods for Intrusion Detection Systems: A Survey" where they enumerate the possible approaches to a machine learning based \gls{ids} and discuss their advantages and disadvantages. The authors classify proposed \glspl{ids} to date based on data sources and detection methods used to create a comprehensive taxonomy system. When using machine learning, further classification entails the type of machine learning methods used for implementing it. Based on their classification, our approach would be categorized as following: The data source is a network based IDS with flow based detection using deep learning methods. The detection method is machine learning based anomaly detection and the machine learning model is a deep learning model based on \gls{lstm} cells, but using both unsupervised and supervised learning methods. As such, our model is not even completely classifiable by the taxonomy proposed by Hongyu Liu et al.. \par
+
+\todo{insert image of classification of our approach based on this taxonomy}
+
+Congruent with our assumptions, Hongyu Liu and Bo Lang deem a flow based detection to be a suitable way to structuring the raw network data, as it represents the whole network environment and retains a lot of contextual information but with the obvious drawback that package payload is being ignored. This leads to poor detection rates for \gls{u2r} and \gls{r2l} attacks like SQL injection or XSS attacks which our results confirm as can be seen in section \ref{sec:results}. \par
+
+Although the design space for \gls{ml} based is much greater, we are focusing on \gls{dl} based approaches which have shown to be superior to shallow networks in general. A good initial overview of state-of-the-art \gls{dl} techniques applied to \gls{nid} can be found in the 2020 paper "Fog-Based Attack Detection Framework for Internet of Things Using Deep Learning" \cite{fog_based_detection_survey_2020} by Ahmed Samy et al. Although their it has its focus on \glspl{ids} for resource and energy constrained \gls{iot} networks, the authors provides a comprehensive overview of the performance of different up-to-date \gls{dl} models applied to various \gls{nids} data sets. The goal of their research is to implement powerful \gls{dl} based \glspl{ids} in a resource constrained \gls{iot} network by outsourcing the processing to fog nodes which are capable of storing large amounts of data with low latency and are placed at the edge of the \gls{iot} network. In the context of their research, they implemented six state of the art \gls{dl} models:
+
+\glsreset{dnn}
+\glsreset{lstm}
+\glsreset{bilstm}
+\glsreset{cnnlstm}
+\glsreset{gru}
+\glsreset{cnn}
+
+\begin{itemize}
+	\item \textbf{\gls{dnn}} with an input layer of 1024 cells, five hidden layers with 512 cells each using \gls{relu} activation functions and one output layer with one cell using a sigmoid activation function.
+	\item \textbf{\gls{lstm}} with an input layer of 128 cells, three hidden layers with 256 cells each and one output layer with one cell using sigmoid activation 
+	\item \textbf{\gls{bilstm}} with an input layer of 128 cells, three hidden layers with 128 cells each and one output layer with one cell using sigmoid activation
+	\item \textbf{\gls{cnnlstm}} with three convolutional layers with 64 filters, each using \gls{relu} activation functions, three pooling layers, one \gls{lstm} layer with 256 cells and one output layer with one cell using sigmoid activation
+	\item \textbf{\gls{gru}} with an input layer of 64 cells, three hidden layers with 64 cells each and one output layer with one cell using sigmoid activation
+	\item \textbf{\gls{cnn}} with three convolutional layers with 64 filters each using \gls{relu} activation functions, three pooling layers and one output layer with one cell using sigmoid activation
+\end{itemize}
+
+For multi-class classification the output layer is expanded to match the number of classes in the data set.
+Ahmed Samy et al. tested their implementations on five different data sets:
+
+\begin{itemize}
+	\item UNSW-NB15 \cite{unsw_nb15}
+	\item CICIDS-2017 \cite{cic_ids_2017}
+	\item RPL-NIDS17 \cite{rpl_nids17}
+	\item N\_BaIoT \cite{n_baiot}
+	\item NSL-KDD \cite{nsl_kdd}
+\end{itemize}
+
+They used a feature representation of the data comprised of 80 network traffic features extracted with CICFLOWMETER.
+The best results in training where achieved with a learning rate of 0.01, a batch size of 64 using the Adam optimization algorithm.
+They used accuracy, precision, recall, F1-measure, \gls{far}, \gls{dr} as metrics corresponding with the definitions in section \ref{sec:backgrund:metrics} to assess the performance of the different models. This research was especially relevant for as, because the authors 
+used similar models and the same datasets, so a direct comparison with our results can be made.
+An overview of the relevant results for binary classifications can be found in table \ref{fig:stateofart:fog_based_detection_survey_2020_results_binary} and for multi-class classification in table \ref{fig:stateofart:fog_based_detection_survey_2020_results_class}.
+
+\todo{cut tables to only include relevant stats}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{img/fog_based_detection_survey_2020_results_binary.png}
+	\caption{Evaluation metrics of \gls{dl} models with the five data sets in binary classification. \cite{fog_based_detection_survey_2020}}
+	\label{fig:stateofart:fog_based_detection_survey_2020_results_binary}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{img/fog_based_detection_survey_2020_results_class.png}
+	\caption{Evaluation metrics of \gls{dl} models with the five data sets in binary classification. \cite{fog_based_detection_survey_2020}}
+	\label{fig:stateofart:fog_based_detection_survey_2020_results_class}
+\end{figure}
+
+As shown by the results and also stated in the paper: \gls{lstm} networks outperform other deep learning models consistently in attack detection and accuracy overall. This gives us confidence that our decision of working with \gls{lstm} networks was the right call as it adds to the real world relevance of our work. We also use a TransformerEncoder model for classification which was not included in the comparison done by Ahmed Samy et al. Furthermore, the models in their paper were trained fully supervised with at least 70\% of the data available in each data set which differs from our approach of using very little labeled data and relying on self-supervised pre-training.
+
 \section{Self-supervised Pre-training for LSTMs and Transformer Networks}
 
-When it comes to machine learning, rapid progress has been made over the past years. Frameworks such as PyTorch \cite{pytorch} and Tensorflow \cite{tensorflow} have made the technology accessible to people without a background in computer science. More than 11 thousand papers in the category "Computer Science - Artificial Intelligence (cs.AI)" have been published on arXiv.org \cite{arxiv} within only the last year. With steadily increasing processing capabilities, vast amounts of data can be used to train ever growing \glspl{nn} within an acceptable timeframe. E.g. the largest variant of Google's \gls{bert} algorithm has 340 million parameters and was trained on a dataset of 3.3 Billion words \cite{bert}. In the following section we are looking at some of the related papers with regards to our research question. An overview of the methods and models used in these papers can be found in table \ref{table:stateofart:self_supervised_overview}. \par
+When it comes to machine learning, rapid progress has been made over the past years. Frameworks such as PyTorch \cite{pytorch} and Tensorflow \cite{tensorflow} have made the technology accessible to people without a background in computer science. More than 11 thousand papers in the category "Computer Science - Artificial Intelligence (cs.AI)" have been published on arXiv.org \cite{arxiv} within only the last year. With steadily increasing processing capabilities, vast amounts of data can be used to train ever growing \glspl{nn} within an acceptable timeframe. E.g. the largest variant of Google's \gls{bert} algorithm has 340 million parameters and was trained on a dataset of 3.3 billion words \cite{bert}. In the following section we are looking at some of the related papers with regards to our research question. An overview of the methods and models used in these papers can be found in table \ref{table:stateofart:self_supervised_overview}. \par
 
-\begin{adjustbox}{angle=90}
+\begin{adjustbox}{angle=90}[H]
 %	\begin{table}[h]
 	\scalebox{0.77}{
 		\begin{tabular}{c c c c c c}
@@ -128,87 +189,6 @@ layer} & \thead{Dropout} & \thead{lag} & \thead{batch} & \thead{RMSE} & \thead{M
 The results in tables \ref{table:stateofart:unsupervised_learning_lstms_timeseries_results1} and \ref{table:stateofart:unsupervised_learning_lstms_timeseries_results2} show that unsupervised pre-training improved final accuracy and led to better and faster convergence. \par
 
 For this thesis, we used only a single \gls{lstmae} network, but with three layers of \gls{lstm} cells making it a \gls{dlstm} for both encoder and decoder.
-
-\section{Machine Learning for Network Intrusion Detection}
-
-Machine learning techniques have shown to be competitive to signature based expert systems when it comes to \gls{nid}. Hence there have been many attempts over the past years to implement various types of machine learning algorithms with considerable success. The design space for such systems is vast as will be discussed in section \ref{section:stateofart:nid_machine_learning_survey}. 
-
-\subsection{Machine Learning and Deep Learning Methods for Intrusion Detection Systems: A Survey} \label{section:stateofart:nid_machine_learning_survey}
-
-In their 2019 paper Hongyu Liu and Bo Lang \cite{nid_ml_survey_2019} enumerate the possible approaches to a machine learning based \gls{ids} and discuss their advantages and disadvantages. The authors classify proposed \glspl{ids} to date based on data sources and detection methods used to create a comprehensive taxonomy system. When using machine learning, further classification entails the type of machine learning methods used for implementing it. The devised taxonomy based on data source and detection method can be seen in figure \ref{fig:stateofart:nid_detection_methods_data_sources_taxonomy}. The taxonomy based on machine learning algorithms can be seen in figure \ref{fig:stateofart:nid_ml_taxonomy}. 
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1.0\textwidth]{img/nid_detection_methods_data_sources_taxonomy.png}
-	\caption{Taxonomy system of IDS. \cite{nid_ml_survey_2019}}
-	\label{fig:stateofart:nid_detection_methods_data_sources_taxonomy}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1.0\textwidth]{img/nid_ml_taxonomy.png}
-	\caption{Taxonomy of machine learning algorithms. \cite{nid_ml_survey_2019}}
-	\label{fig:stateofart:nid_ml_taxonomy}
-\end{figure}
-
-One can see that even after choosing a machine learning based approach the subsequent choice of data source and machine learning model results in a vast design space where many design decisions have to be made. In terms of the above taxonomies, the methodology used for this thesis can be classified as following: The data source is a network based IDS with flow based detection using deep learning methods. The detection method is machine learning based anomaly detection and the machine learning model is a deep learning model based on \gls{lstm} cells, but using both unsupervised and supervised learning methods. As such, our model is not even completely classifiable by the taxonomy proposed by Hongyu Liu et al.. \par
-
-Congruent with our assumptions, Hongyu Liu and Bo Lang deem a flow based detection to be a suitable way to structuring the raw network data, as it represents the whole network environment and retains a lot of contextual information but with the obvious drawback that package payload is being ignored. This leads to poor detection rates for \gls{u2r} and \gls{r2l} attacks like Xterm DoS or SnmpGetAttack.
-
-\subsection{Fog-Based Attack Detection Framework for Internet of Things Using Deep Learning} \label{section:stateofart:fog_based_detection_survey_2020}
-Although their 2020 paper \cite{fog_based_detection_survey_2020} has its focus on \glspl{ids} for resource and energy constrained \gls{iot} networks, Ahmed Samy et al. research provides a comprehensive overview of the performance of different up-to-date \gls{dl} models applied to various \gls{nids} data sets. The goal of their research is to implement powerful \gls{dl} based \glspl{ids} in a resource constrained \gls{iot} network by outsourcing the processing to fog nodes which are capable of storing large amounts of data with low latency and are placed at the edge of the \gls{iot} network. In the context of their research, they implemented six state of the art \gls{dl} models:
-
-\glsreset{dnn}
-\glsreset{lstm}
-\glsreset{bilstm}
-\glsreset{cnnlstm}
-\glsreset{gru}
-\glsreset{cnn}
-
-\begin{itemize}
-	\item \textbf{\gls{dnn}} with an input layer of 1024 cells, five hidden layers with 512 cells each using \gls{relu} activation functions and one output layer with one cell using a sigmoid activation function.
-	\item \textbf{\gls{lstm}} with an input layer of 128 cells, three hidden layers with 256 cells each and one output layer with one cell using sigmoid activation 
-	\item \textbf{\gls{bilstm}} with an input layer of 128 cells, three hidden layers with 128 cells each and one output layer with one cell using sigmoid activation
-	\item \textbf{\gls{cnnlstm}} with three convolutional layers with 64 filters, each using \gls{relu} activation functions, three pooling layers, one \gls{lstm} layer with 256 cells and one output layer with one cell using sigmoid activation
-	\item \textbf{\gls{gru}} with an input layer of 64 cells, three hidden layers with 64 cells each and one output layer with one cell using sigmoid activation
-	\item \textbf{\gls{cnn}} with three convolutional layers with 64 filters each using \gls{relu} activation functions, three pooling layers and one output layer with one cell using sigmoid activation
-\end{itemize}
-
-For multi-class classification the output layer is expanded to match the number of classes in the data set.
-Ahmed Samy et al. tested their implementations on five different data sets:
-
-\begin{itemize}
-	\item UNSW-NB15 \cite{unsw_nb15}
-	\item CICIDS-2017 \cite{cic_ids_2017}
-	\item RPL-NIDS17 \cite{rpl_nids17}
-	\item N\_BaIoT \cite{n_baiot}
-	\item NSL-KDD \cite{nsl_kdd}
-\end{itemize}
-
-They used a feature representation of the data comprised of 80 network traffic features extracted with CICFLOWMETER.
-
-The best results in training where achieved with a learning rate of 0.01, a batch size of 64 using the Adam optimization algorithm.
-
-They used accuracy, precision, recall, F1-measure, \gls{far}, \gls{dr} as metrics corresponding with the definitions in section \ref{sec:backgrund:metrics} to assess the performance of the different models.
-
-An overview of their results for binary classifications can be found in table \ref{fig:stateofart:fog_based_detection_survey_2020_results_binary} and for multi-class classification in table \ref{fig:stateofart:fog_based_detection_survey_2020_results_class}.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1.0\textwidth]{img/fog_based_detection_survey_2020_results_binary.png}
-	\caption{Evaluation metrics of \gls{dl} models with the five data sets in binary classification. \cite{fog_based_detection_survey_2020}}
-	\label{fig:stateofart:fog_based_detection_survey_2020_results_binary}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1.0\textwidth]{img/fog_based_detection_survey_2020_results_class.png}
-	\caption{Evaluation metrics of \gls{dl} models with the five data sets in binary classification. \cite{fog_based_detection_survey_2020}}
-	\label{fig:stateofart:fog_based_detection_survey_2020_results_class}
-\end{figure}
-
-As shown by the results and also stated in the paper: \gls{lstm} networks outperform other deep learning models consistently in attack detection and accuracy overall. This gives us confidence that our decision of working with \gls{lstm} networks was the right call as it adds to the real world relevance of our work. We also use a TransformerEncoder model for classification which was not included in the comparison done by Ahmed Samy et al. Furthermore, the models in their paper were trained fully supervised with at least 70\% of the data available in each data set which differs from our approach of using very little labeled data and relying on self-supervised pre-training.
-
 
 \begin{itemize}
 	\item Findings: What do they claim (main findings)
