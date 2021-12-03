@@ -25,11 +25,11 @@ pairs of input and target sequences $(x^{(t)}, y^{(t)})$ are provided from which
 \section{Long Short-Term Memory}
 
 Introduced by Hochreiter and Schmidhuber in 1997 \cite{lstm_origin}, the \gls{lstm} model mitigates the vanishing and exploding gradient problem by replacing the tanh nodes in the hidden layer of a conventional \gls{rnn} with \textit{memory cells} as seen in \ref{fig:background:lstm}. 
-A memory cell is comprised of \textit{input node}, \textit{input gate}, \textit{internal state}, \textit{forget gate} and \textit{output gate}. 
+A memory cell is comprised of \textit{input node} $\tilde{C}$, \textit{hidden state} $h$, \textit{cell state} $C$, \textit{input gate} $i$, \textit{forget gate} $f$ and \textit{output gate} $o$. 
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1\textwidth]{img/lstm2.png}
+	\includegraphics[width=1\textwidth]{img/lstm_cell.png}
 	\caption{One \gls{lstm} memory cell \cite{rnn_zachary}}
 	\label{fig:background:lstm}
 \end{figure}

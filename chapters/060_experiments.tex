@@ -55,48 +55,42 @@ For pre-training the \gls{lstm} we devised six different proxy tasks for the mod
 	\scalebox{0.8}{
 	\begin{tabular}{cccccccc}
 		\textbf{\#}    & \textbf{Dataset}      & \textbf{Subset}     & \textbf{Training} \% & \textbf{Training Eps.} & \textbf{Proxy Task} & \textbf{Pretr.} \% & \textbf{Pretr. Eps.} \\ \hline
-		2.1.1 \label{ex_2_1_1} & CIC-IDS-2017 & -          & 10          & 40            & NONE       & 0         & 0           \\
-		2.1.2 \label{ex_2_1_2} & CIC-IDS-2017 & -          & 10          & 40            & PREDICT    & 80        & 10          \\
-		2.1.3 \label{ex_2_1_3} & CIC-IDS-2017 & -          & 10          & 40            & MASKF      & 80        & 10          \\
-		2.1.4 \label{ex_2_1_4} & CIC-IDS-2017 & -          & 10          & 40            & MASKP      & 80        & 10          \\
-		2.1.5 \label{ex_2_1_5} & CIC-IDS-2017 & -          & 10          & 40            & AUTO       & 80        & 10          \\
-		2.1.6 \label{ex_2_1_6} & CIC-IDS-2017 & -          & 10          & 40            & IDENTITY   & 80        & 10          \\
-		2.1.7 \label{ex_2_1_7} & CIC-IDS-2017 & -          & 10          & 40            & COMPOSITE  & 80        & 10          \\
+		2.1.1 \label{ex_2_1_1} & CIC-IDS-2017 & -          & 10          & 50            & NONE       & 0         & 0           \\
+		2.1.2 \label{ex_2_1_2} & CIC-IDS-2017 & -          & 10          & 50            & PREDICT    & 80        & 10          \\
+		2.1.3 \label{ex_2_1_3} & CIC-IDS-2017 & -          & 10          & 50            & OBSCURE      & 80        & 10          \\         \\
+		2.1.4 \label{ex_2_1_4} & CIC-IDS-2017 & -          & 10          & 50            & AUTO       & 80        & 10          \\
+		2.1.5 \label{ex_2_1_5} & CIC-IDS-2017 & -          & 10          & 50            & IDENTITY   & 80        & 10          \\
+		2.1.6 \label{ex_2_1_6} & CIC-IDS-2017 & -          & 10          & 50            & COMPOSITE  & 80        & 10          \\
 		2.2.1 \label{ex_2_2_1} & CIC-IDS-2017 & -          & 1           & 200           & NONE       & 0         & 0           \\
 		2.2.2 \label{ex_2_2_2} & CIC-IDS-2017 & -          & 1           & 200           & PREDICT    & 80        & 10          \\
-		2.2.3 \label{ex_2_2_3} & CIC-IDS-2017 & -          & 1           & 200           & MASKF      & 80        & 10          \\
-		2.2.4 \label{ex_2_2_4} & CIC-IDS-2017 & -          & 1           & 200           & MASKP      & 80        & 10          \\
-		2.2.5 \label{ex_2_2_5} & CIC-IDS-2017 & -          & 1           & 200           & AUTO       & 80        & 10          \\
-		2.2.6 \label{ex_2_2_6} & CIC-IDS-2017 & -          & 1           & 200           & IDENTITY   & 80        & 10          \\
-		2.2.7 \label{ex_2_2_7} & CIC-IDS-2017 & -          & 1           & 200           & COMPOSITE  & 80        & 10          \\
+		2.2.3 \label{ex_2_2_3} & CIC-IDS-2017 & -          & 1           & 200           & OBSCURE      & 80        & 10          \\
+		2.2.4 \label{ex_2_2_4} & CIC-IDS-2017 & -          & 1           & 200           & AUTO       & 80        & 10          \\
+		2.2.5 \label{ex_2_2_5} & CIC-IDS-2017 & -          & 1           & 200           & IDENTITY   & 80        & 10          \\
+		2.2.6 \label{ex_2_2_6} & CIC-IDS-2017 & -          & 1           & 200           & COMPOSITE  & 80        & 10          \\
 		2.3.1 \label{ex_2_3_1} & CIC-IDS-2017 & CIC17\_10  & -           & 600           & NONE       & 0         & 0           \\
 		2.3.2 \label{ex_2_3_2} & CIC-IDS-2017 & CIC17\_10  & -           & 600           & PREDICT    & 80        & 10          \\
-		2.3.3 \label{ex_2_3_3} & CIC-IDS-2017 & CIC17\_10  & -           & 600           & MASKF      & 80        & 10          \\
-		2.3.4 \label{ex_2_3_4} & CIC-IDS-2017 & CIC17\_10  & -           & 600           & MASKP      & 80        & 10          \\
-		2.3.5 \label{ex_2_3_5} & CIC-IDS-2017 & CIC17\_10  & -           & 600           & AUTO       & 80        & 10          \\
-		2.3.6 \label{ex_2_3_6} & CIC-IDS-2017 & CIC17\_10  & -           & 600           & IDENTITY   & 80        & 10          \\
-		2.3.7 \label{ex_2_3_7} & CIC-IDS-2017 & CIC17\_10  & -           & 600           & COMPOSITE  & 80        & 10          \\
-		2.4.1 \label{ex_2_4_1} & UNSW-NB15    & -          & 10          & 40            & NONE       & 0         & 0           \\
-		2.4.2 \label{ex_2_4_2} & UNSW-NB15    & -          & 10          & 40            & PREDICT    & 80        & 10          \\
-		2.4.3 \label{ex_2_4_3} & UNSW-NB15    & -          & 10          & 40            & MASKF      & 80        & 10          \\
-		2.4.4 \label{ex_2_4_4} & UNSW-NB15    & -          & 10          & 40            & MASKP      & 80        & 10          \\
-		2.4.5 \label{ex_2_4_5} & UNSW-NB15    & -          & 10          & 40            & AUTO       & 80        & 10          \\
-		2.4.6 \label{ex_2_4_6} & UNSW-NB15    & -          & 10          & 40            & IDENTITY   & 80        & 10          \\
-		2.4.7 \label{ex_2_4_7} & UNSW-NB15    & -          & 10          & 40            & COMPOSITE  & 80        & 10          \\
+		2.3.3 \label{ex_2_3_3} & CIC-IDS-2017 & CIC17\_10  & -           & 600           & OBSCURE      & 80        & 10          \\
+		2.3.4 \label{ex_2_3_4} & CIC-IDS-2017 & CIC17\_10  & -           & 600           & AUTO       & 80        & 10          \\
+		2.3.5 \label{ex_2_3_5} & CIC-IDS-2017 & CIC17\_10  & -           & 600           & IDENTITY   & 80        & 10          \\
+		2.3.6 \label{ex_2_3_6} & CIC-IDS-2017 & CIC17\_10  & -           & 600           & COMPOSITE  & 80        & 10          \\
+		2.4.1 \label{ex_2_4_1} & UNSW-NB15    & -          & 10          & 50            & NONE       & 0         & 0           \\
+		2.4.2 \label{ex_2_4_2} & UNSW-NB15    & -          & 10          & 50            & PREDICT    & 80        & 10          \\
+		2.4.3 \label{ex_2_4_3} & UNSW-NB15    & -          & 10          & 50            & OBSCURE      & 80        & 10          \\
+		2.4.5 \label{ex_2_4_4} & UNSW-NB15    & -          & 10          & 50            & AUTO       & 80        & 10          \\
+		2.4.6 \label{ex_2_4_5} & UNSW-NB15    & -          & 10          & 50            & IDENTITY   & 80        & 10          \\
+		2.4.7 \label{ex_2_4_6} & UNSW-NB15    & -          & 10          & 50            & COMPOSITE  & 80        & 10          \\
 		2.5.1 \label{ex_2_5_1} & UNSW-NB15    & -          & 1           & 200           & NONE       & 0         & 0           \\
 		2.5.2 \label{ex_2_5_2} & UNSW-NB15    & -          & 1           & 200           & PREDICT    & 80        & 10          \\
-		2.5.3 \label{ex_2_5_3} & UNSW-NB15    & -          & 1           & 200           & MASKF      & 80        & 10          \\
-		2.5.4 \label{ex_2_5_4} & UNSW-NB15    & -          & 1           & 200           & MASKP      & 80        & 10          \\
-		2.5.5 \label{ex_2_5_5} & UNSW-NB15    & -          & 1           & 200           & AUTO       & 80        & 10          \\
-		2.5.6 \label{ex_2_5_6} & UNSW-NB15    & -          & 1           & 200           & IDENTITY   & 80        & 10          \\
-		2.5.7 \label{ex_2_5_7} & UNSW-NB15    & -          & 1           & 200           & COMPOSITE  & 80        & 10          \\
+		2.5.3 \label{ex_2_5_3} & UNSW-NB15    & -          & 1           & 200           & OBSCURE      & 80        & 10          \\
+		2.5.4 \label{ex_2_5_4} & UNSW-NB15    & -          & 1           & 200           & AUTO       & 80        & 10          \\
+		2.5.5 \label{ex_2_5_5} & UNSW-NB15    & -          & 1           & 200           & IDENTITY   & 80        & 10          \\
+		2.5.6 \label{ex_2_5_6} & UNSW-NB15    & -          & 1           & 200           & COMPOSITE  & 80        & 10          \\
 		2.6.1 \label{ex_2_6_1} & UNSW-NB15    & UNSW15\_10 & -           & 600           & NONE       & 0         & 0           \\
 		2.6.2 \label{ex_2_6_2} & UNSW-NB15    & UNSW15\_10 & -           & 600           & PREDICT    & 80        & 10          \\
-		2.6.3 \label{ex_2_6_3} & UNSW-NB15    & UNSW15\_10 & -           & 600           & MASKF      & 80        & 10          \\
-		2.6.4 \label{ex_2_6_4} & UNSW-NB15    & UNSW15\_10 & -           & 600           & MASKP      & 80        & 10          \\
-		2.6.5 \label{ex_2_6_5} & UNSW-NB15    & UNSW15\_10 & -           & 600           & AUTO       & 80        & 10          \\
-		2.6.6 \label{ex_2_6_6} & UNSW-NB15    & UNSW15\_10 & -           & 600           & IDENTITY   & 80        & 10          \\
-		2.6.7 \label{ex_2_6_7} & UNSW-NB15    & UNSW15\_10 & -           & 600           & COMPOSITE  & 80        & 10         
+		2.6.3 \label{ex_2_6_3} & UNSW-NB15    & UNSW15\_10 & -           & 600           & OBSCURE      & 80        & 10          \\
+		2.6.4 \label{ex_2_6_4} & UNSW-NB15    & UNSW15\_10 & -           & 600           & AUTO       & 80        & 10          \\
+		2.6.5 \label{ex_2_6_5} & UNSW-NB15    & UNSW15\_10 & -           & 600           & IDENTITY   & 80        & 10          \\
+		2.6.6 \label{ex_2_6_6} & UNSW-NB15    & UNSW15\_10 & -           & 600           & COMPOSITE  & 80        & 10         
 	\end{tabular}}
 	\caption{Training and pretraining configurations for \gls{lstm} model with different proxy tasks.}
 	\label{table:experiments:lstm:configurations}
@@ -139,8 +133,8 @@ For the composite model we recreated the network proposed by Nitish Srivastava e
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{img/unsupervised_learning_with_lstms_composite.png}
-	\caption{Composite model for input reconstruction and future prediction \cite{unsupervised_learning_lstms}}
+	\includegraphics[width=1.0\textwidth]{img/composite_model.png}
+	\caption{Composite model for input reconstruction and future prediction}
 	\label{fig:experiments:unsupervised_lstm_composite}
 \end{figure}	
 
