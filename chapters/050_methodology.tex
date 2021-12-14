@@ -8,22 +8,22 @@ Network communication is similar to natural language in the sense that it follow
 
 We used the two \gls{nids} datasets \textit{UNSW-NB15} \cite{unsw_nb15} and \textit{CIC-IDS-2017} \cite{cic_ids_2017}. \par
 
-The \textbf{UNSW-NB15} dataset \cite{unsw_nb15}, created by Nour Moustafa et al. from the School of Engineering and Information Technology, University of New South Wales at the Australian Defence Force Academy, Australia, was released as an update for the formerly frequently used but deprecated \cite{unsw_nb15} KDD dataset family. It was designed to reflect most known low foot print attacks at time of publication. The records are bidrectional flows extracted from the raw traffic data and grouped by the commonly used \textit{<srcIP, dstIP, srcPort, dstPort, protocol>} tuple. Each flow is described by 47 derived or measured features e.g. total duration, bytes transmitted, the mean of the flow packet size transmitted by destination IP, etc. The dataset contains a total of 2.54 million records of which 2.22 million are natural transaction data labeled as benign and 0.32 million attack records meaning 87.4\% of data is classified as benign. Attack records can be further divided into nine attack categories as listed in table \ref{table:methodology:datasets:unsw_nb15_categories}.
+The \textbf{UNSW-NB15} dataset \cite{unsw_nb15}, created by Nour Moustafa et al. from the School of Engineering and Information Technology, University of New South Wales at the Australian Defence Force Academy, Australia, was released as an update for the formerly frequently used but deprecated \cite{unsw_nb15} KDD dataset family. It was designed to reflect most known low foot print attacks at time of publication. The records are bidrectional flows extracted from the raw traffic data and grouped by the commonly used \textit{<srcIP, dstIP, srcPort, dstPort, protocol>} tuple. Each flow is described by 47 derived or measured features e.g. total duration, bytes transmitted, the mean of the flow packet size transmitted by destination IP, etc. After preprocessing where some incomplete records are removed, the dataset contains a total of 2.06 million records of which 1.99 million are normal transactions labeled as benign and 0.072 million attack records meaning 96.64\% of data is classified as benign and 3.36\% as attack. Attack records can be further divided into nine attack categories as listed in table \ref{table:methodology:datasets:unsw_nb15_categories}.
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{c c c c c}
-			\thead{\textbf{Type}} & \thead{\textbf{\textbf{No. Records}}} & \thead{\textbf{\% w.r.t.} \\ \textbf{majority class}} & \thead{\textbf{\% w.r.t.} \\ \textbf{majority attack class}} & \thead{\textbf{\% w.r.t.} \\ \textbf{total instances}}\\ \hline \midrule
-			Normal & 2218761 & 100.000 & 1029.678 & 87.351 \\ \midrule
-			Fuzzers & 24246 & 1.093 & 11.252 & 0.955 \\ \midrule
-			Analysis & 2677 & 0.121 & 1.242 & 0.105 \\ \midrule
-			Backdoor & 2329 & 0.105 & 1.081 & 0.092 \\ \midrule
-			DoS & 16353 & 0.737 & 7.589 & 0.644 \\ \midrule
-			Exploits & 44525 & 2.007 & 20.663 & 1.753 \\ \midrule
-			Generic & 215481 & 9.712 & 100.000 & 8.483 \\ \midrule
-			Reconnaissance & 13987 & 0.630 & 6.491 & 0.551 \\ \midrule
-			Shellcode & 1511 & 0.068 & 0.701 & 0.059 \\ \midrule
-			Worms & 174 & 0.008 & 0.081 & 0.007 \\ \midrule
+	\begin{tabular}{cccccc}
+		\thead{\textbf{\#}} & \thead{\textbf{Class}} & \thead{\textbf{\textbf{No. Records}}} & \thead{\textbf{\% w.r.t.} \\ \textbf{benign class}} & \% \thead{\textbf{\% w.r.t.} \\ \textbf{majority atk. class}} & \thead{\textbf{\% w.r.t.} \\ \textbf{total instances}} \\ \hline \midrule
+		0  & Analysis       & 534         & 0.03\%                 & 1.82\%                        & 0.03\%                    \\ \midrule
+		1  & Backdoors      & 397         & 0.02\%                 & 1.36\%                        & 0.02\%                    \\ \midrule
+		2  & DoS            & 3972        & 0.20\%                 & 13.57\%                       & 0.19\%                    \\ \midrule
+		3  & Exploits       & 29281       & 1.47\%                 & 100.00\%                      & 1.42\%                    \\ \midrule
+		4  & Fuzzers        & 20848       & 1.05\%                 & 71.20\%                       & 1.01\%                    \\ \midrule
+		5  & Generic        & 4301        & 0.22\%                 & 14.69\%                       & 0.21\%                    \\ \midrule
+		6  & Benign         & 1991349     & 100.00\%               & 6800.82\%                     & 96.46\%                   \\ \midrule
+		7  & Reconnaissance & 11971       & 0.60\%                 & 40.88\%                       & 0.58\%                    \\ \midrule
+		8  & Shellcode      & 1546        & 0.08\%                 & 5.28\%                        & 0.07\%                    \\ \midrule
+		9  & Worms          & 185         & 0.01\%                 & 0.63\%                        & 0.01\%                   
 	\end{tabular}
  	\caption{UNSW-NB15 dataset record distribution \cite{unsw_nb15}.}
  	\label{table:methodology:datasets:unsw_nb15_categories}
@@ -31,26 +31,27 @@ The \textbf{UNSW-NB15} dataset \cite{unsw_nb15}, created by Nour Moustafa et al.
 
 The dataset was generated from a synthetic environment comprised of 3 networks and 45 distinct IP addresses using the IXIA PerfectStorm (now keysight PerfectStorm) tool.
 
-The \textbf{CIC-IDS-2017} dataset \cite{cic_ids_2017}, created by Iman Sharafaldin et. al from Canadian Institute for Cybersecurity (CIC), University of New Brunswick (UNB), Canada constitutes another updated representation of known attack types at the time of publication. Compared to the UNSW-NB15 dataset it contains records of more modern cyber attacks like Heartbleed, HULK DoS but leaves out e.g. worm attacks. It contains a total of 2.83 million records of which 2.36 million are labeled as benign and 0.47 million are attack records. In other words, 83.35\% of the dataset are benign records and 16.61\% attack records. Attack records can are further classified as shown in table \ref{table:methodology:datasets:cic_ids_2017_categories}.
+The \textbf{CIC-IDS-2017} dataset \cite{cic_ids_2017}, created by Iman Sharafaldin et. al from Canadian Institute for Cybersecurity (CIC), University of New Brunswick (UNB), Canada constitutes another updated representation of known attack types at the time of publication. Compared to the UNSW-NB15 dataset it contains records of more modern cyber attacks like Heartbleed, HULK DoS but leaves out e.g. worm attacks. It contains a total of 2.31 million records of which 1.73 million are labeled as benign and 0.58 million are attack records. In other words, 74.72\% of the dataset are benign records and 25.28\% attack records. Attack records are further classified as shown in table \ref{table:methodology:datasets:cic_ids_2017_categories}.
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{c c c c c}
-		\thead{\textbf{Type}} & \thead{\textbf{No. Records}} & \thead{\textbf{\% w.r.t.} \\ \textbf{majority class}} & \thead{\textbf{\% w.r.t.} \\ \textbf{majority attack class}} & \thead{\textbf{\% w.r.t.} \\ \textbf{total instances}}\\ \hline \midrule
-		Benign                     & 2359087 & 100.000 & 1020.932 & 83.363 \\ \midrule
-		Bot                        & 1966    & 0.083   & 0.851    & 0.069  \\ \midrule
-		DDoS                       & 41835   & 1.773   & 18.105   & 1.478  \\ \midrule
-		DoS GoldenEye              & 10293   & 0.436   & 4.454    & 0.364  \\ \midrule
-		DoS Hulk                   & 231072  & 9.795   & 100.000  & 8.165  \\ \midrule
-		DoS Slow – httptest        & 5499    & 0.233   & 2.380    & 0.194  \\ \midrule
-		DoS slowloris              & 5796    & 0.246   & 2.508    & 0.205  \\ \midrule
-		FTP-Patator                & 7938    & 0.336   & 3.435    & 0.281  \\ \midrule
-		Heartbleed                 & 11      & 0.000   & 0.005    & 0.000  \\ \midrule
-		Infiltration               & 36      & 0.002   & 0.016    & 0.001  \\ \midrule
-		PortScan                   & 158930  & 6.737   & 68.779   & 5.616  \\ \midrule
-		SSH-Patator                & 5897    & 0.250   & 2.552    & 0.208  \\ \midrule
-		Web Atk. – Brute Force   & 1507    & 0.064   & 0.652    & 0.053  \\ \midrule
-		Web Atk. – Sql Injection & 21      & 0.001   & 0.009    & 0.001  \\ \midrule
+	\begin{tabular}{cccccc}
+		\thead{\textbf{\#}} & \thead{\textbf{Class}} & \thead{\textbf{No. Records}} & \thead{\textbf{\% w.r.t.} \\ \textbf{benign class}}s & \thead{\textbf{\% w.r.t.} \\ \textbf{majority atk. class}} & \thead{\textbf{\% w.r.t.} \\ \textbf{total instances}} \\ \hline \midrule
+		0  & Botnet ARES             & 755         & 0.04\%                 & 0.32\%                          & 0.03\%                    \\ \midrule
+		1  & FTP-Patator             & 254         & 0.01\%                 & 0.11\%                          & 0.01\%                    \\ \midrule
+		2  & SSH-Patator             & 2556        & 0.15\%                 & 1.09\%                          & 0.11\%                    \\ \midrule
+		3  & DDoS LOIT               & 94327       & 5.46\%                 & 40.39\%                         & 4.08\%                    \\ \midrule
+		4  & DoS GoldenEye           & 7451        & 0.43\%                 & 3.19\%                          & 0.32\%                    \\ \midrule
+		5  & DoS Hulk                & 233521      & 13.53\%                & 100.00\%                        & 10.11\%                   \\ \midrule
+		6  & DoS Slowhttptest        & 4209        & 0.24\%                 & 1.80\%                          & 0.18\%                    \\ \midrule
+		7  & DoS slowloris           & 3886        & 0.23\%                 & 1.66\%                          & 0.17\%                    \\ \midrule
+		8  & Heartbleed              & 2           & 0.00\%                 & 0.00\%                          & 0.00\%                    \\ \midrule
+		9  & Infiltration            & 76237       & 4.42\%                 & 32.65\%                         & 3.30\%                    \\ \midrule
+		10 & Benign                  & 1726226     & 100.00\%               & 739.22\%                        & 74.72\%                   \\ \midrule
+		11 & PortScan - Firewall off & 159648      & 9.25\%                 & 68.37\%                         & 6.91\%                    \\ \midrule
+		12 & PortScan - Firewall on  & 381         & 0.02\%                 & 0.16\%                          & 0.02\%                    \\ \midrule
+		13 & SQL Injection           & 13          & 0.00\%                 & 0.01\%                          & 0.00\%                    \\ \midrule
+		14 & XSS WebAttack           & 678         & 0.04\%                 & 0.29\%                          & 0.03\%                   
 	\end{tabular}
 	\caption{CIC-IDS-2017 dataset record distribution \cite{cic_ids_2017_analysis}.}
 	\label{table:methodology:datasets:cic_ids_2017_categories}
@@ -123,7 +124,7 @@ The Transformer model as proposed by Vaswani et. al \cite{attention} and its der
 To conduct our experiments we used PyTorch \cite{pytorch} to implement and train our proposed models. To save labor and to keep results comparable we used the standard implementations \textit{torch.nn.LSTM} and \textit{torch.nn.TransformerEncoder}. Training is conducted by a standard training loop going through forward and back propagation, calculating losses and updating weights for each batch. Noteworthy is the use of gradient clipping to a maximum of 1 and the use of a learning rate scheduler witch decreases the learning rate by a factor of 0.1 if mean batch loss is plateauing during training. As optimization criterion for pretraining we use L1 loss, i.e. \gls{mae} (\textit{nn.L1Loss}). For supervised training we use \gls{bce} loss with mean reduction on logits directly (\textit{nn.BCEWithLogitsLoss}).
 For updating weights we use the \textit{Adam} optimizer \cite{adam} which is an extension to the commonly used \gls{sgd} method. Similar to \textit{AdaGrad} \cite{optimizer_comparison} and \textit{RMSProp} \cite{optimizer_comparison} it maintains separate learning rates for each individual weight instead of using the same learning rate for every weight like in classic \gls{sgd}. Compared to other optimizers \textit{Adam} was shown to be more effective in improving training efficiency \cite{adam} and is appropriate for noisy or sparse gradients which can occur when working with \glspl{rnn} in general.
 We developed and implemented a framework in Python to automate the experiments, generate statistics, plots and metrics. \par
-The models were trained on two NVidia GeForce RTX 2070 Super GPUs with a combined performance of 19.4 Teraflops per second for 32bit float (FP32) values. We tried using 16bit float (FP16) values during training together with the \textit{torch.cuda.amp.GradScaler}. This significantly decreased training time but introduced numerical instability in some cases and we went back to training with FP32 values. Training was performed with a batch size of 128 for the \gls{lstm} model and 1024 for the TransformerEncoder model. Further increasing batch size did neither improve final accuracy nor did it decrease the time in which training converges. \par
+The models were trained on two NVidia GeForce RTX 2070 Super GPUs with a combined performance of 19.4 Teraflops per second for 32bit float (FP32) values. For some instances we use 16bit float (FP16) values during training together with the \textit{torch.cuda.amp.GradScaler}. This significantly decreases training time and GPU load but introduced numerical instability in some cases and for those we went back to training with FP32 values. Training was performed with a batch size of 128 for the \gls{lstm} model and 1024 for the TransformerEncoder model. Further increasing batch size did not improve final accuracy nor did it decrease the time in which training converges. \par
 
 \begin{itemize}
 	\item explain why these experiments are used
@@ -145,7 +146,6 @@ Provide a figure (see example figure \ref{fig:modeling-example}) to describe the
 	\caption{Describe in the caption exactly what can be seen in the figure}
 	\label{fig:modeling-example}
 \end{figure}
-
 
 
 

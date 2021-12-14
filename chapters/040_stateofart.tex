@@ -4,9 +4,22 @@ As the topic of this thesis is rather specific, comparable research is hard to f
 
 \section{Machine Learning for Network Intrusion Detection}
 
-Machine learning techniques have shown to be competitive to signature based expert systems when it comes to \gls{nid}. Hence there have been many attempts over the past years to implement various types of machine learning algorithms with considerable success. The design space for such systems is vast as Hongyu Liu and Bo Lang show in their 2019 paper \cite{nid_ml_survey_2019} "Machine Learning and Deep Learning Methods for Intrusion Detection Systems: A Survey" where they enumerate the possible approaches to a machine learning based \gls{ids} and discuss their advantages and disadvantages. The authors classify proposed \glspl{ids} to date based on data sources and detection methods used to create a comprehensive taxonomy system. When using machine learning, further classification entails the type of machine learning methods used for implementing it. Based on their classification, our approach would be categorized as following: The data source is a network based IDS with flow based detection using deep learning methods. The detection method is machine learning based anomaly detection and the machine learning model is a deep learning model based on \gls{lstm} cells, but using both unsupervised and supervised learning methods. As such, our model is not even completely classifiable by the taxonomy proposed by Hongyu Liu et al.. \par
+Machine learning techniques have shown to be competitive to signature based expert systems when it comes to \gls{nid}. Hence there have been many attempts over the past years to implement various types of machine learning algorithms with considerable success. The design space for such systems is vast as Hongyu Liu and Bo Lang show in their 2019 paper \cite{nid_ml_survey_2019} "Machine Learning and Deep Learning Methods for Intrusion Detection Systems: A Survey" where they enumerate the possible approaches to a machine learning based \gls{ids} and discuss their advantages and disadvantages. The authors classify proposed \glspl{ids} to date based on data sources and detection methods used to create a comprehensive taxonomy system. When using machine learning, further classification entails the type of machine learning methods used for implementing it. Based on their classification, our approach would be categorized as following: The data source is a network based IDS with flow based detection using deep learning methods as depicted in figure \ref{fig:stateofart:ids_data_source_taxonomy}. As can be see in figure \ref{fig:stateofart:ids_detection_methods_taxonomy} the detection method is machine learning based anomaly detection and the machine learning model is a deep learning model based on \gls{lstm} and transformer networks, but using both unsupervised and supervised learning methods. As such, our model is not even completely classifiable by the taxonomy proposed by Hongyu Liu et al.. \par
 
-\todo{insert image of classification of our approach based on this taxonomy}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.65\textwidth]{img/ids_data_source_taxonomy.png}
+	\caption{Our design decisions (blue) and alternatives (green) based on the data source taxonomy proposed by Hongyu Liu et al. \cite{nid_ml_survey_2019}.}
+	\label{fig:stateofart:ids_data_source_taxonomy}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{img/ids_detection_methods_taxonomy.png}
+	\caption{Our design decisions (blue) and alternatives (green) based on the detection method taxonomy proposed by Hongyu Liu et al. \cite{nid_ml_survey_2019}.}
+	\label{fig:stateofart:ids_detection_methods_taxonomy}
+\end{figure}
 
 Congruent with our assumptions, Hongyu Liu and Bo Lang deem a flow based detection to be a suitable way to structuring the raw network data, as it represents the whole network environment and retains a lot of contextual information but with the obvious drawback that package payload is being ignored. This leads to poor detection rates for \gls{u2r} and \gls{r2l} attacks like SQL injection or XSS attacks which our results confirm as can be seen in section \ref{sec:results}. \par
 
@@ -45,16 +58,14 @@ They used accuracy, precision, recall, F1-measure, \gls{far}, \gls{dr} as metric
 used similar models and the same datasets, so a direct comparison with our results can be made.
 An overview of the relevant results for binary classifications can be found in table \ref{fig:stateofart:fog_based_detection_survey_2020_results_binary} and for multi-class classification in table \ref{fig:stateofart:fog_based_detection_survey_2020_results_class}.
 
-\todo{cut tables to only include relevant stats}
-
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\textwidth]{img/fog_based_detection_survey_2020_results_binary.png}
 	\caption{Evaluation metrics of \gls{dl} models with the five data sets in binary classification. \cite{fog_based_detection_survey_2020}}
 	\label{fig:stateofart:fog_based_detection_survey_2020_results_binary}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\textwidth]{img/fog_based_detection_survey_2020_results_class.png}
 	\caption{Evaluation metrics of \gls{dl} models with the five data sets in binary classification. \cite{fog_based_detection_survey_2020}}
@@ -67,7 +78,7 @@ As shown by the results and also stated in the paper: \gls{lstm} networks outper
 
 When it comes to machine learning, rapid progress has been made over the past years. Frameworks such as PyTorch \cite{pytorch} and Tensorflow \cite{tensorflow} have made the technology accessible to people without a background in computer science. More than 11 thousand papers in the category "Computer Science - Artificial Intelligence (cs.AI)" have been published on arXiv.org \cite{arxiv} within only the last year. With steadily increasing processing capabilities, vast amounts of data can be used to train ever growing \glspl{nn} within an acceptable timeframe. E.g. the largest variant of Google's \gls{bert} algorithm has 340 million parameters and was trained on a dataset of 3.3 billion words \cite{bert}. In the following section we are looking at some of the related papers with regards to our research question. An overview of the methods and models used in these papers can be found in table \ref{table:stateofart:self_supervised_overview}. \par
 
-\begin{adjustbox}{angle=90}[H]
+\begin{adjustbox}{angle=90}[h]
 %	\begin{table}[h]
 	\scalebox{0.77}{
 		\begin{tabular}{c c c c c c}
@@ -134,7 +145,7 @@ In their 2019 paper \cite{unsupervised_learning_lstms_timeseries} Alaa Sagheer e
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\textwidth]{img/multi_layer_lstm.png}
-	\caption{Depiction of a three layered \gls{lstm} network}
+	\caption{Data flow in a three layered \gls{lstm} network.}
 	\label{fig:stateofart:unsupervised_learning_with_lstms_dlstm}
 \end{figure}
 

@@ -1,0 +1,3 @@
+[submodule "self-supervised-ids"]
+	path = self-supervised-ids
+	url = git@github.com:Johnsen92/self-supervised-ids.git
