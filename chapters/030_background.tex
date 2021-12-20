@@ -122,6 +122,11 @@ From these basic metrics, a variety of semantically more expressive metrics can 
 	Recall = DR = \frac{TP}{TP + FN}
 	\end{equation}
 	
+	\item \textbf{Specificity} is defined as the ration of true negative samples to total negative samples. The metric describes the probability that a benign flow will be categorized as such by the \gls{ids}.
+	\begin{equation}
+	Specificity = \frac{TN}{TN + FP}
+	\end{equation}
+	
 	\item \textbf{\gls{fnr} or \gls{mar}} is defined as the ratio of false negative samples to total positive samples and describes how many attacks go undetected by the \gls{ids}.
 	\begin{equation}
 	FNR = MAR = \frac{FN}{TP + FN}

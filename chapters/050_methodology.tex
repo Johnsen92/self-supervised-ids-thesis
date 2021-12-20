@@ -147,6 +147,51 @@ Provide a figure (see example figure \ref{fig:modeling-example}) to describe the
 	\label{fig:modeling-example}
 \end{figure}
 
+\section{Subsets}
 
+In hope of making any possible positive results more salient, we devised an extreme scenario where we limit the labeled date available for fine-tuning to a bare minimum of 10 records per attack category present in the original dataset. We then include an amount of benign records to keep the ratio of attack/benign flows of the original dataset. This results in the two subsets elaborated in tables \ref{table:methodology:datasets:cic17_subset} and \ref{table:methodology:datasets:unsw15_subset} labeled CIC17 and UNSW15 for the corresponding datasets.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\thead{\textbf{\#}} & \thead{\textbf{Class}} & \thead{\textbf{No. Records}} \\ \hline \midrule
+		0  & Botnet ARES             & 10  \\
+		1  & FTP-Patator             & 10  \\
+		2  & SSH-Patator             & 10  \\
+		3  & DDoS LOIT               & 10  \\
+		4  & DoS GoldenEye           & 10  \\
+		5  & DoS Hulk                & 10  \\
+		6  & DoS Slowhttptest        & 10  \\
+		7  & DoS slowloris           & 10  \\
+		8  & Heartbleed              & 10  \\
+		9  & Infiltration            & 10  \\
+		10 & Benign                  & 391 \\
+		11 & PortScan - Firewall off & 10  \\
+		12 & PortScan - Firewall on  & 10  \\
+		13 & SQL Injection           & 10  \\
+		14 & XSS WebAttack           & 10                    
+	\end{tabular}
+	\caption{Subset \textbf{CIC17} devised for CIC-IDS-2017 to include a minimal amount of records amounting to approximately 0.023\% of the total dataset.}
+	\label{table:methodology:datasets:cic17_subset}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\thead{\textbf{\#}} & \thead{\textbf{Class}} & \thead{\textbf{\textbf{No. Records}}} \\ \hline \midrule
+		0 & Analysis       & 534     \\
+		1 & Backdoors      & 397     \\
+		2 & DoS            & 3972    \\
+		3 & Exploits       & 29281   \\
+		4 & Fuzzers        & 20848   \\
+		5 & Generic        & 4301    \\
+		6 & Benign         & 1991349 \\
+		7 & Reconnaissance & 11971   \\
+		8 & Shellcode      & 1546    \\
+		9 & Worms          & 185                     
+	\end{tabular}
+	\caption{Subset \textbf{UNSW15} devised for UNSW-NB15 to include a minimal amount of records amounting to approximately 0.11\% of the total dataset.}
+	\label{table:methodology:datasets:unsw15_subset}
+\end{table}
 
 \newpage

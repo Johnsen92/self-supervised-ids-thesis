@@ -11,7 +11,7 @@ As the technologies mentioned above are fairly recent (Transformers Dec 2017, \g
 
 \section{Research Questions} \label{sect.research_questions}
 
-In this thesis we inspect if the flow classification performance of \glspl{lstm} and Transformer-Encoder networks can be improved with self-supervised pre-training in a scenario where only little labeled and a lot of labeled data is available. In our context this means a ratio of 1:1000 for labeled to unlabeled data. For performance we are mainly looking at the accuracy of classification, but we are also keeping track of the \gls{far}. The problem to solve is a binary classification problem for which the model is to group flows into \textit{attack} and \textit{no-attack}. 
+In this thesis we inspect if the flow classification performance of \glspl{lstm} and Transformer-Encoder networks can be improved with self-supervised pre-training in a scenario where only little labeled and a lot of labeled data is available. In our experiments we are looking at scenarios where the ratio of labeled to unlabeled data is 1:8, 1:80 and 1: for labeled to unlabeled data. For performance we are mainly looking at the accuracy of classification, but we are also keeping track of the \gls{far}. The problem to solve is a binary classification problem for which the model is to group flows into \textit{attack} and \textit{no-attack}. 
 
 \begin{itemize}
 	\item R1: Can self-supervised pre-training improve the flow classification capabilities of an \gls{lstm} model?
