@@ -27,7 +27,7 @@ The maximum delta between supervised only trained and pre-trained models increas
 The pattern of improved accuracy breaks again when looking at finetuning with the specialized subset UNSW15\_10 in table \ref{table:results:lstm:stats_flows15_subset} for experiments 2.6.1-6. Here, almost no improvement is measurable and for the COMPOSITE proxy task accuracy even dropped by 0.168\% when for finetuning with 1\% and 10\% it showed slight improvement. The only increases in accuracy are measurable for the PREDICT and AUTO proxy tasks with very minor accuracy increases of 0.005\% and 0.010\% with all other pre-training methods resulting in lower accuracy scores best represented by experiment 2.6.6 with the COMPOSITE proxy-task where accuracy dropped by 0.168\%. \par
 Overall, looking at experiments with the \gls{lstm} model, no clear pattern emerges which could point at a proxy-task that generally improves accuracy when used in pre-training. Looking at table \ref{table:results:lstm:improvement_results} we could name the predict packet (PREDICT) and surprisingly the identity function (ID) proxy task as most likely to improve final accuracy of the model. The fact that any improvement was observable at all is already promising, when considering that the baseline results of exclusively supervised trained models are already very high when compared to other state-of-the-art results in contemporary research. Increasing accuracy ever so slightly without the need for more labeled data might make a \gls{ml} based \gls{ids} feasible in a real world scenario when before it was not. 
 
-\begin{table}[h]
+\begin{table}[!htbp]
 	\centering
 	\begin{tabular}{rccccc}
 		\thead{\textbf{Experiments (\#)}} & \thead{\textbf{PREDICT}} & \thead{\textbf{OBSCURE}} & \thead{\textbf{AUTO}}   & \thead{\textbf{ID}}      & \thead{\textbf{COMPOSITE}} \\ \midrule
@@ -55,14 +55,14 @@ Overall, looking at experiments with the \gls{lstm} model, no clear pattern emer
 
 \input{results/results/rn500/lstm/tables/flows_subset/class_comparison_ALL}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.0\linewidth]{results/results/rn500/lstm/plots/losses/flows_subset/training_loss.png}
 	\caption{Training loss for supervised training on the \gls{lstm} model with the CIC17\_10 subset.}
 	\label{fig:results:lstm:training_loss_flows_subset}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.0\linewidth]{results/results/rn500/lstm/plots/losses/flows_subset/validation_loss.png}
 	\caption{Validation loss for supervised training on the \gls{lstm} model with the CIC17\_10 subset.}
@@ -81,14 +81,14 @@ Overall, looking at experiments with the \gls{lstm} model, no clear pattern emer
 
 \input{results/results/rn500/lstm/tables/flows15_subset/class_comparison_ALL}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.0\linewidth]{results/results/rn500/lstm/plots/losses/flows15_subset/training_loss.png}
 	\caption{Training loss for supervised training on the \gls{lstm} model with the UNSW15\_10 subset.}
 	\label{fig:results:lstm:training_loss_flows15_subset}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.0\linewidth]{results/results/rn500/lstm/plots/losses/flows15_subset/validation_loss.png}
 	\caption{Validation loss for supervised training on the \gls{lstm} model with the UNSW15\_10 subset.}
@@ -116,7 +116,7 @@ Overall, looking at experiments with the \gls{lstm} model, no clear pattern emer
 	\item 
 \end{itemize}
 
-\begin{table}[h]
+\begin{table}[!htbp]
 	\centering
 	\begin{tabular}{rccc}
 		\thead{\textbf{Experiments (\#)}} & \thead{\textbf{MASK}} & \thead{\textbf{OBSCURE}} & \thead{\textbf{AUTO}} \\ \midrule
@@ -144,14 +144,14 @@ Overall, looking at experiments with the \gls{lstm} model, no clear pattern emer
 
 \input{results/results/rn500/transformer/tables/flows_subset/class_comparison_ALL}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.0\linewidth]{results/results/rn500/transformer/plots/losses/flows15_subset/training_loss.png}
 	\caption{Training loss for supervised training on transformer model with the UNSW15\_10 subset.}
 	\label{fig:results:transformer:training_loss_flows_subset}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.0\linewidth]{results/results/rn500/transformer/plots/losses/flows15_subset/validation_loss.png}
 	\caption{Validation loss for supervised training on \gls{lstm} model with the UNSW15\_10 subset.}
@@ -170,14 +170,14 @@ Overall, looking at experiments with the \gls{lstm} model, no clear pattern emer
 
 \input{results/results/rn500/transformer/tables/flows15_subset/class_comparison_ALL}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.0\linewidth]{results/results/rn500/transformer/plots/losses/flows15_subset/training_loss.png}
 	\caption{Training loss for supervised training on the transformer model with the UNSW15\_10 subset.}
 	\label{fig:results:transformer:training_loss_flows15_subset}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.0\linewidth]{results/results/rn500/transformer/plots/losses/flows15_subset/validation_loss.png}
 	\caption{Validation loss for supervised training on the \gls{lstm} model with the UNSW15\_10 subset.}
@@ -203,38 +203,84 @@ We started with the \textbf{\gls{pd}} analysis on some of the features
 to discern their effect on the classification of each attack type in the dataset. 
 The resulting \glspl{pdp} were generated with the models from experiments \ref{table:results:lstm:stats_flows_subset},
 \ref{table:results:lstm:stats_flows15_subset}, \ref{table:results:transformer:stats_flows_subset}, \ref{table:results:transformer:stats_flows15_subset} because we assumed that pre-training has the most impact on models trained on very little labeled training data. The features we looked at where \textit{source port number}, \textit{destination port number}, \textit{protocol identifier} and \textit{packet length}.
-For both datasets, we generated plots to inspect how the predictions of the model change after altering the value of the feature (\textit{ceteris paribus}). The value range of each feature was withing the highest and lowest occurring value of said feature in the dataset. After we generated the data for each tuple of $dataset x model x feature x attack type$ we generated plots to compare the results of the different models yielding a total of 160 plots. Most of them are of little interest as often the inspected feature had no or very little impact on the classification of the attack type. We will take a deeper look into this issue later in the section when we look at the structure of the decision tree used to classify each attack category. 
+For both datasets, we generated plots to inspect how the predictions of the model change after altering the value of the feature (\textit{ceteris paribus}). The value range of each feature was withing the highest and lowest occurring value of said feature in the dataset. After we generated the data for each tuple of ($dataset$ x $model$ x $feature$ x $attack type$) we generated plots to compare the results of the different models yielding a total of 160 plots. Most of them are of little interest as often the inspected feature had no or very little impact on the classification of the attack type. We will take a deeper look into this issue later in the section when we look at the structure of the decision tree used to classify each attack category. 
 
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.1\linewidth]{results/results/rn500/lstm/plots/pdp/flows_NONE_PREDICT_OBSCURE_AUTO_ID_COMPOSITE/Destination_port_2_SSH-Patator_1.png}
 	\caption{Partial dependency plot between the packet length and classification of SSH Patator attacks in the CIC-IDS2017 dataset.}
 	\label{fig:results:lstm:pdp:cic17_destination_port_ssh_patator}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.1\linewidth]{results/results/rn500/lstm/plots/pdp/flows_NONE_PREDICT_OBSCURE_AUTO_ID_COMPOSITE/Source_port_2_SSH-Patator_0.png}
 	\caption{Partial dependency plot between the source port and classification of SSH Patator attacks in the CIC-IDS2017 dataset.}
 	\label{fig:results:lstm:pdp:cic17_source_port_ssh_patator}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.1\linewidth]{{"results/results/rn500//lstm/plots/neuron/flows_ID/latest/11_PortScan - Firewall off"}.png}
 	\caption{Neuron activation plot comparing neuron activations of the latest stage of the \gls{lstm} model (after the last packet in the sequence has been processed) after pre-training with the ID proxy task and after fine-tuning with flows classified as \textit{PortScan - Firewall off} in the CIC-IDS2017 dataset.}
 	\label{fig:results:lstm:neuron:cic17_id_port_scan_firewall_off}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.1\linewidth]{results/results/rn500//lstm/plots/neuron/flows_ID/latest/9_Infiltration.png}
 	\caption{Neuron activation plot comparing neuron activations of the latest stage of the \gls{lstm} model (after the last packet in the sequence has been processed) after pre-training with the ID proxy task and after fine-tuning with flows classified as \textit{Infiltration} in the CIC-IDS2017 dataset.}
 	\label{fig:results:lstm:neuron:cic17_id_infiltration}
 \end{figure}
 
+Due to the high accuracy rates the models achieved with very little training data i.e. the specialized subsets as specified in section \ref{sec:methodology:subsets}, we suspected that the datasets might simply be easy to classify. To get additional information on how the models might classify the data and discern benign from attack traffic, we fitted a \gls{dtc} on both used datasets and plotted the resulting decision trees. In table \ref{table:results:dtc:cic2017:accuracy} we evaluated the accuracy of the decision tree classifier with different maximum depths when tasked with classifying whether a packet is part of an attack or not. The accuracy scores listed in table \ref{table:results:dtc:cic2017:accuracy} are based on per packet classification so they are not directly comparable to the results from the \gls{dnn} models as there validation is done on flow basis. Nonetheless, the high accuracy achieved by the \gls{dtc} on a packet basis without having any concept of flows or sequences might indicate that the dataset indeed might be simply very easy to classify. 
 
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{ccc}
+		\thead{\textbf{Max depth}} & \thead{\textbf{Packet classification accuracy}} & \thead{\textbf{Fitting time}} \\ \midrule
+		1         & 82.84\%         & 201.69s      \\
+		2         & 82.84\%         & 18.72s       \\
+		3         & 89.20\%         & 26.56s       \\
+		4         & 90.86\%         & 36.48s       \\
+		5         & 91.51\%         & 45.93s       \\
+		6         & 93.27\%         & 54.22s       \\
+		7         & 93.56\%         & 60.38s       \\
+		8         & 96.44\%         & 65.72s       \\
+		9         & 96.94\%         & 73.12s       \\
+		10        & 97.27\%         & 80.51s       \\
+		11        & 97.58\%         & 81.41s       \\
+		12        & 97.75\%         & 83.63s       \\
+		13        & 97.91\%         & 83.43s       \\
+		14        & 98.00\%         & 86.46s       \\
+		15        & 98.06\%         & 91.30s       \\
+		16        & 98.11\%         & 93.48s       \\
+		17        & 98.14\%         & 95.17s       \\
+		18        & 98.16\%         & 94.39s       \\
+		19        & 98.18\%         & 91.71s       \\
+		20        & 98.19\%         & 96.41s       \\
+		21        & 98.19\%         & 96.69s       \\
+		22        & 98.19\%         & 94.56s       \\
+		23        & 98.18\%         & 95.59s       \\
+		24        & 98.16\%         & 93.95s      
+	\end{tabular}
+	\label{table:results:dtc:cic2017:accuracy}
+	\caption{Accuracy of a \gls{dtc} with different maximum depths fitted to 90\% the CIC-IDS-2017 dataset and evaluated with the remaining 10\%.}
+\end{table} 
+
+Next we tried to fit a \gls{dtc} on subsets of the datasets containing only benign flows and flows of one attack category. We used a maximum depth of 5 as a trade-off between accuracy and readability of the resulting decision trees. An overview of all the results can be seen in tables \ref{table:results:dtc:flows} and \ref{table:results:dtc:flows15}. The resulting trees can be inspected to discern which features are important for classifying the different attack types. E.g. in figure \ref{fig:results:dtc:cic2017:ssh_patator} the decision tree for the classification of \textit{SSH-Patator} flows in the CIC-IDS-2017 dataset is depicted. The tree is to be interpreted as following: Each node constitutes a binary split in the data. The first line in each node contains a threshold of a feature value e.g. \textit{Destination port <= 22.5} in the root node. All samples in the branch to the left fulfill the criterion, all samples to the right don't. The label \textit{gini} indicates the quality of the split measured with the \textit{Gini impurity}. The label \textit{samples} states how many samples have been passed on to this node. The label \textit{value} the current guess of the classifier for how the current set is comprised. The first value constitutes a guess of the \gls{dtc} on how many \textit{benign} samples are still in the set and second value of how many \textit{attack} samples remain. The proportion of remaining \textit{benign} and \textit{attack} values is also depicted in the color of the node. The label \textit{class} indicates the best guess of the \gls{dtc} at this point in the tree.  
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=1.0\linewidth]{results/results/rn500/dataset/flows/dt_5_2_SSH-Patator.png}
+	\caption{Decision tree yielded from a \gls{dtc} fitted to the a subset of the CIC-IDS2017 dataset (99.329\% benign samples, 0.671\% attack samples) containing only benign flows and attack flows of category \textit{SSH-Patator}. The \gls{dtc} achieved an accuracy of 99.781\%.}
+	\label{fig:results:dtc:cic2017:ssh_patator}
+\end{figure}
+
+\input{results/results/rn500/dataset/flows/dt_md5_summary}
+
+\input{results/results/rn500/dataset/flows15/dt_md5_summary}
 
 \begin{itemize}
 	\item close look at differences in performance for different attack classes
