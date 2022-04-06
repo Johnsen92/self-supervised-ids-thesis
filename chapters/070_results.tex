@@ -29,15 +29,17 @@ Overall, looking at experiments with the \gls{lstm} model, no clear pattern emer
 
 \begin{table}[!htbp]
 	\centering
-	\begin{tabular}{rccccc}
-		\thead{\textbf{Experiments (\#)}} & \thead{\textbf{PREDICT}} & \thead{\textbf{OBSCURE}} & \thead{\textbf{AUTO}}   & \thead{\textbf{ID}}      & \thead{\textbf{COMPOSITE}} \\ \midrule
-		CIC-IDS2017 10\% (2.1.1-6) 		& Yes    & No   & No   & Yes    & Yes      \\ 
-		CIC-IDS2017 1\% (2.2.1-6) 		& Yes    & No   & No   & Yes    & Yes      \\ 
-		CIC-IDS2017 subset (2.3.1-6) 	& No   	 & No   & No   & Yes    & No     \\ 
-		UNSW-NB15 10\% (2.4.1-6) 		& Yes    & Yes    & Yes    & Yes    & Yes      \\ 
-		UNSW-NB15 1\% (2.5.1-6) 		& Yes    & Yes    & Yes    & Yes    & Yes      \\ 
-		UNSW-NB15 subset (2.6.1-6) 		& Yes    & No   & Yes    & No   & No     \\ \midrule
-		\makecell{\# Cases in which pre-training \\ improved accuracy} & 5/6 & 2/6 & 3/6 & 5/6 & 4/6  
+	\begin{tabular}{cccccc}
+		\thead{\textbf{Experiment \#}} & \thead{\textbf{PREDICT(2)}} & \thead{\textbf{OBSCURE(3)}} & \thead{\textbf{AUTO(4)}}   & \thead{\textbf{ID(5)}}      & \thead{\textbf{COMPOSITE(6)}} \\ \midrule
+		\multicolumn{6}{l}{CIC-IDS2017} \\ \midrule
+		10\% (2.1.x) 		& Yes    & No   & No   & Yes    & Yes      \\ 
+		1\% (2.2.x) 		& Yes    & No   & No   & Yes    & Yes      \\ 
+		CIC2017\_10 (2.3.x) 	& No   	 & No   & No   & Yes    & No     \\ \\ \midrule
+		\multicolumn{6}{l}{UNSW-NB15} \\ \midrule
+		10\% (2.4.x) 		& Yes    & Yes    & Yes    & Yes    & Yes      \\ 
+		1\% (2.5.x) 		& Yes    & Yes    & Yes    & Yes    & Yes      \\ 
+		UNSW15\_10 (2.6.x) 		& Yes    & No   & Yes    & No   & No     \\ \midrule
+		\makecell{\# Cases in which \\ pre-training \\ improved accuracy} & 5/6 & 2/6 & 3/6 & 5/6 & 4/6  
 	\end{tabular}
 	\caption{Table of comparisons whether accuracy improved for pre-trained \gls{lstm} models when compared to supervised only trained baseline experiments.}
 	\label{table:results:lstm:improvement_results}
@@ -105,28 +107,25 @@ Overall, looking at experiments with the \gls{lstm} model, no clear pattern emer
 
 \input{results/results/rn500/transformer/tables/flows15_supervised/class_comparison_ALL}
 
-\begin{itemize}
-	\item \ref{table:results:transformer:stats_flows_supervised} State of the art results, similar to experiments with LSTM: For 90\% of data for supervised training only 0.138\% and 0.187\% absolute difference for CIC-IDS2017 and UNSW-NB15 datasets respectively.
-	\item Pretraining seems to have much less impact compared to \gls{lstm} model in general \ref{table:results:transformer:improvement_results}, but still yielded some positive results for experiments with very little supervised data (subsets) in \ref{table:results:transformer:stats_flows15_subset}
-	\item For CIC-IDS2017 no improvement in accuracy could be achieved
-	\item For UNSW-NB15 for 10\% and 1\% finetuning no improvements were achieved, except for a 0.03\% plus in accuracy for 3.5.4 \ref{table:results:transformer:stats_flows15_1} which is most likely just variance
-	\item For experiments 3.6.1-4 \ref{table:results:transformer:stats_flows15_subset} on dataset UNSW-NB15 with subset UNSW15\_10 both the AUTO proxy task yielded minor improvements of 0.295\% accuracy but with the MASK proxy task the model accuracy fell by 1.213\% as the model defaulted to guessing negative (detection rate: 0\%).
-	\item The accuracy improvements in this case stems from a major increase in detection rate of an absolute 29.424\% for experiment 3.6.4.
-	\item Surprisingly, the MASK proxy task yielded the worst results overall i.e. showing the worst drops in accuracy for 4/6 experiment series even though it is the most similar proxy task used when compared to google BERT
-	\item 
-\end{itemize}
+The transformer model without pre-training produces state of the art results, similar to experiments with the \gls{lstm} model but  performs slightly worse: For 90\% of data for supervised training only 0.138\% and 0.187\% absolute difference for CIC-IDS2017 and UNSW-NB15 datasets respectively \ref{table:results:transformer:stats_flows_supervised}.
+Pretraining seems to have much less impact compared to the \gls{lstm} model in general \ref{table:results:transformer:improvement_results}, but still yielded some positive results for experiments with very little supervised data i.e. the dedicated subsets for experiments 3.3.3 and 3.6.4 as can be seen in tables \ref{table:results:transformer:stats_flows_subset} and \ref{table:results:transformer:stats_flows15_subset}. 
+For UNSW-NB15 for 10\% and 1\% finetuning no improvements were achieved, except for a 0.03\% plus in accuracy for 3.5.4 \ref{table:results:transformer:stats_flows15_1} which is most likely just variance.
+For experiments 3.6.1-4 \ref{table:results:transformer:stats_flows15_subset} on dataset UNSW-NB15 with subset UNSW15\_10 both the AUTO proxy task yielded minor improvements of 0.295\% accuracy but with the MASK proxy task the model accuracy fell by 1.213\% as the model defaulted to guessing negative i.e. detection rate: 0\%. The accuracy improvements in experiment 3.6.4 stems from a major increase in detection rate of an absolute 29.424\% when compared to experiment 3.6.1 i.e. performance of the model without pre-training.
+Surprisingly, the MASK proxy task yielded the worst results overall when looking at accuracy as it dropped for 4/6 experiment series even though it is the most similar proxy task used compared to the one used in Google BERT.
 
 \begin{table}[!htbp]
 	\centering
 	\begin{tabular}{rccc}
-		\thead{\textbf{Experiments (\#)}} & \thead{\textbf{MASK}} & \thead{\textbf{OBSCURE}} & \thead{\textbf{AUTO}} \\ \midrule
-		CIC-IDS2017 10\% (3.1.1-4)   & No  & No   & No   \\
-		CIC-IDS2017 1\% (3.2.1-4)    & No  & No   & No   \\
-		CIC-IDS2017 subset (3.3.1-4) & No  & No   & No   \\
-		UNSW-NB15 10\% (3.4.1-4)     & No  & No   & No   \\
-		UNSW-NB15 1\% (3.5.1-4)      & No  & No   & Yes  \\
-		UNSW-NB15 subset (3.6.1-4)   & No  & No   & Yes  \\ \midrule
-		\makecell{\# Cases in which pre-training \\ improved accuracy}  & 0/6 & 0/6 & 2/6
+		\thead{\textbf{Experiments (\#)}} & \thead{\textbf{MASK(2)}} & \thead{\textbf{OBSCURE(3)}} & \thead{\textbf{AUTO(4)}} \\ \midrule
+		\multicolumn{4}{l}{CIC-IDS2017} \\ \midrule
+		10\% (3.1.x)   & No  & No   & No   \\
+		1\% (3.2.x)    & No  & No   & No   \\
+		CIC2017\_10 (3.3.x) & No  & Yes  & No   \\ \midrule
+		\multicolumn{4}{l}{UNSW-NB15} \\ \midrule
+		10\% (3.4.x)     & No  & No   & No   \\
+		1\% (3.5.x)      & No  & No   & Yes  \\
+		UNSW15\_10 (3.6.x)   & No  & No   & Yes  \\ \midrule
+		\makecell{\# Cases in which \\ pre-training \\ improved accuracy} & 0/6 & 1/6 & 2/6
 	\end{tabular}
 	\caption{Table of comparisons whether accuracy improved for pre-trained transformer models when compared to supervised only trained baseline experiments.}
 	\label{table:results:transformer:improvement_results}
@@ -187,12 +186,13 @@ Overall, looking at experiments with the \gls{lstm} model, no clear pattern emer
 
 \section{Explainability}
 
-In this section we are trying to analyze the mechanisms involved in generating the results in the previous section. As with machine learning in general, complete explainability is hard to achieve, hence the following attempts are our best efforts to make sense of the results. We try to answer the questions
+In this section we are trying to analyze the mechanisms involved in generating the results in the previous section and analyze the datasets used. As with machine learning in general, complete explainability is hard to achieve, hence the following attempts are our best efforts to make sense of the results. We try to answer the questions
 
 \begin{itemize}
 	\item Did the pre-training have any effect on the model behavior and if yes: how did predictions change?
 	\item Which features where relevant for classification? 
 	\item Why did the model perform so well, even with very little training data?
+	\item Where the datasets suited to be used for the conducted experiments?
 \end{itemize}
 
 To answer these questions, we conducted a series of tests including plotting neuron activation data, a \gls{pd} analysis, and fitting a \gls{dtc} to discern the value thresholds of features which lead to correct classifications. 
@@ -234,40 +234,84 @@ For both datasets, we generated plots to inspect how the predictions of the mode
 	\label{fig:results:lstm:neuron:cic17_id_infiltration}
 \end{figure}
 
-Due to the high accuracy rates the models achieved with very little training data i.e. the specialized subsets as specified in section \ref{sec:methodology:subsets}, we suspected that the datasets might simply be easy to classify. To get additional information on how the models might classify the data and discern benign from attack traffic, we fitted a \gls{dtc} on both used datasets and plotted the resulting decision trees. In table \ref{table:results:dtc:cic2017:accuracy} we evaluated the accuracy of the decision tree classifier with different maximum depths when tasked with classifying whether a packet is part of an attack or not. The accuracy scores listed in table \ref{table:results:dtc:cic2017:accuracy} are based on per packet classification so they are not directly comparable to the results from the \gls{dnn} models as there validation is done on flow basis. Nonetheless, the high accuracy achieved by the \gls{dtc} on a packet basis without having any concept of flows or sequences might indicate that the dataset indeed might be simply very easy to classify. 
+Due to the high accuracy rates the models achieved with very little training data i.e. the specialized subsets as specified in section \ref{sec:methodology:subsets}, we suspected that the datasets might simply be easy to classify. To get additional information on how the models might classify the data and discern benign from attack traffic, we fitted a \gls{dtc} on both used datasets and plotted the resulting decision trees. In table \ref{fig:results:dtc:depth_analysis} we evaluated the accuracy of the decision tree classifier with different maximum depths when tasked with binary classification of the datasets. 
+The accuracy scores listed in table \ref{table:results:dtc:cic2017:accuracy} are based on per packet classification so they are not completely comparable to the results from the \gls{dnn} models as there validation is done on flow basis. 
+We used 90\% of data for fitting the \gls{dtc}, using stratified sampling on flow records of the dataset. 
+We used the same random seed as for experiments on the \gls{dl} models which results into the exact same 90\\10 training split we used for training and evaluating the \gls{dl} models to keep some comparability. 
+The classifier achieves peak performance with depth 20 and 16 for datasets CIC-IDS2017 and UNSW-NB15 respectively before starting to overfit. 
+This indicates that records of CIC-IDS2017 dataset might be slightly harder to classify.
+The high accuracy achieved by the \gls{dtc} on a packet basis without having any concept of flows or sequences might indicate that the datasets indeed might be simply very easy to classify. 
 
 \begin{table}[!htbp]
 	\centering
-	\begin{tabular}{ccc}
-		\thead{\textbf{Max depth}} & \thead{\textbf{Packet classification accuracy}} & \thead{\textbf{Fitting time}} \\ \midrule
-		1         & 82.84\%         & 201.69s      \\
-		2         & 82.84\%         & 18.72s       \\
-		3         & 89.20\%         & 26.56s       \\
-		4         & 90.86\%         & 36.48s       \\
-		5         & 91.51\%         & 45.93s       \\
-		6         & 93.27\%         & 54.22s       \\
-		7         & 93.56\%         & 60.38s       \\
-		8         & 96.44\%         & 65.72s       \\
-		9         & 96.94\%         & 73.12s       \\
-		10        & 97.27\%         & 80.51s       \\
-		11        & 97.58\%         & 81.41s       \\
-		12        & 97.75\%         & 83.63s       \\
-		13        & 97.91\%         & 83.43s       \\
-		14        & 98.00\%         & 86.46s       \\
-		15        & 98.06\%         & 91.30s       \\
-		16        & 98.11\%         & 93.48s       \\
-		17        & 98.14\%         & 95.17s       \\
-		18        & 98.16\%         & 94.39s       \\
-		19        & 98.18\%         & 91.71s       \\
-		20        & 98.19\%         & 96.41s       \\
-		21        & 98.19\%         & 96.69s       \\
-		22        & 98.19\%         & 94.56s       \\
-		23        & 98.18\%         & 95.59s       \\
-		24        & 98.16\%         & 93.95s      
+	\begin{tabular}{c|cc|cc}
+		& \multicolumn{2}{l}{\thead{\textbf{CIC-IDS-2017}}} & \multicolumn{2}{l}{\thead{\textbf{UNSW-NB15}}} \\ \midrule
+		\thead{\textbf{max. depth}} & \thead{\textbf{accuracy}}      & \thead{\textbf{fitting time}}     & \thead{\textbf{accuracy}}     & \thead{\textbf{fitting time}}   \\ \midrule
+		1          & 82.8558\%     & 202.97s          & 98.7241\%    & 212.02s        \\
+		2          & 82.8558\%     & 216.38s          & 98.7695\%    & 227.32s        \\
+		3          & 89.3871\%     & 216.94s          & 98.8434\%    & 249.41s        \\
+		4          & 90.9993\%     & 226.19s          & 98.8562\%    & 268.7s         \\
+		5          & 91.6236\%     & 242.34s          & 98.9273\%    & 285.73s        \\
+		6          & 93.3365\%     & 241.75s          & 99.0839\%    & 312.4s         \\
+		7          & 93.6416\%     & 252.43s          & 99.1811\%    & 330.9s         \\
+		8          & 96.4964\%     & 259.8s           & 99.2847\%    & 347.64s        \\
+		9          & 96.9901\%     & 271.28s          & 99.3517\%    & 363.32s        \\
+		10         & 97.3088\%     & 266.96s          & 99.3894\%    & 381.01s        \\
+		11         & 97.6354\%     & 265.23s          & 99.4337\%    & 399.33s        \\
+		12         & 97.7696\%     & 269.61s          & 99.4546\%    & 415.14s        \\
+		13         & 97.9199\%     & 273.56s          & 99.4596\%    & 429.8s         \\
+		14         & 98.0323\%     & 277.4s           & 99.4671\%    & 454.4s         \\
+		15         & 98.0646\%     & 274.03s          & 99.4715\%    & 455.26s        \\
+		16         & 98.0982\%     & 281.64s          & 99.472\%     & 453.49s        \\
+		17         & 98.1472\%     & 274.37s          & 99.472\%     & 457.97s        \\
+		18         & 98.1662\%     & 275.86s          & 99.468\%     & 461.35s        \\
+		19         & 98.1792\%     & 276.26s          & 99.4609\%    & 457.48s        \\
+		20         & 98.1928\%     & 288.68s          & 99.4531\%    & 457.15s        \\
+		21         & 98.1906\%     & 297.94s          & 99.4447\%    & 475.83s        \\
+		22         & 98.167\%      & 309.79s          & 99.4244\%    & 502.92s        \\
+		23         & 98.1783\%     & 310.07s          & 99.4131\%    & 498.34s        \\
+		24         & 98.1524\%     & 313.42s          & 99.4028\%    & 506.54s        \\
+		25         & 98.154\%      & 312.18s          & 99.4058\%    & 486.02s       
 	\end{tabular}
-	\label{table:results:dtc:cic2017:accuracy}
-	\caption{Accuracy of a \gls{dtc} with different maximum depths fitted to 90\% the CIC-IDS-2017 dataset and evaluated with the remaining 10\%.}
-\end{table} 
+	\caption{Performance of \gls{dtc} for binary classification fitted on 90\% of data from the respective dataset with different maximum depth values. Accuracy was calculated on the remaining 10\% of data not used for fitting.}
+	\label{fig:results:dtc:depth_analysis}
+\end{table}
+
+A more detailed comparison between results yielded from the \gls{dtc} and the \gls{dl} models without pre-training can be found in table \ref{table:results:explainability:model_comparison}, again with the caveat that the \gls{dtc} is evaluated on packets and not flows, hence shifting the ratio of attack to benign records slightly. Here we also looked into how the \gls{dtc} performs with less data, i.e. only 10\% and 1\% of the datasets. The evaluation subset for CIC-IDS2017 consisting of 2493032 packets and is composed of 82.86\% benign packets and 17.14\% attack packets. In flow representation, the dataset consists of
+74.72\% benign and 25.28\% attack records. The evaluation subset for UNSW-NB15 consisting of 6228573 packets and is composed of 98.33\% benign packets and 1.67\% attack packets. In flow representation, the dataset consists of 
+96.64\% benign and 3.36\% attack records. Only looking at accuracy, the \gls{dtc} performs similarly to the \gls{dl} models, but other metrics e.g. FAR and MAR, are considerably worse especially when comparing results for the cases where the models had access to 90\% of the datasets. 
+
+\begin{table}[]
+	\begin{tabular}{c|ccc|ccc}
+		\thead{\textbf{Trained with}} & \multicolumn{3}{c}{\thead{\textbf{CIC-IDS-2017}}}    & \multicolumn{3}{c}{\thead{\textbf{UNSW-NB15}}}       \\ \midrule
+		\thead{\textbf{90.00}}\%      & \thead{\textbf{LSTM}}      & \thead{\textbf{Transformer}} & \thead{\textbf{DTC*}}      & \thead{\textbf{LSTM}}      & \thead{\textbf{Transformer}} & \thead{\textbf{DTC*}}      \\ \midrule
+		Accuracy     & 99.796 \% & 99.658 \%   & 98.193 \% & 98.930 \% & 98.743 \%   & 99.453 \% \\
+		DR           & 99.306 \% & 98.884 \%   & 95.101 \% & 82.936 \% & 79.300 \%   & 82.125 \% \\
+		Precision    & 99.885 \% & 99.762 \%   & 94.399 \% & 86.315 \% & 84.283 \%   & 84.628 \% \\
+		Specificity  & 99.961 \% & 99.920 \%   & 98.832 \% & 99.517 \% & 99.457 \%   & 99.747 \% \\
+		F1-Measure   & 99.595 \% & 99.321 \%   & 94.749 \% & 84.592 \% & 81.716 \%   & 83.358 \% \\
+		FAR          & 0.115 \%  & 0.238 \%    & 5.601 \%  & 13.685 \% & 15.717 \%   & 15.372 \% \\
+		MAR          & 0.694 \%  & 1.116 \%    & 4.899 \%  & 17.064 \% & 20.700 \%   & 17.875 \% \\ \midrule
+		\thead{\textbf{10.00\%}}      & \thead{\textbf{LSTM}}      & \thead{\textbf{Transformer}} & \thead{\textbf{DTC*}}      & \thead{\textbf{LSTM}}      & \thead{\textbf{Transformer}} & \thead{\textbf{DTC*}}      \\ \midrule
+		Accuracy     & 99.632 \% & 99.448 \%   & 97.849 \% & 98.654 \% & 98.545 \%   & 99.322 \% \\
+		DR           & 98.828 \% & 98.576 \%   & 94.507 \% & 80.684 \% & 88.111 \%   & 76.731 \% \\
+		Precision    & 99.711 \% & 99.236 \%   & 93.140 \% & 81.166 \% & 75.079 \%   & 82.350 \% \\
+		Specificity  & 99.903 \% & 99.743 \%   & 98.547 \% & 99.313 \% & 98.928 \%   & 99.714 \% \\
+		F1-Measure   & 99.268 \% & 98.905 \%   & 93.819 \% & 80.924 \% & 81.075 \%   & 79.441 \% \\
+		FAR          & 0.289 \%  & 0.764 \%    & 6.860 \%  & 18.834 \% & 24.921 \%   & 17.650 \% \\
+		MAR          & 1.172 \%  & 1.424 \%    & 5.493 \%  & 19.316 \% & 11.889 \%   & 23.269 \% \\ \midrule
+		\thead{\textbf{1.00\%}}       & \thead{\textbf{LSTM}}      & \thead{\textbf{Transformer}} & \thead{\textbf{DTC*}}      & \thead{\textbf{LSTM}}      & \thead{\textbf{Transformer}} & \thead{\textbf{DTC*}}      \\ \midrule
+		Accuracy     & 99.385 \% & 99.189 \%   & 96.874 \% & 98.305 \% & 98.328 \%   & 99.124 \% \\
+		DR           & 98.408 \% & 98.640 \%   & 92.718 \% & 78.846 \% & 84.212 \%   & 69.783 \% \\
+		Precision    & 99.153 \% & 98.161 \%   & 89.513 \% & 74.673 \% & 72.790 \%   & 76.189 \% \\
+		Specificity  & 99.716 \% & 99.374 \%   & 97.739 \% & 99.019 \% & 98.845 \%   & 99.626 \% \\
+		F1-Measure   & 98.779 \% & 98.400 \%   & 91.087 \% & 76.703 \% & 78.086 \%   & 72.846 \% \\
+		FAR          & 0.847 \%  & 1.839 \%    & 10.487 \% & 25.327 \% & 27.210 \%   & 23.811 \% \\
+		MAR          & 1.592 \%  & 1.360 \%    & 7.282 \%  & 21.154 \% & 15.788 \%   & 30.217 \%
+	\end{tabular}
+	\caption{Comparison between model performances without pre-training for 90\%, 10\% and 1\% of training data with random seed 500 and stratified sampling. \gls{dtc} performance is only partly comparable as it operates on packets and not flows.}
+	\label{table:results:explainability:model_comparison}
+\end{table}
 
 Next we tried to fit a \gls{dtc} on subsets of the datasets containing only benign flows and flows of one attack category. We used a maximum depth of 5 as a trade-off between accuracy and readability of the resulting decision trees. An overview of all the results can be seen in tables \ref{table:results:dtc:flows} and \ref{table:results:dtc:flows15}. The resulting trees can be inspected to discern which features are important for classifying the different attack types. E.g. in figure \ref{fig:results:dtc:cic2017:ssh_patator} the decision tree for the classification of \textit{SSH-Patator} flows in the CIC-IDS-2017 dataset is depicted. The tree is to be interpreted as following: Each node constitutes a binary split in the data. The first line in each node contains a threshold of a feature value e.g. \textit{Destination port <= 22.5} in the root node. All samples in the branch to the left fulfill the criterion, all samples to the right don't. The label \textit{gini} indicates the quality of the split measured with the \textit{Gini impurity}. The label \textit{samples} states how many samples have been passed on to this node. The label \textit{value} the current guess of the classifier for how the current set is comprised. The first value constitutes a guess of the \gls{dtc} on how many \textit{benign} samples are still in the set and second value of how many \textit{attack} samples remain. The proportion of remaining \textit{benign} and \textit{attack} values is also depicted in the color of the node. The label \textit{class} indicates the best guess of the \gls{dtc} at this point in the tree.  
 
