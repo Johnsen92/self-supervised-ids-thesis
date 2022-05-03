@@ -57,20 +57,6 @@ Overall, looking at experiments with the \gls{lstm} model, no clear pattern emer
 
 \input{results/results/rn500/lstm/tables/flows_subset/class_comparison_ALL}
 
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=1.0\linewidth]{results/results/rn500/lstm/plots/losses/flows_subset/training_loss.png}
-	\caption{Training loss for supervised training on the \gls{lstm} model with the CIC17\_10 subset.}
-	\label{fig:results:lstm:training_loss_flows_subset}
-\end{figure}
-
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=1.0\linewidth]{results/results/rn500/lstm/plots/losses/flows_subset/validation_loss.png}
-	\caption{Validation loss for supervised training on the \gls{lstm} model with the CIC17\_10 subset.}
-	\label{fig:results:lstm:validation_loss_flows_subset}
-\end{figure}
-
 \input{results/results/rn500/lstm/tables/flows15_10/stats_comparison_ALL}
 
 \input{results/results/rn500/lstm/tables/flows15_10/class_comparison_ALL}
@@ -82,20 +68,6 @@ Overall, looking at experiments with the \gls{lstm} model, no clear pattern emer
 \input{results/results/rn500/lstm/tables/flows15_subset/stats_comparison_ALL}
 
 \input{results/results/rn500/lstm/tables/flows15_subset/class_comparison_ALL}
-
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=1.0\linewidth]{results/results/rn500/lstm/plots/losses/flows15_subset/training_loss.png}
-	\caption{Training loss for supervised training on the \gls{lstm} model with the UNSW15\_10 subset.}
-	\label{fig:results:lstm:training_loss_flows15_subset}
-\end{figure}
-
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=1.0\linewidth]{results/results/rn500/lstm/plots/losses/flows15_subset/validation_loss.png}
-	\caption{Validation loss for supervised training on the \gls{lstm} model with the UNSW15\_10 subset.}
-	\label{fig:results:lstm:validation_loss_flows15_subset}
-\end{figure}
 
 \section{Transformer Model} \label{sec:results:transformer}
 
@@ -143,20 +115,6 @@ Surprisingly, the MASK proxy task yielded the worst results overall when looking
 
 \input{results/results/rn500/transformer/tables/flows_subset/class_comparison_ALL}
 
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=1.0\linewidth]{results/results/rn500/transformer/plots/losses/flows15_subset/training_loss.png}
-	\caption{Training loss for supervised training on transformer model with the UNSW15\_10 subset.}
-	\label{fig:results:transformer:training_loss_flows_subset}
-\end{figure}
-
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=1.0\linewidth]{results/results/rn500/transformer/plots/losses/flows15_subset/validation_loss.png}
-	\caption{Validation loss for supervised training on \gls{lstm} model with the UNSW15\_10 subset.}
-	\label{fig:results:transformer:validation_loss_flows_subset}
-\end{figure}
-
 \input{results/results/rn500/transformer/tables/flows15_10/stats_comparison_ALL}
 
 \input{results/results/rn500/transformer/tables/flows15_10/class_comparison_ALL}
@@ -168,20 +126,6 @@ Surprisingly, the MASK proxy task yielded the worst results overall when looking
 \input{results/results/rn500/transformer/tables/flows15_subset/stats_comparison_ALL}
 
 \input{results/results/rn500/transformer/tables/flows15_subset/class_comparison_ALL}
-
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=1.0\linewidth]{results/results/rn500/transformer/plots/losses/flows15_subset/training_loss.png}
-	\caption{Training loss for supervised training on the transformer model with the UNSW15\_10 subset.}
-	\label{fig:results:transformer:training_loss_flows15_subset}
-\end{figure}
-
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=1.0\linewidth]{results/results/rn500/transformer/plots/losses/flows15_subset/validation_loss.png}
-	\caption{Validation loss for supervised training on the \gls{lstm} model with the UNSW15\_10 subset.}
-	\label{fig:results:transformer:validation_loss_flows15_subset}
-\end{figure}
 
 
 \section{Explainability}
@@ -235,10 +179,9 @@ For both datasets, we generated plots to inspect how the predictions of the mode
 \end{figure}
 
 Due to the high accuracy rates the models achieved with very little training data i.e. the specialized subsets as specified in section \ref{sec:methodology:subsets}, we suspected that the datasets might simply be easy to classify. To get additional information on how the models might classify the data and discern benign from attack traffic, we fitted a \gls{dtc} on both used datasets and plotted the resulting decision trees. In table \ref{fig:results:dtc:depth_analysis} we evaluated the accuracy of the decision tree classifier with different maximum depths when tasked with binary classification of the datasets. 
-The accuracy scores listed in table \ref{table:results:dtc:cic2017:accuracy} are based on per packet classification so they are not completely comparable to the results from the \gls{dnn} models as there validation is done on flow basis. 
+The accuracy scores listed in table \ref{table:results:dtc:cic2017:accuracy} are based on per packet classification so they are not completely comparable to the results from the \gls{dnn} models as their validation metrics are based on the classification of the extracted flows and not packets. 
 We used 90\% of data for fitting the \gls{dtc}, using stratified sampling on flow records of the dataset. 
-We used the same random seed as for experiments on the \gls{dl} models which results into the exact same 90\\10 training split we used for training and evaluating the \gls{dl} models to keep some comparability. 
-The classifier achieves peak performance with depth 20 and 16 for datasets CIC-IDS2017 and UNSW-NB15 respectively before starting to overfit. 
+We used the same random seed as for experiments on the \gls{dl} models which results into the exact same 90\\10 training split we used for training and evaluating the \gls{dl} models to keep some comparability. The \gls{dtc} achieves peak performance with depth 20 and 16 for datasets CIC-IDS2017 and UNSW-NB15 respectively before it starts to overfit. 
 This indicates that records of CIC-IDS2017 dataset might be slightly harder to classify.
 The high accuracy achieved by the \gls{dtc} on a packet basis without having any concept of flows or sequences might indicate that the datasets indeed might be simply very easy to classify. 
 
@@ -313,7 +256,7 @@ A more detailed comparison between results yielded from the \gls{dtc} and the \g
 	\label{table:results:explainability:model_comparison}
 \end{table}
 
-Next we tried to fit a \gls{dtc} on subsets of the datasets containing only benign flows and flows of one attack category. We used a maximum depth of 5 as a trade-off between accuracy and readability of the resulting decision trees. An overview of all the results can be seen in tables \ref{table:results:dtc:flows} and \ref{table:results:dtc:flows15}. The resulting trees can be inspected to discern which features are important for classifying the different attack types. E.g. in figure \ref{fig:results:dtc:cic2017:ssh_patator} the decision tree for the classification of \textit{SSH-Patator} flows in the CIC-IDS-2017 dataset is depicted. The tree is to be interpreted as following: Each node constitutes a binary split in the data. The first line in each node contains a threshold of a feature value e.g. \textit{Destination port <= 22.5} in the root node. All samples in the branch to the left fulfill the criterion, all samples to the right don't. The label \textit{gini} indicates the quality of the split measured with the \textit{Gini impurity}. The label \textit{samples} states how many samples have been passed on to this node. The label \textit{value} the current guess of the classifier for how the current set is comprised. The first value constitutes a guess of the \gls{dtc} on how many \textit{benign} samples are still in the set and second value of how many \textit{attack} samples remain. The proportion of remaining \textit{benign} and \textit{attack} values is also depicted in the color of the node. The label \textit{class} indicates the best guess of the \gls{dtc} at this point in the tree.  
+Next we tried to fit a \gls{dtc} on subsets of the datasets containing only benign flows and flows of one attack category to obtain thresholds for the feature values which lead to the correct classification of the different attack types. We used a maximum depth of 5 as a trade-off between accuracy and readability of the resulting decision trees. An overview of all the results can be seen in tables \ref{table:results:dtc:flows} and \ref{table:results:dtc:flows15}. The resulting trees can be inspected to discern which features are important for classifying the different attack types. E.g. in figure \ref{fig:results:dtc:cic2017:ssh_patator} the decision tree for the classification of \textit{SSH-Patator} flows in the CIC-IDS-2017 dataset is depicted. The tree is to be interpreted as following: Each node constitutes a binary split in the data. The first line in each node contains a threshold of a feature value e.g. \textit{Destination port <= 22.5} in the root node. All samples in the branch to the left fulfill the criterion, all samples to the right don't. The label \textit{gini} indicates the quality of the split measured with the \textit{Gini impurity}. The label \textit{samples} states how many samples have been passed on to this node. The label \textit{value} the current guess of the classifier for how the current set is comprised. The first value constitutes a guess of the \gls{dtc} on how many \textit{benign} samples are still in the set and second value of how many \textit{attack} samples remain. The proportion of remaining \textit{benign} and \textit{attack} values is also depicted in the color of the node. The label \textit{class} indicates the best guess of the \gls{dtc} at this point in the tree. As the graphical representation is too small to be printed if all leafs of the tree are present, we will only present the textual tree representation as generated by the \textit{scikit-learn} \gls{ml} python library \cite{sklearn}. A list of all generated trees can be found in the appendix in section \ref{label}.
 
 \begin{figure}[!htbp]
 	\centering
@@ -325,12 +268,5 @@ Next we tried to fit a \gls{dtc} on subsets of the datasets containing only beni
 \input{results/results/rn500/dataset/flows/dt_md5_summary}
 
 \input{results/results/rn500/dataset/flows15/dt_md5_summary}
-
-\begin{itemize}
-	\item close look at differences in performance for different attack classes
-	\item partial dependency plots
-	\item neuron activation
-	\item \gls{dlstm}s and transformer encoder already very effective, so improvement is hard
-\end{itemize}
 
 \newpage

@@ -144,7 +144,7 @@ For the composite model we recreated the network proposed by Nitish Srivastava e
 
 \section{Self-supervised Pre-training for Transformer Networks} \label{sec:experiments:transformer}
 
-Like with the \gls{lstm} we devised a series of proxy tasks for pre-training the model in self-supervised fashion. Since the information flow is different in Transformers than it is in \glspl{lstm}, the pre-training task \textit{Predict Packets} \ref{sec:experiments_lstm} we used for the \gls{lstm} is no longer feasible. While the \gls{lstm} at each stage has only access to all the tokens it processed up to this point, the Transformer has access to all input tokens at each stage of the execution which is one of the benefits of self-attention \cite{attention}. Contrary to our expectations, supervised training (with 90\% auf the dataset) on the Transformer takes longer than on the \gls{lstm} to achieve the observed optimal accuracy of 99,65\%. In other words, when training the \gls{lstm} and the Transformer network with the same amount of data for the same amount of time, the \gls{lstm} produces better results. In the following sections we describe the pre-training methods we used to pre-train the Transformer network.
+Like with the \gls{lstm} we devised a series of proxy tasks for pre-training the model in self-supervised fashion. Since the information flow is different in transformer models than it is in \glspl{lstm}, the pre-training task \textit{Predict Packets} \ref{sec:experiments_lstm} we used for the \gls{lstm} is no longer feasible. While the \gls{lstm} at each stage only has access to all the tokens it processed up to this point, the Transformer has access to all input tokens at each stage of the execution which is one of the benefits of self-attention \cite{attention}. Contrary to our expectations, supervised training with 90\% of the dataset on the Transformer takes longer to converge than on the \gls{lstm} in terms of real time. In other words, when training the \gls{lstm} and the Transformer network with the same amount of data for the same amount of time, the \gls{lstm} produces better results. In the following sections we describe the pre-training methods we used to pre-train the Transformer network.
 
 \begin{table}[H]
 	\scalebox{0.8}{
@@ -179,16 +179,9 @@ Like with the \gls{lstm} we devised a series of proxy tasks for pre-training the
 	\label{table:experiments:transformer:configurations}
 \end{table}
 
-\todo{write}
+To make the effect of pre-training on the Transformer more salient we tried different approaches like using two consecutive transformer encoder models in serial configuration. Only the first transformer model is pre-trained and for supervised fine-tuning it feeds its output, which hopefully constitutes an abstraction of the data, into the second model which is then trained with labeled data.
+Another approach was to reset the deeper layers of the transformer model, as an abstract data representation might have formed in the earlier layers and the later layers might have been used to solve the proxy task based on this representation which are not needed and even disadvantageous for classification. We also tried tweaking the dropout rate, the number of attentions heads and the number of layers to improve performance. None of these methods achieved consistent improvements in our case.
 
-\begin{itemize}
-	\item two consecutive TransformerEncoders, one for pre-training, one for fine-tuning
-	\item Classification (CLS) Token
-	\item Resetting last Layers 1,...,5 of Transformer after pre-training
-	\item Use decoder also
-	\item different dropout rates
-	\item different number of attention heads
-\end{itemize}
 
 \subsection{Obscure Features (OBSCURE)} \label{sec:experiments:transformer:mask_feature}
 
