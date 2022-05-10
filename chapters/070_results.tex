@@ -25,25 +25,6 @@ A similar pattern emerges from the results of tests on the UNSW-NB15 dataset. Fo
 Looking at class specific accuracy in table \ref{table:results:lstm:class_flows15_10} we can see that contrary to the results from experiments 2.1.1-6 on dataset CIC-IDS2017, here the increase in overall accuracy stems from minor improvements on benign flow classification i.e. an increase in specificity rather than an increase in detection rate. In fact, detection rate drops for all pre-trained models in experiments 2.4.1-6 most salient in results from experiment 2.4.6 trained on the COMPOSITE proxy-task where detection rate drops by 1.273\% but specificity increased by 0.084\% when compared to supervised only training in experiment 2.4.1 resulting in an improvement in accuracy of 0.037\% due to 96.64\% of the UNSW-NB15 dataset being benign flows. \par
 The maximum delta between supervised only trained and pre-trained models increases to 0.137\% in experiments 2.5.1-6 in table \ref{table:results:lstm:stats_flows15_1}, this time occurring for proxy task AUTO with all other proxy tasks also showing minor improvements in accuracy. Just looking at experiment 2.5.4, contrary to experiments 2.4.1-6 in table  \ref{table:results:lstm:stats_flows15_10}, specificity and detection rate increased slightly when compared to baseline experiment 2.5.1. While in experiments 2.4.1-6 in table \ref{table:results:lstm:stats_flows15_10}, all pre-trained models show a decrease in detection rate, in experiments 2.5.1-6 in table  \ref{table:results:lstm:stats_flows15_1} all pre-training methods except the COMPOSITE proxy-task result in an improved detection rate. \par
 The pattern of improved accuracy breaks again when looking at finetuning with the specialized subset UNSW15\_10 in table \ref{table:results:lstm:stats_flows15_subset} for experiments 2.6.1-6. Here, almost no improvement is measurable and for the COMPOSITE proxy task accuracy even dropped by 0.168\% when for finetuning with 1\% and 10\% it showed slight improvement. The only increases in accuracy are measurable for the PREDICT and AUTO proxy tasks with very minor accuracy increases of 0.005\% and 0.010\% with all other pre-training methods resulting in lower accuracy scores best represented by experiment 2.6.6 with the COMPOSITE proxy-task where accuracy dropped by 0.168\%. \par
-Overall, looking at experiments with the \gls{lstm} model, no clear pattern emerges which could point at a proxy-task that generally improves accuracy when used in pre-training. Looking at table \ref{table:results:lstm:improvement_results} we could name the predict packet (PREDICT) and surprisingly the identity function (ID) proxy task as most likely to improve final accuracy of the model. The fact that any improvement was observable at all is already promising, when considering that the baseline results of exclusively supervised trained models are already very high when compared to other state-of-the-art results in contemporary research. Increasing accuracy ever so slightly without the need for more labeled data might make a \gls{ml} based \gls{ids} feasible in a real world scenario when before it was not. 
-
-\begin{table}[!htbp]
-	\centering
-	\begin{tabular}{cccccc}
-		\thead{\textbf{Experiment \#}} & \thead{\textbf{PREDICT(2)}} & \thead{\textbf{OBSCURE(3)}} & \thead{\textbf{AUTO(4)}}   & \thead{\textbf{ID(5)}}      & \thead{\textbf{COMPOSITE(6)}} \\ \midrule
-		\multicolumn{6}{l}{CIC-IDS2017} \\ \midrule
-		10\% (2.1.x) 		& Yes    & No   & No   & Yes    & Yes      \\ 
-		1\% (2.2.x) 		& Yes    & No   & No   & Yes    & Yes      \\ 
-		CIC2017\_10 (2.3.x) 	& No   	 & No   & No   & Yes    & No     \\ \\ \midrule
-		\multicolumn{6}{l}{UNSW-NB15} \\ \midrule
-		10\% (2.4.x) 		& Yes    & Yes    & Yes    & Yes    & Yes      \\ 
-		1\% (2.5.x) 		& Yes    & Yes    & Yes    & Yes    & Yes      \\ 
-		UNSW15\_10 (2.6.x) 		& Yes    & No   & Yes    & No   & No     \\ \midrule
-		\makecell{\# Cases in which \\ pre-training \\ improved accuracy} & 5/6 & 2/6 & 3/6 & 5/6 & 4/6  
-	\end{tabular}
-	\caption{Table of comparisons whether accuracy improved for pre-trained \gls{lstm} models when compared to supervised only trained baseline experiments.}
-	\label{table:results:lstm:improvement_results}
-\end{table}
 
 \input{results/results/rn500/lstm/tables/flows_10/stats_comparison_ALL}
 
@@ -80,28 +61,9 @@ Overall, looking at experiments with the \gls{lstm} model, no clear pattern emer
 \input{results/results/rn500/transformer/tables/flows15_supervised/class_comparison_ALL}
 
 The transformer model without pre-training produces state of the art results, similar to experiments with the \gls{lstm} model but  performs slightly worse: For 90\% of data for supervised training only 0.138\% and 0.187\% absolute difference for CIC-IDS2017 and UNSW-NB15 datasets respectively \ref{table:results:transformer:stats_flows_supervised}.
-Pretraining seems to have much less impact compared to the \gls{lstm} model in general \ref{table:results:transformer:improvement_results}, but still yielded some positive results for experiments with very little supervised data i.e. the dedicated subsets for experiments 3.3.3 and 3.6.4 as can be seen in tables \ref{table:results:transformer:stats_flows_subset} and \ref{table:results:transformer:stats_flows15_subset}. 
 For UNSW-NB15 for 10\% and 1\% finetuning no improvements were achieved, except for a 0.03\% plus in accuracy for 3.5.4 \ref{table:results:transformer:stats_flows15_1} which is most likely just variance.
 For experiments 3.6.1-4 \ref{table:results:transformer:stats_flows15_subset} on dataset UNSW-NB15 with subset UNSW15\_10 both the AUTO proxy task yielded minor improvements of 0.295\% accuracy but with the MASK proxy task the model accuracy fell by 1.213\% as the model defaulted to guessing negative i.e. detection rate: 0\%. The accuracy improvements in experiment 3.6.4 stems from a major increase in detection rate of an absolute 29.424\% when compared to experiment 3.6.1 i.e. performance of the model without pre-training.
 Surprisingly, the MASK proxy task yielded the worst results overall when looking at accuracy as it dropped for 4/6 experiment series even though it is the most similar proxy task used compared to the one used in Google BERT.
-
-\begin{table}[!htbp]
-	\centering
-	\begin{tabular}{rccc}
-		\thead{\textbf{Experiments (\#)}} & \thead{\textbf{MASK(2)}} & \thead{\textbf{OBSCURE(3)}} & \thead{\textbf{AUTO(4)}} \\ \midrule
-		\multicolumn{4}{l}{CIC-IDS2017} \\ \midrule
-		10\% (3.1.x)   & No  & No   & No   \\
-		1\% (3.2.x)    & No  & No   & No   \\
-		CIC2017\_10 (3.3.x) & No  & Yes  & No   \\ \midrule
-		\multicolumn{4}{l}{UNSW-NB15} \\ \midrule
-		10\% (3.4.x)     & No  & No   & No   \\
-		1\% (3.5.x)      & No  & No   & Yes  \\
-		UNSW15\_10 (3.6.x)   & No  & No   & Yes  \\ \midrule
-		\makecell{\# Cases in which \\ pre-training \\ improved accuracy} & 0/6 & 1/6 & 2/6
-	\end{tabular}
-	\caption{Table of comparisons whether accuracy improved for pre-trained transformer models when compared to supervised only trained baseline experiments.}
-	\label{table:results:transformer:improvement_results}
-\end{table}
 
 \input{results/results/rn500/transformer/tables/flows_10/stats_comparison_ALL}
 
@@ -128,7 +90,7 @@ Surprisingly, the MASK proxy task yielded the worst results overall when looking
 \input{results/results/rn500/transformer/tables/flows15_subset/class_comparison_ALL}
 
 
-\section{Explainability}
+\section{Explainability} \label{sec:results:explainability}
 
 In this section we are trying to analyze the mechanisms involved in generating the results in the previous section and analyze the datasets used. As with machine learning in general, complete explainability is hard to achieve, hence the following attempts are our best efforts to make sense of the results. We try to answer the questions
 
@@ -166,7 +128,7 @@ For both datasets, we generated plots to inspect how the predictions of the mode
 
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=1.1\linewidth]{{"results/results/rn500//lstm/plots/neuron/flows_ID/latest/11_PortScan - Firewall off"}.png}
+	\includegraphics[width=1.1\linewidth]{results/results/rn500//lstm/plots/neuron/flows_ID/latest/11_PortScan_-_Firewall_off.png}
 	\caption{Neuron activation plot comparing neuron activations of the latest stage of the \gls{lstm} model (after the last packet in the sequence has been processed) after pre-training with the ID proxy task and after fine-tuning with flows classified as \textit{PortScan - Firewall off} in the CIC-IDS2017 dataset.}
 	\label{fig:results:lstm:neuron:cic17_id_port_scan_firewall_off}
 \end{figure}

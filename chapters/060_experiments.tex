@@ -48,7 +48,7 @@ As pretraining method we devised a list of proxy tasks which should challenge th
 	\label{table:experiments:proxy_tasks}
 \end{table}
 
-\section{Self-supervised Pre-training for Long Short-Term Memory Networks} \label{sec:experiments_lstm}
+\section{Self-supervised Pre-training for Long Short-Term Memory Networks} \label{sec:experiments:lstm}
 
 For pre-training the \gls{lstm} we devised six different proxy tasks for the model to solve in a self-supervised fashion: Predicting the next packet in the flow, predicting masked features of randomly chosen packets and predicting randomly masked packets, the identity function, a sequence2sequence Auto Encoder and a composite task comprised of part auto encoding and part prediction. Because we assume that in some cases, i.e. for some sequences, no reasonable prediction can be made we don't want the model to react too strongly to those outliers. Hence, the \gls{mae} is used to determine the divergence between prediction and target data instead of \gls{mse}. Translating to PyTorch this means we used \textit{L1Loss} with \textit{mean} reduction as the loss function for pre-training. After some initial trials we set the training hyper-parameters for both supervised and self-supervised training to an initial \textit{learning rate} of $10^{-3}$ and a \textit{batch size} of 128. Over the training process, the learning rate will be adjusted by Adam so the model is somewhat robust to changes on the initial learning rate. For every proxy task, the model has been trained with the different parameters in table \ref{table:experiments:lstm:configurations} to establish comparable results.
 

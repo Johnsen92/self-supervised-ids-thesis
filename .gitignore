@@ -17,4 +17,7 @@ results/*
 *.toc
 *.log
 *.synctex.gz
+*.acr
+*.alg
+*.glg
 *.glsdefs
