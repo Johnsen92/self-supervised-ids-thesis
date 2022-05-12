@@ -1,6 +1,6 @@
 \chapter{Results} \label{sec:results}
 
-In this chapter, we discuss results and try to explain them based on neuron activation and \gls{pd} plots. Like with the experiments section, we will be looking at the results from \gls{lstm} and the transformer model independently.
+In this chapter, we discuss results from experiments conducted with the methods discussed in earlier sections. Like with the experiments section, we will be looking at the results from \gls{lstm} and the transformer model independently. An in-depth look into the datasets and the workings of the differently trained models based on \gls{pd} plots, neuron data plots and the outputs of a fitted \gls{dtc} follow in the section \ref{sec:results:explainability}
 
 \section{Long Short-Term Memory Model} \label{sec:results:lstm}
 
@@ -11,44 +11,55 @@ While this is fairly pleasant in general, it means that results will be harder t
 
 \input{results/results/rn500/lstm/tables/flows_supervised/class_comparison_ALL}
 
+Next, we will be looking at results for pre-training with the different proxy tasks and different amounts of data used for supervised finetuning. Tables \ref{table:results:lstm:stats_flows_10}, \ref{table:results:lstm:stats_flows_1} and \ref{table:results:lstm:stats_flows_subset} show results for experiments 2.1.1 - 2.1.6, 2.2.1 - 2.2.6 and 2.3.1 - 2.3.6 on dataset CIC-IDS2017 conducted with 10\%, 1\% and only a very small fraction of data as defined in subset CIC17\_10. Looking at the performance metrics, we can see that there is some variance in the resulting data. The NumPy and PyTorch random seeds are the same for all experiments which means that pre-training, supervised finetuning and validation have been conducted with the exact same subsets of the original dataset which means that differences in results can only come from pre-training with different proxy tasks. This establishes the fact that pre-training in general, and also different methods of pre-training have an effect on final performance. Starting with table \ref{table:results:lstm:stats_flows_10}, we can see that pre-training with some proxy tasks improves performance while others have almost no effect or even a negative effect. \par
+
 \input{results/results/rn500/lstm/tables/flows15_supervised/stats_comparison_ALL}
 
 \input{results/results/rn500/lstm/tables/flows15_supervised/class_comparison_ALL}
 
-Next, we will be looking at results for pretraining with the different proxy tasks and different amounts of data used for supervised finetuning. Tables \ref{table:results:lstm:stats_flows_10}, \ref{table:results:lstm:stats_flows_1} and \ref{table:results:lstm:stats_flows_subset} show results for experiments 2.1.1 - 2.1.6, 2.2.1 - 2.2.6 and 2.3.1 - 2.3.6 on dataset CIC-IDS2017 conducted with 10\%, 1\% and only a very small fraction of data as defined in subset CIC17\_10. Looking at the performance metrics, we can see that there is some variance in the resulting data. The NumPy and PyTorch random seeds are the same for all experiments which means that pretraining, supervised finetuning and validation have been conducted with the exact same subsets of the original dataset which means that differences in results can only come from pretraining with different proxy tasks. This establishes the fact that pretraining in general, and also different methods of pretraining have an effect on final performance. Starting with table \ref{table:results:lstm:stats_flows_10}, we can see that pretraining with some proxy tasks improves performance while others have almost no effect or even a negative effect.
-For accuracy, the highest positive delta 0.101\% in experiments 2.1.1-6 in table \ref{table:results:lstm:stats_flows_10} can be observed for pretraining with the COMPOSITE proxy task \ref{sec:experiments:lstm:composite} closely followed by pretraining with the ID proxy task \ref{sec:experiments:lstm:identity} with a delta of 0.095\%. The highest negative delta in accuracy, -0.010\%, can be observed for the obscure feature proxy task \ref{sec:experiments:lstm:obscure}. It should be noted, that for detection rate, the highest delta is 0.343\% also occurring after COMPOSITE pretraining. This shows that the improvement in accuracy stems from improved attack detection capability achieved through pretraining. \par
-Looking at table \ref{table:results:class_lstm:stats_flows_1} we can inspect for which attack categories improvement is most salient. When comparing training with supervised methods only in experiment 2.1.1 with the on the COMPOSITE proxy task pre-trained model in experiment 2.1.6 we can see major improvements for detection of FTP-Patator brute force attacks. Accuracy jumped from 72\% for supervised only training to 92.308\% for the COMPOSITE trained model and even 96.154\% for the PREDICT proxy task, constituting a positive delta of 24.154\%. For experiment 2.1.4, pre-training with the auto encoder task, the accuracy for detection of the FTP-Patator attack category dropped to 3.846\%. Such high variance in results shows again that the \gls{lstm} model is susceptible to different pre-training strategies. Other attack classes which have seen improvement in detection accuracy are port scans with firewall on and off (\#11-12) with positive deltas of 2.702\% and 0.606\% respectively and infiltration (\#9) and SSH-Patator (\#2) with deltas of 1.269\% and 1.185\%. \par
-Looking at results for experiments 2.2.1-6 \ref{table:results:lstm:stats_flows_1} finetuned with 1\% of the CICIDS-2017 dataset - \textit{ceteris paribus} - the maximum delta in accuracy increased to 0.178\%, which in this iteration is observed after pretraining with the PREDICT proxy task \ref{sec:experiments:lstm:predict_packet}. The positive delta for the COMPOSITE proxy tasks increased to 0.136\% and the delta for the ID proxy task remained almost the same at 0.094\%. PREDICT, ID and COMPOSITE proxy tasks have shown improvements in accuracy and performance overall for experiments 2.1.1-6 and 2.2.1-6, but the pattern breaks down when looking at experiments 2.3.1-6 with finetuning performed with subset CIC17\_10 where improvement is now only present for pretraining with the ID proxy task where the positive deltas in accuracy and detection rate have increased to 0.594\% and 3.602\% respectively. All other pretraining resulted in strongly reduced performance most salient with the OBSCURE proxy task with a negative delta in accuracy of -2.327\%. \par 
-It shall be noted that training with this little data entails a high variability in validation accuracy and loss over the course of training. In our case, validation accuracy was tested only every 6 epochs of training for the overall 600 training epochs to keep training times reasonable. Higher accuracy scores might have occurred during
-epochs in which validation accuracy was not tested before the model started overfitting. The same caveat must be stated for experiments 2.2.1-6 in table \ref{table:results:lstm:stats_flows_1} or 2.5.1-6 in table \ref{table:results:lstm:stats_flows15_1} where validation accuracy was tested only every second epoch during training, but training for these experiments was much more stable in general and 1/2 is a much higher chance of catching the highest result than 1/6. It also shall be noted that for training with the CIC17\_10 and UNSW15\_10 the ratio of samples between categories has changed when compared to the original dataset or the stratified sampled 10\% and 1\% subsets. For CIC17\_10 and UNSW15\_10, the same amount of samples per category are included. This does not impact the comparison between pre-trained and non-pre-trained models but takes from the comparability between results of experiments 2.3.1-6 in table \ref{table:results:lstm:stats_flows_subset} and the results of experiments 2.1.1-6 in table \ref{table:results:lstm:stats_flows_10} and 2.2.1-6 in table \ref{table:results:lstm:stats_flows_1}. \par
-A similar pattern emerges from the results of tests on the UNSW-NB15 dataset. For experiments 2.4.1-6 in table \ref{table:results:lstm:stats_flows15_10} finetuned with 10\% of the dataset minor improvement can again be observed for the pre-trained models. The highest positive delta of 0.086\% occurred after pre-training with de identity function proxy task in experiment 2.4.5 when comparing to the purely supvervised training in experiment 2.4.1. Training with other proxy tasks shows comparably minor improvements to accuracy. \par
-Looking at class specific accuracy in table \ref{table:results:lstm:class_flows15_10} we can see that contrary to the results from experiments 2.1.1-6 on dataset CIC-IDS2017, here the increase in overall accuracy stems from minor improvements on benign flow classification i.e. an increase in specificity rather than an increase in detection rate. In fact, detection rate drops for all pre-trained models in experiments 2.4.1-6 most salient in results from experiment 2.4.6 trained on the COMPOSITE proxy-task where detection rate drops by 1.273\% but specificity increased by 0.084\% when compared to supervised only training in experiment 2.4.1 resulting in an improvement in accuracy of 0.037\% due to 96.64\% of the UNSW-NB15 dataset being benign flows. \par
-The maximum delta between supervised only trained and pre-trained models increases to 0.137\% in experiments 2.5.1-6 in table \ref{table:results:lstm:stats_flows15_1}, this time occurring for proxy task AUTO with all other proxy tasks also showing minor improvements in accuracy. Just looking at experiment 2.5.4, contrary to experiments 2.4.1-6 in table  \ref{table:results:lstm:stats_flows15_10}, specificity and detection rate increased slightly when compared to baseline experiment 2.5.1. While in experiments 2.4.1-6 in table \ref{table:results:lstm:stats_flows15_10}, all pre-trained models show a decrease in detection rate, in experiments 2.5.1-6 in table  \ref{table:results:lstm:stats_flows15_1} all pre-training methods except the COMPOSITE proxy-task result in an improved detection rate. \par
-The pattern of improved accuracy breaks again when looking at finetuning with the specialized subset UNSW15\_10 in table \ref{table:results:lstm:stats_flows15_subset} for experiments 2.6.1-6. Here, almost no improvement is measurable and for the COMPOSITE proxy task accuracy even dropped by 0.168\% when for finetuning with 1\% and 10\% it showed slight improvement. The only increases in accuracy are measurable for the PREDICT and AUTO proxy tasks with very minor accuracy increases of 0.005\% and 0.010\% with all other pre-training methods resulting in lower accuracy scores best represented by experiment 2.6.6 with the COMPOSITE proxy-task where accuracy dropped by 0.168\%. \par
+For accuracy, the highest positive delta 0.101\% in experiments 2.1.1-6 in table \ref{table:results:lstm:stats_flows_10} can be observed for pre-training with the COMPOSITE proxy task \ref{sec:experiments:lstm:composite} closely followed by pre-training with the ID proxy task \ref{sec:experiments:lstm:identity} with a delta of 0.095\%. The highest negative delta in accuracy, -0.010\%, can be observed for the OBSCURE feature proxy task \ref{sec:experiments:lstm:obscure}. It should be noted, that for detection rate, the highest delta is 0.343\% also occurring after COMPOSITE pre-training. This shows that the improvement in accuracy stems from improved attack detection capability achieved through pre-training. \par
 
 \input{results/results/rn500/lstm/tables/flows_10/stats_comparison_ALL}
 
 \input{results/results/rn500/lstm/tables/flows_10/class_comparison_ALL}
 
+Looking at table \ref{table:results:lstm:stats_flows_1} we can inspect for which attack categories improvement is most salient. When comparing training with supervised methods only in experiment 2.1.1 with the on the COMPOSITE proxy task pre-trained model in experiment 2.1.6 we can see major improvements for detection of FTP-Patator brute force attacks. Accuracy jumped from 72\% for supervised only training to 92.308\% for the COMPOSITE trained model and even 96.154\% for the PREDICT proxy task, constituting a positive delta of 24.154\%. For experiment 2.1.4, pre-training with the auto encoder task, the accuracy for detection of the FTP-Patator attack category dropped to 3.846\%. Such high variance in results shows again that the \gls{lstm} model is susceptible to different pre-training strategies. Other attack classes which have seen improvement in detection accuracy are port scans with firewall on and off (\#11-12) with positive deltas of 2.702\% and 0.606\% respectively and infiltration (\#9) and SSH-Patator (\#2) with deltas of 1.269\% and 1.185\%. \par
+
 \input{results/results/rn500/lstm/tables/flows_1/stats_comparison_ALL}
 
 \input{results/results/rn500/lstm/tables/flows_1/class_comparison_ALL}
+
+Looking at results for experiments 2.2.1-6 \ref{table:results:lstm:stats_flows_1} finetuned with 1\% of the CICIDS-2017 dataset - \textit{ceteris paribus} - the maximum delta in accuracy increased to 0.178\%, which in this iteration is observed after pre-training with the PREDICT proxy task \ref{sec:experiments:lstm:predict_packet}. The positive delta for the COMPOSITE proxy tasks increased to 0.136\% and the delta for the ID proxy task remained almost the same at 0.094\%. PREDICT, ID and COMPOSITE proxy tasks have shown improvements in accuracy and performance overall for experiments 2.1.1-6 and 2.2.1-6, but the pattern breaks down when looking at experiments 2.3.1-6 with finetuning performed with subset CIC17\_10 where improvement is now only present for pre-training with the ID proxy task where the positive deltas in accuracy and detection rate have increased to 0.594\% and 3.602\% respectively. All other pre-training resulted in strongly reduced performance most salient with the OBSCURE proxy task with a negative delta in accuracy of -2.327\%. \par 
 
 \input{results/results/rn500/lstm/tables/flows_subset/stats_comparison_ALL}
 
 \input{results/results/rn500/lstm/tables/flows_subset/class_comparison_ALL}
 
+It shall be noted that training with this little data entails a high variability in validation accuracy and loss over the course of training. In our case, validation accuracy was tested only every 6 epochs of training for the overall 600 training epochs to keep training times reasonable. Higher accuracy scores might have occurred during
+epochs in which validation accuracy was not tested before the model started overfitting. The same caveat must be stated for experiments 2.2.1-6 in table \ref{table:results:lstm:stats_flows_1} or 2.5.1-6 in table \ref{table:results:lstm:stats_flows15_1} where validation accuracy was tested only every second epoch during training, but training for these experiments was much more stable in general and 1/2 is a much higher chance of catching the highest result than 1/6. \par 
+
 \input{results/results/rn500/lstm/tables/flows15_10/stats_comparison_ALL}
+
+It also shall be noted that for training with the CIC17\_10 and UNSW15\_10 the ratio of samples between categories has changed when compared to the original dataset or the stratified sampled 10\% and 1\% subsets. For CIC17\_10 and UNSW15\_10, the same amount of samples per category are included. This does not impact the comparison between pre-trained and non-pre-trained models but takes from the comparability between results of experiments 2.3.1-6 in table \ref{table:results:lstm:stats_flows_subset} and the results of experiments 2.1.1-6 in table \ref{table:results:lstm:stats_flows_10} and 2.2.1-6 in table \ref{table:results:lstm:stats_flows_1}. \par
+A similar pattern emerges from the results of tests on the UNSW-NB15 dataset. For experiments 2.4.1-6 in table \ref{table:results:lstm:stats_flows15_10} finetuned with 10\% of the dataset minor improvement can again be observed for the pre-trained models. The highest positive delta of 0.086\% occurred after pre-training with de identity function proxy task in experiment 2.4.5 when comparing to the purely supvervised training in experiment 2.4.1. Training with other proxy tasks shows comparably minor improvements to accuracy. \par
 
 \input{results/results/rn500/lstm/tables/flows15_10/class_comparison_ALL}
 
 \input{results/results/rn500/lstm/tables/flows15_1/stats_comparison_ALL}
 
+Looking at class specific accuracy in table \ref{table:results:lstm:class_flows15_10} we can see that contrary to the results from experiments 2.1.1-6 on dataset CIC-IDS2017, here the increase in overall accuracy stems from minor improvements on benign flow classification i.e. an increase in specificity rather than an increase in detection rate. In fact, detection rate drops for all pre-trained models in experiments 2.4.1-6 most salient in results from experiment 2.4.6 trained on the COMPOSITE proxy-task where detection rate drops by 1.273\% but specificity increased by 0.084\% when compared to supervised only training in experiment 2.4.1 resulting in an improvement in accuracy of 0.037\% due to 96.64\% of the UNSW-NB15 dataset being benign flows. \par
+
 \input{results/results/rn500/lstm/tables/flows15_1/class_comparison_ALL}
+
+The maximum delta between supervised only trained and pre-trained models increases to 0.137\% in experiments 2.5.1-6 in table \ref{table:results:lstm:stats_flows15_1}, this time occurring for proxy task AUTO with all other proxy tasks also showing minor improvements in accuracy. Just looking at experiment 2.5.4, contrary to experiments 2.4.1-6 in table  \ref{table:results:lstm:stats_flows15_10}, specificity and detection rate increased slightly when compared to baseline experiment 2.5.1. While in experiments 2.4.1-6 in table \ref{table:results:lstm:stats_flows15_10}, all pre-trained models show a decrease in detection rate, in experiments 2.5.1-6 in table  \ref{table:results:lstm:stats_flows15_1} all pre-training methods except the COMPOSITE proxy-task result in an improved detection rate. \par
 
 \input{results/results/rn500/lstm/tables/flows15_subset/stats_comparison_ALL}
 
+The pattern of improved accuracy breaks again when looking at finetuning with the specialized subset UNSW15\_10 in table \ref{table:results:lstm:stats_flows15_subset} for experiments 2.6.1-6. Here, almost no improvement is measurable and for the COMPOSITE proxy task accuracy even dropped by 0.168\% when for finetuning with 1\% and 10\% it showed slight improvement. The only increases in accuracy are measurable for the PREDICT and AUTO proxy tasks with very minor accuracy increases of 0.005\% and 0.010\% with all other pre-training methods resulting in lower accuracy scores best represented by experiment 2.6.6 with the COMPOSITE proxy-task where accuracy dropped by 0.168\%. \par
+
 \input{results/results/rn500/lstm/tables/flows15_subset/class_comparison_ALL}
+
+\FloatBarrier
 
 \section{Transformer Model} \label{sec:results:transformer}
 
@@ -56,18 +67,16 @@ The pattern of improved accuracy breaks again when looking at finetuning with th
 
 \input{results/results/rn500/transformer/tables/flows_supervised/class_comparison_ALL}
 
-\input{results/results/rn500/transformer/tables/flows15_supervised/stats_comparison_ALL}
-
-\input{results/results/rn500/transformer/tables/flows15_supervised/class_comparison_ALL}
-
 The transformer model without pre-training produces state of the art results, similar to experiments with the \gls{lstm} model but  performs slightly worse: For 90\% of data for supervised training only 0.138\% and 0.187\% absolute difference for CIC-IDS2017 and UNSW-NB15 datasets respectively \ref{table:results:transformer:stats_flows_supervised}.
-For UNSW-NB15 for 10\% and 1\% finetuning no improvements were achieved, except for a 0.03\% plus in accuracy for 3.5.4 \ref{table:results:transformer:stats_flows15_1} which is most likely just variance.
-For experiments 3.6.1-4 \ref{table:results:transformer:stats_flows15_subset} on dataset UNSW-NB15 with subset UNSW15\_10 both the AUTO proxy task yielded minor improvements of 0.295\% accuracy but with the MASK proxy task the model accuracy fell by 1.213\% as the model defaulted to guessing negative i.e. detection rate: 0\%. The accuracy improvements in experiment 3.6.4 stems from a major increase in detection rate of an absolute 29.424\% when compared to experiment 3.6.1 i.e. performance of the model without pre-training.
-Surprisingly, the MASK proxy task yielded the worst results overall when looking at accuracy as it dropped for 4/6 experiment series even though it is the most similar proxy task used compared to the one used in Google BERT.
+For UNSW-NB15 for 10\% and 1\% finetuning no improvements were achieved, except for a 0.03\% plus in accuracy for 3.5.4 \ref{table:results:transformer:stats_flows15_1} which is most likely just variance. \par
 
 \input{results/results/rn500/transformer/tables/flows_10/stats_comparison_ALL}
 
 \input{results/results/rn500/transformer/tables/flows_10/class_comparison_ALL}
+
+For experiments 3.6.1-4 \ref{table:results:transformer:stats_flows15_subset} on dataset UNSW-NB15 with subset UNSW15\_10 both the AUTO proxy task yielded minor improvements of 0.295\% accuracy but with the MASK proxy task the model accuracy fell by 1.213\% as the model defaulted to guessing negative i.e. detection rate: 0\%. The accuracy improvements in experiment 3.6.4 stems from a major increase in detection rate of an absolute 29.424\% when compared to experiment 3.6.1 i.e. performance of the model without pre-training. \par
+Surprisingly, the MASK proxy task yielded the worst results overall when looking at accuracy as it dropped for 4/6 experiment series even though it is the most similar proxy task used compared to the one used in Google BERT.
+
 
 \input{results/results/rn500/transformer/tables/flows_1/stats_comparison_ALL}
 
@@ -79,6 +88,8 @@ Surprisingly, the MASK proxy task yielded the worst results overall when looking
 
 \input{results/results/rn500/transformer/tables/flows15_10/stats_comparison_ALL}
 
+\clearpage
+
 \input{results/results/rn500/transformer/tables/flows15_10/class_comparison_ALL}
 
 \input{results/results/rn500/transformer/tables/flows15_1/stats_comparison_ALL}
@@ -89,6 +100,7 @@ Surprisingly, the MASK proxy task yielded the worst results overall when looking
 
 \input{results/results/rn500/transformer/tables/flows15_subset/class_comparison_ALL}
 
+\FloatBarrier
 
 \section{Explainability} \label{sec:results:explainability}
 
@@ -103,51 +115,65 @@ In this section we are trying to analyze the mechanisms involved in generating t
 
 To answer these questions, we conducted a series of tests including plotting neuron activation data, a \gls{pd} analysis, and fitting a \gls{dtc} to discern the value thresholds of features which lead to correct classifications. 
 
+\subsection{Neuron Activation Plots}
+
 To answer the question whether pre-training had any effect at all on the behavior of the \gls{lstm} model, we looked at neuron activations of the last stage of the \gls{lstm}, i.e. the hidden state of the last stage of the last layer of the model after having processed the whole data sequence, after pre-training and after fine-tuning. The assumption was, that if the information the model learned during pre-training proofed useful for classification the neurons which were activated after pre-training would still be activated after fine-tuning. The same neuron activations not being present after fine-tuning does however not mean, that pre-training had no positive effect on classification. As we are only looking at the last stage of the last layer of the \gls{lstm}, the learned information might have been used in a previous layer of the \gls{lstm} to influence later layers towards a more accurate classification which would not show in these results. To have some form of quantitative metric, we calculated the \gls{mae} between the activated neurons after pre-training, i.e. neurons unequal to zero, and the same neurons after fine-tuning. 
 
-We started with the \textbf{\gls{pd}} analysis on some of the features
-to discern their effect on the classification of each attack type in the dataset. 
-The resulting \glspl{pdp} were generated with the models from experiments \ref{table:results:lstm:stats_flows_subset},
-\ref{table:results:lstm:stats_flows15_subset}, \ref{table:results:transformer:stats_flows_subset}, \ref{table:results:transformer:stats_flows15_subset} because we assumed that pre-training has the most impact on models trained on very little labeled training data. The features we looked at where \textit{source port number}, \textit{destination port number}, \textit{protocol identifier} and \textit{packet length}.
-For both datasets, we generated plots to inspect how the predictions of the model change after altering the value of the feature (\textit{ceteris paribus}). The value range of each feature was withing the highest and lowest occurring value of said feature in the dataset. After we generated the data for each tuple of ($dataset$ x $model$ x $feature$ x $attack type$) we generated plots to compare the results of the different models yielding a total of 160 plots. Most of them are of little interest as often the inspected feature had no or very little impact on the classification of the attack type. We will take a deeper look into this issue later in the section when we look at the structure of the decision tree used to classify each attack category. 
-
-
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=1.1\linewidth]{results/results/rn500/lstm/plots/pdp/flows_NONE_PREDICT_OBSCURE_AUTO_ID_COMPOSITE/Destination_port_2_SSH-Patator_1.png}
-	\caption{Partial dependency plot between the packet length and classification of SSH Patator attacks in the CIC-IDS2017 dataset.}
-	\label{fig:results:lstm:pdp:cic17_destination_port_ssh_patator}
-\end{figure}
-
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=1.1\linewidth]{results/results/rn500/lstm/plots/pdp/flows_NONE_PREDICT_OBSCURE_AUTO_ID_COMPOSITE/Source_port_2_SSH-Patator_0.png}
-	\caption{Partial dependency plot between the source port and classification of SSH Patator attacks in the CIC-IDS2017 dataset.}
-	\label{fig:results:lstm:pdp:cic17_source_port_ssh_patator}
-\end{figure}
-
-\begin{figure}[!htbp]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=1.1\linewidth]{results/results/rn500//lstm/plots/neuron/flows_ID/latest/11_PortScan_-_Firewall_off.png}
 	\caption{Neuron activation plot comparing neuron activations of the latest stage of the \gls{lstm} model (after the last packet in the sequence has been processed) after pre-training with the ID proxy task and after fine-tuning with flows classified as \textit{PortScan - Firewall off} in the CIC-IDS2017 dataset.}
 	\label{fig:results:lstm:neuron:cic17_id_port_scan_firewall_off}
 \end{figure}
 
-\begin{figure}[!htbp]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=1.1\linewidth]{results/results/rn500//lstm/plots/neuron/flows_ID/latest/9_Infiltration.png}
 	\caption{Neuron activation plot comparing neuron activations of the latest stage of the \gls{lstm} model (after the last packet in the sequence has been processed) after pre-training with the ID proxy task and after fine-tuning with flows classified as \textit{Infiltration} in the CIC-IDS2017 dataset.}
 	\label{fig:results:lstm:neuron:cic17_id_infiltration}
 \end{figure}
 
-Due to the high accuracy rates the models achieved with very little training data i.e. the specialized subsets as specified in section \ref{sec:methodology:subsets}, we suspected that the datasets might simply be easy to classify. To get additional information on how the models might classify the data and discern benign from attack traffic, we fitted a \gls{dtc} on both used datasets and plotted the resulting decision trees. In table \ref{fig:results:dtc:depth_analysis} we evaluated the accuracy of the decision tree classifier with different maximum depths when tasked with binary classification of the datasets. 
-The accuracy scores listed in table \ref{table:results:dtc:cic2017:accuracy} are based on per packet classification so they are not completely comparable to the results from the \gls{dnn} models as their validation metrics are based on the classification of the extracted flows and not packets. 
-We used 90\% of data for fitting the \gls{dtc}, using stratified sampling on flow records of the dataset. 
-We used the same random seed as for experiments on the \gls{dl} models which results into the exact same 90\\10 training split we used for training and evaluating the \gls{dl} models to keep some comparability. The \gls{dtc} achieves peak performance with depth 20 and 16 for datasets CIC-IDS2017 and UNSW-NB15 respectively before it starts to overfit. 
-This indicates that records of CIC-IDS2017 dataset might be slightly harder to classify.
-The high accuracy achieved by the \gls{dtc} on a packet basis without having any concept of flows or sequences might indicate that the datasets indeed might be simply very easy to classify. 
+\FloatBarrier
 
-\begin{table}[!htbp]
+\subsection{Partial Dependency Plots}
+
+We started with the \textbf{\gls{pd}} analysis on some of the features
+to discern their effect on the classification of each attack type in the dataset. 
+The resulting \glspl{pdp} were generated with the models from experiments \ref{table:results:lstm:stats_flows_subset},
+\ref{table:results:lstm:stats_flows15_subset}, \ref{table:results:transformer:stats_flows_subset}, \ref{table:results:transformer:stats_flows15_subset} because we assumed that pre-training has the most impact on models trained on very little labeled training data. The features we looked at where \textit{source port number}, \textit{destination port number}, \textit{protocol identifier} and \textit{packet length}. \par
+For both datasets, we generated plots to inspect how the predictions of the model change after altering the value of the feature (\textit{ceteris paribus}). The value range of each feature was withing the highest and lowest occurring value of said feature in the dataset. The colored graph lines represent the predictions, i.e. the activation level of the output neuron of the model trained with the respective proxy task denoted in the graph legend in the top left corner.
+The histogram together with the right-hand side vertical axis describes the number of flows in the dataset, i.e. in the 90\% used for training, with this feature value. 
+Examples of these plots can be seen in figures \ref{fig:results:lstm:pdp:cic17_packet_length_ssh_patator} and \ref{fig:results:lstm:pdp:cic17_source_port_ssh_patator}. After we generated the data for each tuple of ($dataset$ x $model$ x $feature$ x $attack type$) we generated plots to compare the results of the different models yielding a total of 160 plots. Most of them are of little interest as often the inspected feature had no or very little impact on the classification of the attack type. \par 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.1\linewidth]{results/results/rn500/lstm/plots/pdp/flows_NONE_PREDICT_OBSCURE_AUTO_ID_COMPOSITE/Packet_Length_2_SSH-Patator_3}
+	\caption{Partial dependency plot between the packet length and classification of SSH Patator attacks in the CIC-IDS2017 dataset.}
+	\label{fig:results:lstm:pdp:cic17_packet_length_ssh_patator}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.1\linewidth]{results/results/rn500/lstm/plots/pdp/flows_NONE_PREDICT_OBSCURE_AUTO_ID_COMPOSITE/Source_port_2_SSH-Patator_0.png}
+	\caption{Partial dependency plot between the source port and classification of SSH Patator attacks in the CIC-IDS2017 dataset.}
+	\label{fig:results:lstm:pdp:cic17_source_port_ssh_patator}
+\end{figure}
+
+What is immediately apparent from the the plots is that even though the final metrics of the experiments with different proxy tasks where similar, the general behavior of the models trained with different proxy tasks is effected by pre-training. In the range where the actual feature values relevant for classification of specific attack categories lay the models behave very similar which leads to correct classification. An example of this can be seen in figure \ref{fig:results:lstm:pdp:cic17_source_port_ssh_patator} where, deducing from the plots and from a later inspection of the decision tree thresholds of the fitted \gls{dtc}, the source port is an important feature when it comes to classifying \textit{SSH Patator} attacks. Varying this feature leads to different behavior of the differently trained models, but in the value range the feature actually takes on in the dataset, i.e. the relevant section, the models behave very similar. We will take a deeper look into this issue later in the section when we look at the structure of the decision tree used to classify each attack category. If no such clear pattern in the plot emerges like e.g. in plot \ref{fig:results:lstm:pdp:cic17_packet_length_ssh_patator}, it means that there the value of the feature has little impact on the classification of the attack type. Here the dependency of the classification of the \textit{SSH Patator} attack category on the feature \textit{packet length} is inspected.
+
+\FloatBarrier
+
+\subsection{Decision Tree Classifier}
+
+Due to the high accuracy rates the models achieved with very little training data i.e. the specialized subsets as specified in section \ref{sec:methodology:subsets}, we suspected that the datasets might simply be easy to classify. To get additional information on how the models might classify the data and discern benign from attack traffic, we fitted a \gls{dtc} on both used datasets and plotted the resulting decision trees. In table \ref{fig:results:dtc:depth_analysis} we evaluated the accuracy of the decision tree classifier with different maximum depths when tasked with binary classification of the datasets. 
+
+\input{results/results/rn500/dt/tables/flows_depth20/stats_comparison_ALL.tex}
+
+\input{results/results/rn500/dt/tables/flows15_depth16/stats_comparison_ALL.tex}
+
+The accuracy scores listed in tables \ref{table:results:dt:stats_flows_depth20} and \ref{table:results:dt:stats_flows15_depth16} are based on per packet classification so they are not completely comparable to the results from the \gls{dnn} models as their validation metrics are based on the classification of the extracted flows and not packets. The results where generated with the exact same stratified training and validation splits as were used for training the \gls{dl} models to keep some comparability. The results where generated with a maximum depth of 20 and 16 for datasets CIC-IDS2017 and UNSW-NB15 respectively. With these parameters the \gls{dtc} achieves peak performance before it starts to overfit as depicted in table \ref{table:results:explainability:model_comparison}. This indicates that records of CIC-IDS2017 dataset might be slightly harder to classify. The high accuracy achieved by the \gls{dtc} on a packet basis without having any concept of flows or sequences might indicate that the datasets indeed might be simply very easy to classify. 
+
+\begin{table}[!h]
 	\centering
 	\begin{tabular}{c|cc|cc}
 		& \multicolumn{2}{l}{\thead{\textbf{CIC-IDS-2017}}} & \multicolumn{2}{l}{\thead{\textbf{UNSW-NB15}}} \\ \midrule
@@ -182,11 +208,11 @@ The high accuracy achieved by the \gls{dtc} on a packet basis without having any
 	\label{fig:results:dtc:depth_analysis}
 \end{table}
 
-A more detailed comparison between results yielded from the \gls{dtc} and the \gls{dl} models without pre-training can be found in table \ref{table:results:explainability:model_comparison}, again with the caveat that the \gls{dtc} is evaluated on packets and not flows, hence shifting the ratio of attack to benign records slightly. Here we also looked into how the \gls{dtc} performs with less data, i.e. only 10\% and 1\% of the datasets. The evaluation subset for CIC-IDS2017 consisting of 2493032 packets and is composed of 82.86\% benign packets and 17.14\% attack packets. In flow representation, the dataset consists of
-74.72\% benign and 25.28\% attack records. The evaluation subset for UNSW-NB15 consisting of 6228573 packets and is composed of 98.33\% benign packets and 1.67\% attack packets. In flow representation, the dataset consists of 
+A more detailed comparison between results yielded from the \gls{dtc} and the \gls{dl} models without pre-training can be found in table \ref{table:results:explainability:model_comparison}, again with the caveat that the \gls{dtc} is evaluated on packets and not flows, hence shifting the ratio of attack to benign records slightly. The validation subset for CIC-IDS-2017 consisting of 2493032 packets and is composed of 82.86\% benign packets and 17.14\% attack packets. In flow representation, the dataset consists of
+74.72\% benign and 25.28\% attack records. The validation subset for UNSW-NB15 consisting of 6228573 packets and is composed of 98.33\% benign packets and 1.67\% attack packets. In flow representation, the dataset consists of 
 96.64\% benign and 3.36\% attack records. Only looking at accuracy, the \gls{dtc} performs similarly to the \gls{dl} models, but other metrics e.g. FAR and MAR, are considerably worse especially when comparing results for the cases where the models had access to 90\% of the datasets. 
 
-\begin{table}[]
+\begin{table}[!h]
 	\begin{tabular}{c|ccc|ccc}
 		\thead{\textbf{Trained with}} & \multicolumn{3}{c}{\thead{\textbf{CIC-IDS-2017}}}    & \multicolumn{3}{c}{\thead{\textbf{UNSW-NB15}}}       \\ \midrule
 		\thead{\textbf{90.00}}\%      & \thead{\textbf{LSTM}}      & \thead{\textbf{Transformer}} & \thead{\textbf{DTC*}}      & \thead{\textbf{LSTM}}      & \thead{\textbf{Transformer}} & \thead{\textbf{DTC*}}      \\ \midrule
@@ -218,7 +244,13 @@ A more detailed comparison between results yielded from the \gls{dtc} and the \g
 	\label{table:results:explainability:model_comparison}
 \end{table}
 
-Next we tried to fit a \gls{dtc} on subsets of the datasets containing only benign flows and flows of one attack category to obtain thresholds for the feature values which lead to the correct classification of the different attack types. We used a maximum depth of 5 as a trade-off between accuracy and readability of the resulting decision trees. An overview of all the results can be seen in tables \ref{table:results:dtc:flows} and \ref{table:results:dtc:flows15}. The resulting trees can be inspected to discern which features are important for classifying the different attack types. E.g. in figure \ref{fig:results:dtc:cic2017:ssh_patator} the decision tree for the classification of \textit{SSH-Patator} flows in the CIC-IDS-2017 dataset is depicted. The tree is to be interpreted as following: Each node constitutes a binary split in the data. The first line in each node contains a threshold of a feature value e.g. \textit{Destination port <= 22.5} in the root node. All samples in the branch to the left fulfill the criterion, all samples to the right don't. The label \textit{gini} indicates the quality of the split measured with the \textit{Gini impurity}. The label \textit{samples} states how many samples have been passed on to this node. The label \textit{value} the current guess of the classifier for how the current set is comprised. The first value constitutes a guess of the \gls{dtc} on how many \textit{benign} samples are still in the set and second value of how many \textit{attack} samples remain. The proportion of remaining \textit{benign} and \textit{attack} values is also depicted in the color of the node. The label \textit{class} indicates the best guess of the \gls{dtc} at this point in the tree. As the graphical representation is too small to be printed if all leafs of the tree are present, we will only present the textual tree representation as generated by the \textit{scikit-learn} \gls{ml} python library \cite{sklearn}. A list of all generated trees can be found in the appendix in section \ref{label}.
+Next we tried to fit a \gls{dtc} on subsets of the datasets containing only benign flows and flows of one attack category to obtain thresholds for the feature values which lead to the correct classification of the different attack types. We used a maximum depth of 5 as a trade-off between accuracy and readability of the resulting decision trees. An overview of all the results can be seen in tables \ref{table:results:dtc:flows} and \ref{table:results:dtc:flows15}. 
+
+\input{results/results/rn500/dataset/flows/dt_md5_summary}
+
+\input{results/results/rn500/dataset/flows15/dt_md5_summary}
+
+The resulting trees can be inspected to discern which features are important for classifying the different attack types. E.g. in figure \ref{fig:results:dtc:cic2017:ssh_patator} the decision tree for the classification of \textit{SSH-Patator} flows in the CIC-IDS-2017 dataset is depicted. The tree is to be interpreted as following: Each node constitutes a binary split in the data. The first line in each node contains a threshold of a feature value e.g. \textit{Destination port <= 22.5} in the root node. All samples in the branch to the left fulfill the criterion, all samples to the right don't. The label \textit{gini} indicates the quality of the split measured with the \textit{Gini impurity}. The label \textit{samples} states how many samples have been passed on to this node. The label \textit{value} the current guess of the classifier for how the current set is comprised. The first value constitutes a guess of the \gls{dtc} on how many \textit{benign} samples are still in the set and second value of how many \textit{attack} samples remain. The proportion of remaining \textit{benign} and \textit{attack} values is also depicted in the color of the node. The label \textit{class} indicates the best guess of the \gls{dtc} at this point in the tree. As the graphical representation is too small to be printed if all leafs of the tree are present, we will only present the textual tree representation as generated by the \textit{scikit-learn} \gls{ml} python library \cite{sklearn}. A list of all generated trees can be found in the appendix in section \ref{label}.
 
 \begin{figure}[!htbp]
 	\centering
@@ -226,9 +258,5 @@ Next we tried to fit a \gls{dtc} on subsets of the datasets containing only beni
 	\caption{Decision tree yielded from a \gls{dtc} fitted to the a subset of the CIC-IDS2017 dataset (99.329\% benign samples, 0.671\% attack samples) containing only benign flows and attack flows of category \textit{SSH-Patator}. The \gls{dtc} achieved an accuracy of 99.781\%.}
 	\label{fig:results:dtc:cic2017:ssh_patator}
 \end{figure}
-
-\input{results/results/rn500/dataset/flows/dt_md5_summary}
-
-\input{results/results/rn500/dataset/flows15/dt_md5_summary}
 
 \newpage
