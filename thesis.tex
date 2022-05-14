@@ -31,6 +31,12 @@
 \usepackage{hyperref}  % Enables cross linking in the electronic document version. This package has to be included second to last.
 \usepackage[nopostdot,style=super,nonumberlist,acronym,toc]{glossaries} % Enables the generation of glossaries and lists fo acronyms. This package has to be included last.
 
+\newcolumntype{R}[2]{%
+	>{\adjustbox{angle=#1,lap=\width-(#2)}\bgroup}%
+	l%
+	<{\egroup}%
+}
+\newcommand*\rot{\multicolumn{1}{R{90}{1em}}}% no optional argument here, please!
 
 % ADDED
 %grey boxes for self citation

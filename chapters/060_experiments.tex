@@ -40,7 +40,7 @@ As pretraining method we devised a list of proxy tasks which should challenge th
 		\ref{sec:experiments:lstm:identity} & IDENTITY & Identity Function & Reconstruct exact input \\ \midrule
 		\ref{sec:experiments:lstm:predict_packet} & PREDICT & Predict Packet & Predict the next packet at each stage of the \gls{lstm} \\ \midrule
 		\ref{sec:experiments:lstm:mask_packet}, \ref{sec:experiments:transformer:mask_packet} & MASK & Mask Packets & Reconstruct masked packets in the sequence \\ \midrule
-		\ref{sec:experiments:lstm:mask_feature}, \ref{sec:experiments:transformer:mask_feature} & OBSCURE & Obscure Features & Reconstruct obscured features \\ \midrule
+		\ref{sec:experiments:lstm:obscure}, \ref{sec:experiments:transformer:mask_feature} & OBSCURE & Obscure Features & Reconstruct obscured features \\ \midrule
 		\ref{sec:experiments:lstm:auto_encoder}, \ref{sec:experiments:transformer:auto_encoder} & AUTO & Auto-Encoder & Encode and decode input with minimal loss \\ \midrule\\
 		\ref{sec:experiments:lstm:composite} & COMPOSITE & Composite Task & Combination of prediction and auto-encoding \\ \midrule\\
 	\end{tabular}

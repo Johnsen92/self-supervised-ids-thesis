@@ -1,6 +1,6 @@
 \chapter{Results} \label{sec:results}
 
-In this chapter, we present the results from experiments proposed in the previous chapter. Like with the experiments section, we will be looking at the results from \gls{lstm} and the transformer model independently. An in-depth look into the datasets and the workings of the differently trained models based on \gls{pd} plots, neuron data plots and the outputs of a fitted \gls{dtc} follow in the section \ref{sec:results:explainability}.
+In this chapter, we present the results from experiments proposed in the previous chapter. Like with the experiments section, we will be looking at the results from \gls{lstm} and the transformer model independently. An in-depth look into the datasets and the workings of the differently trained models based on \gls{pd} plots, neuron data plots and the outputs of a fitted \gls{dtc} follow in the section \ref{sec:results:explainability}.wweeeeessssssssssssssssesaq
 
 \section{Long Short-Term Memory Model} \label{sec:results:lstm}
 
@@ -117,7 +117,7 @@ To answer these questions, we conducted a series of tests including plotting neu
 
 \subsection{Neuron Activation Plots}
 
-To answer the question whether pre-training had any effect at all on the behavior of the \gls{lstm} model, we looked at neuron activations of the last stage of the \gls{lstm}, i.e. the hidden state of the last stage of the last layer of the model after having processed the whole data sequence, after pre-training and after fine-tuning. The assumption was, that if the information the model learned during pre-training proofed useful for classification the neurons which were activated after pre-training would still be activated after fine-tuning. The same neuron activations not being present after fine-tuning does however not mean, that pre-training had no positive effect on classification. As we are only looking at the last stage of the last layer of the \gls{lstm}, the learned information might have been used in a previous layer of the \gls{lstm} to influence later layers towards a more accurate classification which would not show in these results. To have some form of quantitative metric, we calculated the \gls{mae} between the activated neurons after pre-training, i.e. neurons unequal to zero, and the same neurons after fine-tuning. 
+To answer the question whether pre-training had any effect at all on the behavior of the \gls{lstm} model, we looked at neuron activations of the last stage of the \gls{lstm}, i.e. the hidden state of the last stage of the last layer of the model after having processed the whole data sequence, after pre-training and after fine-tuning. The assumption was, that if the information the model learned during pre-training proofed useful for classification the neurons which were activated after pre-training would still be activated after fine-tuning. The same neuron activations not being present after fine-tuning does however not mean, that pre-training had no positive effect on classification. As we are only looking at the last stage of the last layer of the \gls{lstm}, the learned information might have been used in a previous layer of the \gls{lstm} to influence later layers towards a more accurate classification which would not show in these results. To have some form of quantitative metric, we calculated the \gls{mae} between the activated neurons after pre-training, i.e. neurons unequal to zero, and the same neurons after fine-tuning. Instances where the neuron was not activated i.e. activation level $< 0.1$ in both cases are omitted from the plots (but not the MAE calculation) to increase readability.
 
 \begin{figure}[h]
 	\centering
@@ -246,17 +246,52 @@ A more detailed comparison between results yielded from the \gls{dtc} and the \g
 
 Next we tried to fit a \gls{dtc} on subsets of the datasets containing only benign flows and flows of one attack category to obtain thresholds for the feature values which lead to the correct classification of the different attack types. We used a maximum depth of 5 as a trade-off between accuracy and readability of the resulting decision trees. An overview of all the results can be seen in tables \ref{table:results:dtc:flows} and \ref{table:results:dtc:flows15}. 
 
-\input{results/results/rn500/dataset/flows/dt_md5_summary}
+\input{results/results/rn500/dataset/dt_flows_md5_summary}
 
-\input{results/results/rn500/dataset/flows15/dt_md5_summary}
+\input{results/results/rn500/dataset/dt_flows15_md5_summary}
 
-The resulting trees can be inspected to discern which features are important for classifying the different attack types. E.g. in figure \ref{fig:results:dtc:cic2017:ssh_patator} the decision tree for the classification of \textit{SSH-Patator} flows in the CIC-IDS-2017 dataset is depicted. The tree is to be interpreted as following: Each node constitutes a binary split in the data. The first line in each node contains a threshold of a feature value e.g. \textit{Destination port <= 22.5} in the root node. All samples in the branch to the left fulfill the criterion, all samples to the right don't. The label \textit{gini} indicates the quality of the split measured with the \textit{Gini impurity}. The label \textit{samples} states how many samples have been passed on to this node. The label \textit{value} the current guess of the classifier for how the current set is comprised. The first value constitutes a guess of the \gls{dtc} on how many \textit{benign} samples are still in the set and second value of how many \textit{attack} samples remain. The proportion of remaining \textit{benign} and \textit{attack} values is also depicted in the color of the node. The label \textit{class} indicates the best guess of the \gls{dtc} at this point in the tree. As the graphical representation is too small to be printed if all leafs of the tree are present, we will only present the textual tree representation as generated by the \textit{scikit-learn} \gls{ml} python library \cite{sklearn}. A list of all generated trees can be found in the appendix in section \ref{label}.
+The resulting trees can be inspected to discern which features are important for classifying the different attack types. E.g. in figure \ref{fig:results:dtc:cic2017:ssh_patator} the decision tree for the classification of \textit{SSH-Patator} flows in the CIC-IDS-2017 dataset is depicted. The tree is to be interpreted as following: Each node constitutes a binary split in the data. The first line in each node contains a threshold of a feature value e.g. \textit{Destination port <= 22.5} in the root node. All samples in the branch to the left fulfill the criterion, all samples to the right don't. The label \textit{gini} indicates the quality of the split measured with the \textit{Gini impurity}. The label \textit{samples} states how many samples have been passed on to this node. The label \textit{value} the current guess of the classifier for how the current set is comprised. The first value constitutes a guess of the \gls{dtc} on how many \textit{benign} samples are still in the set and second value of how many \textit{attack} samples remain. The proportion of remaining \textit{benign} and \textit{attack} values is also depicted in the color of the node. The label \textit{class} indicates the best guess of the \gls{dtc} at this point in the tree. As the graphical representation is too small to be printed if all leafs of the tree are present, we present only the textual tree representation as generated by the \textit{scikit-learn} \gls{ml} python library \cite{sklearn} for those instances. A list of all generated trees can be found in the appendix in section \ref{label}. \par
 
-\begin{figure}[!htbp]
+\begin{figure}[]
 	\centering
-	\includegraphics[width=1.0\linewidth]{results/results/rn500/dataset/flows/dt_5_2_SSH-Patator.png}
+	\includegraphics[width=1.0\linewidth]{results/results/rn500/dataset/flows/plots/dt_5_2_SSH-Patator.png}
 	\caption{Decision tree yielded from a \gls{dtc} fitted to the a subset of the CIC-IDS2017 dataset (99.329\% benign samples, 0.671\% attack samples) containing only benign flows and attack flows of category \textit{SSH-Patator}. The \gls{dtc} achieved an accuracy of 99.781\%.}
 	\label{fig:results:dtc:cic2017:ssh_patator}
 \end{figure}
+
+Tables \ref{table:results:explainability:feature_importance_datasets_90}, \ref{table:results:dtc:fimp_flows} and \ref{table:results:dtc:fimp_flows15} constitute a closer look at the importance of different features for binary classification. The values in the tables constitute the \textit{Gini importance} or \textit{mean decrease impurity} which are defined as the total decrease in node impurity i.e. the Gini impurity in our case \cite{sklearn}. \par
+
+\begin{table}[]
+	\centering
+	\begin{tabular}{r|c|c}
+		& \multicolumn{2}{c}{Gini importance} \\ \midrule
+		& \begin{tabular}[c]{@{}c@{}}CIC-IDS-2017\\  (max depth = 20)\end{tabular} & \begin{tabular}[c]{@{}c@{}}UNSW-NB15 \\ (max depth = 16)\end{tabular} \\ \midrule
+		Source port       & 0.1007                                                                   & 0.0270                                                                \\
+		Destination port  & \textbf{0.3987}                                                                   & 0.1916                                                                \\
+		Protocol          & 0.0081                                                                   & 0.0043                                                                \\
+		Packet Length     & 0.1279                                                                   & \textbf{0.5227}                                                                \\
+		Interarrival time & 0.2409                                                                   & 0.0848                                                                \\
+		Direction         & 0.0373                                                                   & 0.0083                                                                \\
+		SYN Flag          & 0.0084                                                                   & 0.0057                                                                \\
+		FIN Flag          & 0.0174                                                                   & 0.0005                                                                \\
+		RST Flag          & 0.0261                                                                   & 0.0004                                                                \\
+		PSH Flag          & 0.0234                                                                   & 0.1318                                                                \\
+		ACK Flag          & 0.0110                                                                   & 0.0230                                                                \\
+		URG Flag          & 0.0000                                                                   & 0.0000                                                                \\
+		ECE Flag          & 0.0000                                                                   & 0.0000                                                                \\
+		CWR Flag          & 0.0000                                                                   & 0.0000                                                                \\
+		NS Flag           & 0.0000                                                                   & 0.0000                                                               
+	\end{tabular}
+	\label{table:results:explainability:feature_importance_datasets_90}
+	\caption{Normalized Gini importances of features resulting from a \gls{dtc} fitted on 90\% of data from the respective dataset. Highest values are marked bold.}
+\end{table}
+
+In table \ref{table:results:explainability:feature_importance_datasets_90} the importances of the different features from both datasets are compared. The destination port and the packet length where the most valuable features for binary classification for the CIC-IDS-2017 and UNSW-NB15 datasets respectively. The URG, ECE, CWR and NS flags seem to be of no importance to classification, but that is probably due to the fact that they are rarely used. Noteworthy is that for the two datasets different features are of high importance which suggests the conclusion that they are easy to classify due to different reasons. \par
+
+\input{results/results/rn500/dataset/dt_flows_md5_feature_importance}
+
+\input{results/results/rn500/dataset/dt_flows15_md5_feature_importance}
+
+In tables \ref{table:results:dtc:fimp_flows} and \ref{table:results:dtc:fimp_flows15} the normalized feature importance was calculate for trees fitted on subsets containing only benign flows and one selected attack category, processed by a \gls{dtc} or depth 5. The most important feature for classifying the respective attack category is again marked bold. These results are mostly consistent with our results from the \gls{pd} plots, even though in that case evaluation was done on flows and not packets. E.g. the high importance of \textit{Source Port} feature when classifying the \textit{SSH-Patator} attack category is reflected in the \gls{pd} plot  \ref{fig:results:lstm:pdp:cic17_source_port_ssh_patator} above. Features might change in importance when looked at in a flow context instead of only looking at single packets.
 
 \newpage
