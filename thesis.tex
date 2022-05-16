@@ -59,6 +59,9 @@ ntheorem
 
 % stop ADDED
 \input{glossary}
+\makeindex      % Use an optional index.
+\makeglossaries % Use an optional glossary.
+%\glstocfalse   % Remove the glossaries from the table of contents.
 
 % Define convenience functions to use the author name and the thesis title in the PDF document properties.
 \newcommand{\authorname}{Jonas Ferdigg} % The author name without titles.
@@ -79,10 +82,6 @@ ntheorem
 
 \nonzeroparskip             % Create space between paragraphs (optional).
 \setlength{\parindent}{0pt} % Remove paragraph identation (optional).
-
-\makeindex      % Use an optional index.
-\makeglossaries % Use an optional glossary.
-%\glstocfalse   % Remove the glossaries from the table of contents.
 
 % Set persons with 4 arguments:
 %  {title before name}{name}{title after name}{gender}

@@ -1,6 +1,10 @@
 \chapter{Background} \label{sec:background}
 
-\glspl{ann} have shown great improvements over the last years due to increasing compute power, more sophisticated models and smarter training algorithms \todo{cite papers}. \gls{ml} and \glspl{ann} have long found their way into many commercial applications and many scientific fields have successfully applied this relatively new method of data processing to further their own research. \todo{cite papers} It was only logical that researchers and companies have also started to look into the possible benefits this emerging technology could have for Network Security applications \todo{cite papers}. \glspl{ann} are especially suited for \glspl{ids} due to their capability to classify data with high accuracy. To harness the power of \gls{ml} for the purpose of Network Security, we made use of existing methods and models which we will summarize in this section.
+\glspl{ann} have shown great improvements over the last years due to increasing compute power, more sophisticated models and smarter training algorithms \cite{reboot_acgan}, \cite{unsupervised_learning_video_segmentation}. \gls{ml} and \glspl{ann} have long found their way into many commercial applications and many scientific fields have successfully applied this relatively new method of data processing to further their own research \cite{alpha_fold}, \cite{ai_medicine}. It was only logical that researchers and companies have also started to look into the possible benefits this emerging technology could have for Network Security applications \cite{kitsune}, \cite{ml_ids_survey}. \glspl{ann} are especially suited for \glspl{ids} due to their capability to classify data with high accuracy based on seemingly complex patterns. To harness the power of \gls{ml} for the purpose of Network Security, we made use of existing methods and models which we will summarize in this section.
+
+\section{Notation} \label{sec:background:terminology:notation}
+
+As for mathematical notation: Throughout the thesis, sequences are denoted $x^{(n)}$ while an element in a vector or matrix would be denoted in subscript e.g. $x_i$ or $W_{i,j}$ respectively, with matrices always being in capital letters. Superscript letters (except for $T$, which is the \textit{transpose} operator and will never be used as label) without parenthesis are part of the variable name e.g. $W^Q$ is the \textit{query} matrix in the attention function. 
 
 \section{Machine Learning} \label{sec:background:ml}
 
@@ -8,7 +12,13 @@ Machine learning describes the study of computer algorithms which are \textit{tr
 
 \section{Artificial Neural Networks} \label{sec:background:ann}
 
-\glspl{ann} are a type of Machine Learning algorithm used for classification and prediction. Named after their resemblance to neurons in a brain, \glspl{ann} are systems comprised of connected nodes called \textit{artificial neurons}. Analogous to synapses, nodes communicate \textit{via} connections called \textit{edges} by sending "signals" to other nodes. Signals are represented as scalar real numbers. The output signal from a sending node is multiplied by the weight of the edge the signal is "traveling" on. Each node calculates its output signal by applying a non-linear function to the sum of its input signals. Signals travel forward through the network from the first to the last layer, but usually not within layers. The resulting computations can be summarized as a combination of function compositions and matrix multiplications $g(x) := f^L(W^Lf^{L-1}(W^{L-1}...f^1(W^1x)...))$ where $L$ is the number of layers, $W^l, l \in \{1,...,L\}$ the weights connecting nodes of the prior layer to layer $l$ and $f^l$ the activation function of the layer. $W^l$ can also be written as series $(w^l_{jk})$ where $w^l_{jk}$ is the weight between the $k$-th node in layer $l-1$ and the $j$-th node in layer $l$. \par There are various types of \glspl{ann} like \glspl{rnn} or \glspl{cnn} which have many derivations themselves but they all operate on the before stated principal of signals traveling through the network which get transformed at each node by a differentiable non-linear function. The most popular non-linear function at this time is the \gls{relu} function. Without training an \gls{ann} performs an input transformation that depends on the initialization values of its weights, often called \textit{parameters}. The network is trained to perform a desired transformation by adjusting its weights/parameters through virtue of \textit{back-propagation}. The network produces output $\hat{y}$ at the last layer after processing input $x$. A scalar cost/loss value is calculated by a \textit{loss function} $C(\hat{y}, y)$ as a measure of difference between the networks output $\hat{y}$ and the target output $y$. For classification tasks the loss function is usually cross entropy loss \todo{reference cross entropy loss} and for regression \gls{sel} or L1 loss is typically used. Back-propagation \ref{sec:background:backprop} computes the gradient of the loss function which is then used by a gradient method like \gls{sgd} to iteratively update all weights in order to minimize (or maximize) $C(\hat{y}, y)$. \todo{find/create graphic}
+\glspl{ann} are a type of Machine Learning algorithm used for classification and prediction. Named after their resemblance to neurons in a brain, \glspl{ann} are systems comprised of connected nodes called \textit{artificial neurons}. Analogous to synapses, nodes communicate \textit{via} connections called \textit{edges} by sending "signals" to other nodes. Signals are represented as scalar real numbers. The output signal from a sending node is multiplied by the weight of the edge the signal is "traveling" on. Each node calculates its output signal by applying a non-linear function to the sum of its input signals. Signals travel forward through the network from the first to the last layer, but usually not within layers. The resulting computations can be summarized as a combination of function compositions and matrix multiplications $g(x) := f^L(W^Lf^{L-1}(W^{L-1}...f^1(W^1x)...))$ where $L$ is the number of layers, $W^l, l \in \{1,...,L\}$ the weights connecting nodes of the prior layer to layer $l$ and $f^l$ the activation function of the layer. $W^l$ can also be written as series $(w^l_{jk})$ where $w^l_{jk}$ is the weight between the $k$-th node in layer $l-1$ and the $j$-th node in layer $l$. \par There are various types of \glspl{ann} like \glspl{rnn} or \glspl{cnn} which have many derivations themselves but they all operate on the before stated principal of signals traveling through the network which get transformed at each node by a differentiable non-linear function. The most popular non-linear function at this time is the \gls{relu} function. Without training an \gls{ann} performs an input transformation that depends on the initialization values of its weights, often called \textit{parameters}. The network is trained to perform a desired transformation by adjusting its weights/parameters through virtue of \textit{back-propagation}. The network produces output $\hat{y}$ at the last layer after processing input $x$. A scalar cost/loss value is calculated by a \textit{loss function} $C(\hat{y}, y)$ as a measure of difference between the networks output $\hat{y}$ and the target output $y$. For classification tasks the loss function is usually \gls{cel} and for regression \gls{sel} or L1 loss is typically used. Back-propagation \ref{sec:background:backprop} computes the gradient of the loss function which is then used by a gradient method like \gls{sgd} to iteratively update all weights in order to minimize (or maximize) $C(\hat{y}, y)$. As we only aim to distinguish between attack and no-attack flows and therefore have only two classes, we are using binary \gls{cel} which is defined as:
+
+\begin{equation}
+C(\hat{y},y) = L = \{l_1, ..., l_N\}^T, l_n = -[y_n \cdot log(\hat{y}_n) + (1-y_n) \cdot log(1-\hat{y}_n)]
+\end{equation}
+
+With $\hat{y}$ and $y$ being predicted and target data and $N$ the batch size.
 
 \section{Back-Propagation} \label{sec:background:backprop}
 
@@ -18,9 +28,25 @@ chain rule for differentiation is applied multiple times to calculate the partia
 
 \section{Recurrent Neural Networks} \label{sec:background:rnn}
 
-The broader concept behind all \glspl{rnn} is a cyclic connection which enables the \gls{rnn} to update its state based on past states and current input data \cite{rnn_review}. Typically, an \gls{rnn} consists of standard tanh nodes with corresponding weights. There are different kinds of \glspl{rnn} like continuous-time and discrete-time or finite impulse and infinite impulse \glspl{rnn}. Here we will only look at discrete-time, finite impulse \glspl{rnn} as we will only be using those. This type of network, e.g. the Elman network \cite{rnn_elman}, is capable of processing sequences of variable length by compressing the information from the whole sequence into the \textit{hidden layer}. \todo{give a more formal description of RNNs} The model produces one output token for each input token, so the transformation is sequence-to-sequence where input and output sequences are of equal length. One input sequence consists of a sequence of real valued vectors $x^{(t)} = x^{(1)}, x^{(2)}, ... , x^{(T)}$ where $T$ is the sequence length. From this input sequence, an output sequence of real valued vectors $\hat{y}^{(t)} = \hat{y}^{(1)}, \hat{y}^{(2)}, ... , \hat{y}^{(T)}$ is produced. To train an \gls{rnn} 
-pairs of input and target sequences $(x^{(t)}, y^{(t)})$ are provided from which, analogous to the training of \glspl{ann} in general\ref{sec:background:ann}, a differentiable loss function $C(\hat{y}^{(t)}, y^{(t)})$ can be calculated which can again be minimized by applying back-propagation and \gls{sgd}. In theory, \glspl{rnn} can process data sequences of arbitrary length, but the longer the sequence, the deeper the network gets i.e. the longer the gradient paths. This leads to complications when relevant tokens are further apart in the sequence as the \gls{rnn} is not capable of handling such "long-term dependencies" \cite{rnn_review}. Long gradient paths in \glspl{rnn} might also cause the gradient to become either very small or very large, which results in the known \textit{vanishing gradient} or \textit{exploding gradient} problems correspondingly and cause training to either stagnate or diverge. The \gls{lstm} improves upon \glspl{rnn} by making the gradient more stable and allowing long-term dependencies to be considered in the learning process.
-\todo{find/create graphic}
+The broader concept behind all \glspl{rnn} is a cyclic connection which enables the \gls{rnn} to update its state based on past states and current input data \cite{rnn_review}. Typically, an \gls{rnn} consists of standard tanh nodes with corresponding weights. There are different kinds of \glspl{rnn} like continuous-time and discrete-time or finite impulse and infinite impulse \glspl{rnn}. Here we will only look at discrete-time, finite impulse \glspl{rnn} as we will only be using those. This type of network, e.g. the Elman network \cite{rnn_elman}, is capable of processing sequences of variable length by compressing the information from the whole sequence into the \textit{hidden layer} or \textit{hidden state}. The model produces one output token for each input token, so the transformation is sequence-to-sequence where input and output sequences are of equal length. One input sequence consists of a sequence of real valued vectors $x^{(t)} = x^{(1)}, x^{(2)}, ... , x^{(T)}$ where $T$ is the sequence length. From this input sequence, an output sequence of real valued vectors $\hat{y}^{(t)} = \hat{y}^{(1)}, \hat{y}^{(2)}, ... , \hat{y}^{(T)}$ is produced. In the case of the Elman network, two parameter matrices are involved in the calculation of the output:
+
+\begin{equation}
+h^{(t)} = \sigma^h (W^h x^{(t)} + U^h h^{(t-1)} + b^h)
+\end{equation}
+
+\begin{equation}
+\hat{y}^{(t)} = \sigma^{\hat{y}} (W^{\hat{y}} h^{(t)} + b^{\hat{y}})
+\end{equation}
+
+With $W$ and $U$ being the parameter matrices and $b$ being a parameter vector.
+To train an \gls{rnn} pairs of input and target sequences $(x^{(t)}, y^{(t)})$ are provided from which, analogous to the training of \glspl{ann} in general\ref{sec:background:ann}, a differentiable loss function $C(\hat{y}^{(t)}, y^{(t)})$ can be calculated which can again be minimized by applying back-propagation and \gls{sgd}. In theory, \glspl{rnn} can process data sequences of arbitrary length, but the longer the sequence, the deeper the network gets i.e. the longer the gradient paths. This leads to complications when relevant tokens are further apart in the sequence as the \gls{rnn} is not capable of handling such "long-term dependencies" \cite{rnn_review}. Long gradient paths in \glspl{rnn} might also cause the gradient to become either very small or very large, which results in the known \textit{vanishing gradient} or \textit{exploding gradient} problems correspondingly and cause training to either stagnate or diverge. The \gls{lstm} improves upon \glspl{rnn} by making the gradient more stable and allowing long-term dependencies to be considered in the learning process.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{img/recurrent_nn.png}
+	\caption{Depiction of an unrolled \gls{rnn} with $x^{(t)}$ being the input sequence, $\hat{y}^{(t)}$ the output sequence and $h^{(t)}$ the internal state of the \gls{rnn} after each processing stage.}
+	\label{fig:background:rnn}
+\end{figure}
 
 \section{Long Short-Term Memory}
 
@@ -34,7 +60,23 @@ A memory cell is comprised of \textit{input node} $\tilde{C}$, \textit{hidden st
 	\label{fig:background:lstm}
 \end{figure}
 
-In contrast to an ordinary \gls{rnn}, an \gls{lstm} has two memory states: the hidden state $h^{(t)}$ and the \textit{cell state} $C^{(t)}$. Three gates enable the cell to control the flow of information and its effects on the cell state. For this purpose, gates in an \gls{lstm} consist of a point-wise multiplication with a vector that holds values between 0 and 1. The three sigma activations seen in \ref{fig:background:lstm} produce the gate vectors. The input gate $i^{(t)} = \sigma(W^i[h^{(t-1)},x^{(t)}] + b^i)$ controls whether the memory cell is updated. The forget gate $f^{(t)} = \sigma(W^f[h^{(t-1)},x^{(t)}] + b^f)$ controls how much of the old state is to be forgotten. The output gate $o^{(t)} = \sigma(W^o[h^{(t-1)},x^{(t)}] + b^o)$ controls whether the current cell state is made visible. The weight matrices $W^i, W^j$ and $W^o$ decide how information is processed by the cell and are learned parameters. The cell state is updated by addition with the vector $\bar{C}=\tanh(W^C[h^{(t-1)},x^{t}]+b^C)$ after multiplication with the input gate vector $i^{(t)}$. The repeated addition of a $\tanh$ activation distributes gradients and vanishing/exploding gradients are mitigated.
+In contrast to an ordinary \gls{rnn}, an \gls{lstm} has two memory states: the hidden state $h^{(t)}$ and the \textit{cell state} $C^{(t)}$. Three gates enable the cell to control the flow of information and its effects on the cell state. For this purpose, gates in an \gls{lstm} consist of a point-wise multiplication with a vector that holds values between 0 and 1. The three sigma activations seen in \ref{fig:background:lstm} produce the gate vectors. The input gate $i^{(t)}$ controls whether the memory cell is updated. The forget gate $f^{(t)}$ controls how much of the old state is to be forgotten. The output gate $o^{(t)}$ controls whether the current cell state is made visible. The weight matrices $W^i, W^j$ and $W^o$ decide how information is processed by the cell and are learned parameters. The cell state is updated by addition with the vector $\bar{C}$ after multiplication with the input gate vector $i^{(t)}$. The repeated addition of a $\tanh$ activation distributes gradients and vanishing/exploding gradients are mitigated.
+
+\begin{equation}
+i^{(t)} = \sigma(W^i[h^{(t-1)},x^{(t)}] + b^i)
+\end{equation}
+
+\begin{equation}
+f^{(t)} = \sigma(W^f[h^{(t-1)},x^{(t)}] + b^f)
+\end{equation}
+
+\begin{equation}
+o^{(t)} = \sigma(W^o[h^{(t-1)},x^{(t)}] + b^o)
+\end{equation}
+
+\begin{equation}
+\bar{C}=\tanh(W^C[h^{(t-1)},x^{t}]+b^C)
+\end{equation}
 
 \section{Attention and Transformers}
 
@@ -74,7 +116,7 @@ used in the Transformer encoder block \ref{fig:transformer_encoder} together wit
 
 \section{Self-supervised Learning}
 
-Supervised learning is most effective when teaching a \gls{nn} what its supposed to do but it is limited by the amount of labeled data that is available. For many use cases, not enough is available and the cost of creating new labeled data is too high to be feasible. In those cases, self-supervised learning or self-supervised pre-training might be an efficient addition. For supervised learning the target data provides the supervision. For Self-supervised learning the data itself provides the supervision meaning the loss $C(\hat{x},x)$ is calculate between the reconstructed input $\hat{x}$ and the actual input $x$. In general this means that some part of an input tensor or an input series is withheld and the model is tasked with reconstructing the unknown information. So instead of being trained for the task we want it to perform, it is first trained on a \textit{proxy task} which serves no purpose on its own but forces the model to learn a semantic representation of the data which will help solve the actual task. 
+Supervised learning is most effective when teaching a \gls{nn} what its supposed to do but it is limited by the amount of labeled data that is available. For many use cases, not enough is available and the cost of creating new labeled data is too high to be feasible. In those cases, self-supervised learning or self-supervised pre-training might be an efficient addition or alternative. For supervised learning the target data provides the supervision. For Self-supervised learning the data itself provides the supervision meaning the loss $C(\hat{x},x)$ is calculate between the reconstructed input $\hat{x}$ and the actual input $x$. In general this means that some part of an input tensor or an input series is withheld and the model is tasked with reconstructing the unknown information. So instead of being trained for the task we want it to perform, it is first trained on a \textit{proxy task} which serves no purpose on its own but forces the model to learn a semantic representation i.e. abstract features of the data which will help solve the actual task. 
 
 \section{Auto Encoder} \label{sec:backgrund:autoencoder}
 
@@ -88,7 +130,7 @@ the input data in its restricted latent space. To compress data with minimal los
 	\label{fig:auto_encoder}
 \end{figure}
 
-After the self-supervised training of the auto encoder is finished, the decoder stage is removed and subsequently the output of the encoder is used as input tensor for a classification or prediction model. 
+After the self-supervised training of the auto encoder is finished, the decoder stage is removed and subsequently the output of the encoder is used as input tensor for a classification or prediction model or the next layer of auto encoder. 
 
 \section{Pre-Training and Fine-Tuning}
 
@@ -105,7 +147,7 @@ To measure the effectiveness of different \glspl{ids} a commonly used set of per
 	\item \textbf{\gls{fn}}: Number of samples falsely classified as benign
 \end{itemize}
 
-From these basic metrics, a variety of semantically more expressive metrics can be derived which describe different performance aspects of the classification task like overall accuracy or the rate of falsely raised alarms. Commonly used metrics are 
+From these basic metrics, a variety of semantically more expressive metrics can be derived which describe different performance aspects of the classification task like overall accuracy or the rate of falsely raised alarms \cite{confusion_matrix}. Commonly used metrics are 
 
 \begin{itemize}
 	\item \textbf{Accuracy} is defined as the ration of correctly classified samples to total samples. \begin{equation}
@@ -138,10 +180,7 @@ From these basic metrics, a variety of semantically more expressive metrics can 
 	\end{equation}
 \end{itemize}
 
-\section{Terminology} \label{sec:background:terminology}
+% \section{Terminology} \label{sec:background:terminology}
 
+% Add a glossary.
 \printglossaries
-
-In addition: Abbreviations and mathematical notation should be put in a list in the beginning of the thesis 
-
-\newpage
