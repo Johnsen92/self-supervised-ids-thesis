@@ -4,45 +4,45 @@
 
 As a premise for our research we trained the \gls{lstm} and the Transformer network in a solely supervised fashion to get a baseline later results can be compared to. Supervised training was performed for 50, 200 and 600 epochs each for 90\%, 10\% and 1\% respectively of available data on both data-sets and a constant 10\% of data for validation which has not been used for training. A full overview of all experiments to establish a comparison baseline can be seen in \ref{table:experiments:baseline}. We specifically wanted to know how the networks would perform in a scenario where very little labeled training data was available as this would best describe a scenario where large amounts of unlabeled data are available for self-supervised pre-training and only a small amount of labeled data for fine tuning. To pre-train a \gls{nn} the network is given a task that is not necessarily connected to the final purpose of the network, often referred to as a \textit{proxy task}. By solving the proxy task the network attempts to find structure in the data and should learn to form a more abstract representation of the data within its latent space. E.g. with \gls{bert} pre-training is performed by masking a certain percentage of input tokens and having the \gls{nn} reconstruct the missing words and additionally letting the network guess whether one sentences precedes another in a text. We defined our own proxy tasks for pre-training the networks as described in the following sections. Pre-training is performed with 80\% of available data, supervised fine-tuning with 10\%, 1\% and with even smaller subsets as described in the previous section \ref{sec:methodology:subsets}.
 The idea behind these experiments is to reduce the available labeled data to highlight positive effects resulting from pre-training. The assumption is: The less the model can rely on information acquired through supervised training the more it has to rely on information acquired during self-supervised pre-training. Overviews of all conducted experiments can be found in tables \ref{table:experiments:baseline}, \ref{table:experiments:lstm:configurations} and \ref{table:experiments:transformer:configurations}.
-Experiments are numbered so they can be referenced in later sections. \todo{correct numbers of specialized subsets}
+Experiments are numbered so they can be referenced in later sections. Experiments in table \ref{table:experiments:baseline} where the model is not pre-trained are referenced again in table \ref{table:experiments:lstm:configurations}.
 
 \begin{table}[h]
 	\scalebox{0.92}{
 		\begin{tabular}{c c c c c c c}
 			\textbf{\#} & \textbf{Model} & \textbf{Dataset} & \multicolumn{1}{l}{\textbf{Batch size}} & \textbf{Subset} & \textbf{Training \%} & \multicolumn{1}{l}{\textbf{Training Eps.}} \\ \hline \midrule
 			1.1.1 \label{ex_1_1_1}           & LSTM           & CIC-IDS-2017     & 128                                     & - 		& 90                   & 50                                            \\ \midrule
-			1.1.2 \label{ex_1_1_2}           & LSTM           & CIC-IDS-2017     & 128                                     & - 		& 10                   & 50                                            \\ \midrule
-			1.1.3 \label{ex_1_1_3}           & LSTM           & CIC-IDS-2017     & 128                                     & - 		& 1                    & 200                                           \\ \midrule
-			1.1.4 \label{ex_1_1_4}           & LSTM           & CIC-IDS-2017     & 128                                     & CIC17\_10	& -                    & 600                                           \\ \midrule
+			2.1.1 \label{ex_1_1_2}           & LSTM           & CIC-IDS-2017     & 128                                     & - 		& 10                   & 50                                            \\ \midrule
+			2.2.1 \label{ex_1_1_3}           & LSTM           & CIC-IDS-2017     & 128                                     & - 		& 1                    & 200                                           \\ \midrule
+			2.3.1 \label{ex_1_1_4}           & LSTM           & CIC-IDS-2017     & 128                                     & CIC17\_10	& -                    & 600                                           \\ \midrule
 			1.2.1 \label{ex_1_1_5}           & LSTM           & UNSW-NB15        & 128                                     & -			& 90                   & 50                                            \\ \midrule
-			1.2.2 \label{ex_1_1_6}           & LSTM           & UNSW-NB15        & 128                                     & -			& 10                   & 50                                            \\ \midrule
-			1.2.3 \label{ex_1_1_7}           & LSTM           & UNSW-NB15        & 128                                     & -			& 1                    & 200                                           \\ \midrule
-			1.2.4 \label{ex_1_1_8}           & LSTM           & UNSW-NB15        & 128                                     & CIC17\_10	& -                    & 600                                           \\ \midrule
+			2.4.1 \label{ex_1_1_6}           & LSTM           & UNSW-NB15        & 128                                     & -			& 10                   & 50                                            \\ \midrule
+			2.5.1 \label{ex_1_1_7}           & LSTM           & UNSW-NB15        & 128                                     & -			& 1                    & 200                                           \\ \midrule
+			2.6.1 \label{ex_1_1_8}           & LSTM           & UNSW-NB15        & 128                                     & CIC17\_10	& -                    & 600                                           \\ \midrule
 			1.3.1 \label{ex_1_2_1}           & Transformer    & CIC-IDS-2017     & 1024                                     & -			& 90                   & 50                                            \\ \midrule
-			1.3.2 \label{ex_1_2_2}           & Transformer    & CIC-IDS-2017     & 1024                                     & -			& 10                   & 50                                            \\ \midrule
-			1.3.3 \label{ex_1_2_3}           & Transformer    & CIC-IDS-2017     & 1024                                     & -			& 1                    & 200                                           \\ \midrule
-			1.3.4 \label{ex_1_2_4}           & Transformer    & CIC-IDS-2017     & 1024                                     & UNSW15\_10	& -                    & 600                                           \\ \midrule
+			3.1.1 \label{ex_1_2_2}           & Transformer    & CIC-IDS-2017     & 1024                                     & -			& 10                   & 50                                            \\ \midrule
+			3.2.1 \label{ex_1_2_3}           & Transformer    & CIC-IDS-2017     & 1024                                     & -			& 1                    & 200                                           \\ \midrule
+			3.3.1 \label{ex_1_2_4}           & Transformer    & CIC-IDS-2017     & 1024                                     & UNSW15\_10	& -                    & 600                                           \\ \midrule
 			1.4.1 \label{ex_1_2_5}           & Transformer    & UNSW-NB15        & 1024                                     & -			& 90                   & 50                                            \\ \midrule
-			1.4.2 \label{ex_1_2_6}           & Transformer    & UNSW-NB15        & 1024                                     & -			& 10                   & 50                                            \\ \midrule
-			1.4.3 \label{ex_1_2_7}           & Transformer    & UNSW-NB15        & 1024                                     & -			& 1                    & 200                                           \\ \midrule
-			1.4.4 \label{ex_1_2_8}           & Transformer    & UNSW-NB15        & 1024                                     & UNSW15\_10	& -                    & 600                                           \\
+			3.4.1 \label{ex_1_2_6}           & Transformer    & UNSW-NB15        & 1024                                     & -			& 10                   & 50                                            \\ \midrule
+			3.5.1 \label{ex_1_2_7}           & Transformer    & UNSW-NB15        & 1024                                     & -			& 1                    & 200                                           \\ \midrule
+			1.6.1 \label{ex_1_2_8}           & Transformer    & UNSW-NB15        & 1024                                     & UNSW15\_10	& -                    & 600                                           \\
 	\end{tabular}}
 	\caption{List of baseline training runs used for comparison later in the thesis.}
 	\label{table:experiments:baseline}
 \end{table}
 
-As pretraining method we devised a list of proxy tasks which should challenge the model to build an abstract representation of the data within its hidden space or at least learn which features are more important than others and correct weights accordingly. A list of all proxy tasks can be seen in table \ref{label}. Each of them will be explained in detail in the sections below.
+As pretraining method we devised a list of proxy tasks which should challenge the model to build an abstract representation of the data within its hidden space or at least learn which features are more important than others and correct weights accordingly. A list of all proxy tasks can be seen in table \ref{table:experiments:proxy_tasks}. Each of them will be explained in detail in the sections below.
 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{c c c c}
 		\thead{\textbf{Section(s)}} & \thead{\textbf{Label}} & \thead{\textbf{Name}} & \thead{\textbf{Description}} \\ \hline \midrule
-		\ref{sec:experiments:lstm:identity} & IDENTITY & Identity Function & Reconstruct exact input \\ \midrule
-		\ref{sec:experiments:lstm:predict_packet} & PREDICT & Predict Packet & Predict the next packet at each stage of the \gls{lstm} \\ \midrule
-		\ref{sec:experiments:lstm:mask_packet}, \ref{sec:experiments:transformer:mask_packet} & MASK & Mask Packets & Reconstruct masked packets in the sequence \\ \midrule
-		\ref{sec:experiments:lstm:obscure}, \ref{sec:experiments:transformer:mask_feature} & OBSCURE & Obscure Features & Reconstruct obscured features \\ \midrule
-		\ref{sec:experiments:lstm:auto_encoder}, \ref{sec:experiments:transformer:auto_encoder} & AUTO & Auto-Encoder & Encode and decode input with minimal loss \\ \midrule\\
-		\ref{sec:experiments:lstm:composite} & COMPOSITE & Composite Task & Combination of prediction and auto-encoding \\ \midrule\\
+		\ref{sec:experiments:lstm:identity} & IDENTITY & Identity Function & \makecell{Reconstruct exact input \\ feature vector at each stage} \\ \midrule
+		\ref{sec:experiments:lstm:predict_packet} & PREDICT & Predict Packet & \makecell{Predict the next packet at \\ each stage of the \gls{lstm}} \\ \midrule
+		\ref{sec:experiments:lstm:mask_packet}, \ref{sec:experiments:transformer:mask_packet} & MASK & Mask Packets & \makecell{Reconstruct masked packets \\ in the sequence} \\ \midrule
+		\ref{sec:experiments:lstm:obscure}, \ref{sec:experiments:transformer:mask_feature} & OBSCURE & Obscure Features & \makecell{Reconstruct obscured features} \\ \midrule
+		\ref{sec:experiments:lstm:auto_encoder}, \ref{sec:experiments:transformer:auto_encoder} & AUTO & Auto-Encoder & \makecell{Encode and decode input \\ with minimal loss} \\ \midrule\\
+		\ref{sec:experiments:lstm:composite} & COMPOSITE & Composite Task & \makecell{Combination of prediction \\ and auto-encoding} \\ \midrule\\
 	\end{tabular}
 	\caption{Devised proxy tasks for pretraining of \gls{dl} models.}
 	\label{table:experiments:proxy_tasks}
@@ -97,12 +97,12 @@ For pre-training the \gls{lstm} we devised six different proxy tasks for the mod
 	\label{table:experiments:lstm:configurations}
 \end{table}
 
-\begin{itemize}
-	\item different parameterization of LSTM
-	\item two consecutive 3-layered LSTMs
-	\item orthogonal initialization
-	\item CrossEntropy Loss instead of BCE
-\end{itemize}
+%\begin{itemize}
+%	\item different parameterization of LSTM
+%	\item two consecutive 3-layered LSTMs
+%	\item orthogonal initialization
+%	\item CrossEntropy Loss instead of BCE
+%\end{itemize}
 
 \subsection{Identity Function (IDENTITY)} \label{sec:experiments:lstm:identity}
 
