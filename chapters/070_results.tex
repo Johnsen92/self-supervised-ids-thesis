@@ -65,40 +65,27 @@ The pattern of improved accuracy breaks again when looking at finetuning with th
 
 \input{results/results/rn500/transformer/tables/flows_supervised/stats_comparison_ALL}
 
-\input{results/results/rn500/transformer/tables/flows_supervised/class_comparison_ALL}
-
 The transformer model without pre-training produces state of the art results, similar to experiments with the \gls{lstm} model but  performs slightly worse: For 90\% of data for supervised training only 0.138\% and 0.187\% absolute difference for CIC-IDS2017 and UNSW-NB15 datasets respectively \ref{table:results:transformer:stats_flows_supervised}.
 For UNSW-NB15 for 10\% and 1\% finetuning no improvements were achieved, except for a 0.03\% plus in accuracy for 3.5.4 \ref{table:results:transformer:stats_flows15_1} which is most likely just variance. \par
 
-\input{results/results/rn500/transformer/tables/flows_10/stats_comparison_ALL}
-
-\input{results/results/rn500/transformer/tables/flows_10/class_comparison_ALL}
+\input{results/results/rn500/transformer/tables/flows15_supervised/stats_comparison_ALL}
 
 For experiments 3.6.1-4 \ref{table:results:transformer:stats_flows15_subset} on dataset UNSW-NB15 with subset UNSW15\_10 both the AUTO proxy task yielded minor improvements of 0.295\% accuracy but with the MASK proxy task the model accuracy fell by 1.213\% as the model defaulted to guessing negative i.e. detection rate: 0\%. The accuracy improvements in experiment 3.6.4 stems from a major increase in detection rate of an absolute 29.424\% when compared to experiment 3.6.1 i.e. performance of the model without pre-training. \par
-Surprisingly, the MASK proxy task yielded the worst results overall when looking at accuracy as it dropped for 4/6 experiment series even though it is the most similar proxy task used compared to the one used in Google BERT.
+Surprisingly, the MASK proxy task yielded the worst results overall when looking at accuracy as it dropped for 4/6 experiment series even though it is the most similar proxy task used compared to the one used in Google BERT. To avoid cluttering this section with tables we moved the per category results for the transformer model to the appendix.
 
+\input{results/results/rn500/transformer/tables/flows_10/stats_comparison_ALL}
 
 \input{results/results/rn500/transformer/tables/flows_1/stats_comparison_ALL}
 
-\input{results/results/rn500/transformer/tables/flows_1/class_comparison_ALL}
-
 \input{results/results/rn500/transformer/tables/flows_subset/stats_comparison_ALL}
-
-\input{results/results/rn500/transformer/tables/flows_subset/class_comparison_ALL}
-
-\input{results/results/rn500/transformer/tables/flows15_10/stats_comparison_ALL}
 
 \clearpage
 
-\input{results/results/rn500/transformer/tables/flows15_10/class_comparison_ALL}
+\input{results/results/rn500/transformer/tables/flows15_10/stats_comparison_ALL}
 
 \input{results/results/rn500/transformer/tables/flows15_1/stats_comparison_ALL}
 
-\input{results/results/rn500/transformer/tables/flows15_1/class_comparison_ALL}
-
 \input{results/results/rn500/transformer/tables/flows15_subset/stats_comparison_ALL}
-
-\input{results/results/rn500/transformer/tables/flows15_subset/class_comparison_ALL}
 
 \FloatBarrier
 
