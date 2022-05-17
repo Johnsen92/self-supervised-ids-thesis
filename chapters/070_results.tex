@@ -11,7 +11,7 @@ While this is fairly pleasant in general, it means that results will be harder t
 
 \input{results/results/rn500/lstm/tables/flows_supervised/class_comparison_ALL}
 
-Next, we will be looking at results for pre-training with the different proxy tasks and different amounts of data used for supervised finetuning. Tables \ref{table:results:lstm:stats_flows_10}, \ref{table:results:lstm:stats_flows_1} and \ref{table:results:lstm:stats_flows_subset} show results for experiments 2.1.1 - 2.1.6, 2.2.1 - 2.2.6 and 2.3.1 - 2.3.6 on dataset CIC-IDS2017 conducted with 10\%, 1\% and only a very small fraction of data as defined in subset CIC17\_10. Looking at the performance metrics, we can see that there is some variance in the resulting data. The NumPy and PyTorch random seeds are the same for all experiments which means that pre-training, supervised finetuning and validation have been conducted with the exact same subsets of the original dataset which means that differences in results can only come from pre-training with different proxy tasks. This establishes the fact that pre-training in general, and also different methods of pre-training have an effect on final performance. Starting with table \ref{table:results:lstm:stats_flows_10}, we can see that pre-training with some proxy tasks improves performance while others have almost no effect or even a negative effect. \par
+Next, we will be looking at results for pre-training with the different proxy tasks and different amounts of data used for supervised fine-tuning. Tables \ref{table:results:lstm:stats_flows_10}, \ref{table:results:lstm:stats_flows_1} and \ref{table:results:lstm:stats_flows_subset} show results for experiments 2.1.1 - 2.1.6, 2.2.1 - 2.2.6 and 2.3.1 - 2.3.6 on dataset CIC-IDS2017 conducted with 10\%, 1\% and only a very small fraction of data as defined in subset CIC17\_10. Looking at the performance metrics, we can see that there is some variance in the resulting data. The NumPy and PyTorch random seeds are the same for all experiments which means that pre-training, supervised fine-tuning and validation have been conducted with the exact same subsets of the original dataset which means that differences in results can only come from pre-training with different proxy tasks. This establishes the fact that pre-training in general, and also different methods of pre-training have an effect on final performance. Starting with table \ref{table:results:lstm:stats_flows_10}, we can see that pre-training with some proxy tasks improves performance while others have almost no effect or even a negative effect. \par
 
 \input{results/results/rn500/lstm/tables/flows15_supervised/stats_comparison_ALL}
 
@@ -29,7 +29,7 @@ Looking at table \ref{table:results:lstm:stats_flows_1} we can inspect for which
 
 \input{results/results/rn500/lstm/tables/flows_1/class_comparison_ALL}
 
-Looking at results for experiments 2.2.1-6 \ref{table:results:lstm:stats_flows_1} finetuned with 1\% of the CICIDS-2017 dataset - \textit{ceteris paribus} - the maximum delta in accuracy increased to 0.178\%, which in this iteration is observed after pre-training with the PREDICT proxy task \ref{sec:experiments:lstm:predict_packet}. The positive delta for the COMPOSITE proxy tasks increased to 0.136\% and the delta for the ID proxy task remained almost the same at 0.094\%. PREDICT, ID and COMPOSITE proxy tasks have shown improvements in accuracy and performance overall for experiments 2.1.1-6 and 2.2.1-6, but the pattern breaks down when looking at experiments 2.3.1-6 with finetuning performed with subset CIC17\_10 where improvement is now only present for pre-training with the ID proxy task where the positive deltas in accuracy and detection rate have increased to 0.594\% and 3.602\% respectively. All other pre-training resulted in strongly reduced performance most salient with the OBSCURE proxy task with a negative delta in accuracy of -2.327\%. \par 
+Looking at results for experiments 2.2.1-6 \ref{table:results:lstm:stats_flows_1} fine-tuned with 1\% of the CICIDS-2017 dataset - \textit{ceteris paribus} - the maximum delta in accuracy increased to 0.178\%, which in this iteration is observed after pre-training with the PREDICT proxy task \ref{sec:experiments:lstm:predict_packet}. The positive delta for the COMPOSITE proxy tasks increased to 0.136\% and the delta for the ID proxy task remained almost the same at 0.094\%. PREDICT, ID and COMPOSITE proxy tasks have shown improvements in accuracy and performance overall for experiments 2.1.1-6 and 2.2.1-6, but the pattern breaks down when looking at experiments 2.3.1-6 with fine-tuning performed with subset CIC17\_10 where improvement is now only present for pre-training with the ID proxy task where the positive deltas in accuracy and detection rate have increased to 0.594\% and 3.602\% respectively. All other pre-training resulted in strongly reduced performance most salient with the OBSCURE proxy task with a negative delta in accuracy of -2.327\%. \par 
 
 \input{results/results/rn500/lstm/tables/flows_subset/stats_comparison_ALL}
 
@@ -41,7 +41,7 @@ epochs in which validation accuracy was not tested before the model started over
 \input{results/results/rn500/lstm/tables/flows15_10/stats_comparison_ALL}
 
 It also shall be noted that for training with the CIC17\_10 and UNSW15\_10 the ratio of samples between categories has changed when compared to the original dataset or the stratified sampled 10\% and 1\% subsets. For CIC17\_10 and UNSW15\_10, the same amount of samples per category are included. This does not impact the comparison between pre-trained and non-pre-trained models but takes from the comparability between results of experiments 2.3.1-6 in table \ref{table:results:lstm:stats_flows_subset} and the results of experiments 2.1.1-6 in table \ref{table:results:lstm:stats_flows_10} and 2.2.1-6 in table \ref{table:results:lstm:stats_flows_1}. \par
-A similar pattern emerges from the results of tests on the UNSW-NB15 dataset. For experiments 2.4.1-6 in table \ref{table:results:lstm:stats_flows15_10} finetuned with 10\% of the dataset minor improvement can again be observed for the pre-trained models. The highest positive delta of 0.086\% occurred after pre-training with de identity function proxy task in experiment 2.4.5 when comparing to the purely supvervised training in experiment 2.4.1. Training with other proxy tasks shows comparably minor improvements to accuracy. \par
+A similar pattern emerges from the results of tests on the UNSW-NB15 dataset. For experiments 2.4.1-6 in table \ref{table:results:lstm:stats_flows15_10} fine-tuned with 10\% of the dataset minor improvement can again be observed for the pre-trained models. The highest positive delta of 0.086\% occurred after pre-training with de identity function proxy task in experiment 2.4.5 when comparing to the purely supvervised training in experiment 2.4.1. Training with other proxy tasks shows comparably minor improvements to accuracy. \par
 
 \input{results/results/rn500/lstm/tables/flows15_10/class_comparison_ALL}
 
@@ -55,7 +55,7 @@ The maximum delta between supervised only trained and pre-trained models increas
 
 \input{results/results/rn500/lstm/tables/flows15_subset/stats_comparison_ALL}
 
-The pattern of improved accuracy breaks again when looking at finetuning with the specialized subset UNSW15\_10 in table \ref{table:results:lstm:stats_flows15_subset} for experiments 2.6.1-6. Here, almost no improvement is measurable and for the COMPOSITE proxy task accuracy even dropped by 0.168\% when for finetuning with 1\% and 10\% it showed slight improvement. The only increases in accuracy are measurable for the PREDICT and AUTO proxy tasks with very minor accuracy increases of 0.005\% and 0.010\% with all other pre-training methods resulting in lower accuracy scores best represented by experiment 2.6.6 with the COMPOSITE proxy-task where accuracy dropped by 0.168\%. \par
+The pattern of improved accuracy breaks again when looking at fine-tuning with the specialized subset UNSW15\_10 in table \ref{table:results:lstm:stats_flows15_subset} for experiments 2.6.1-6. Here, almost no improvement is measurable and for the COMPOSITE proxy task accuracy even dropped by 0.168\% when for fine-tuning with 1\% and 10\% it showed slight improvement. The only increases in accuracy are measurable for the PREDICT and AUTO proxy tasks with very minor accuracy increases of 0.005\% and 0.010\% with all other pre-training methods resulting in lower accuracy scores best represented by experiment 2.6.6 with the COMPOSITE proxy-task where accuracy dropped by 0.168\%. \par
 
 \input{results/results/rn500/lstm/tables/flows15_subset/class_comparison_ALL}
 
@@ -66,7 +66,7 @@ The pattern of improved accuracy breaks again when looking at finetuning with th
 \input{results/results/rn500/transformer/tables/flows_supervised/stats_comparison_ALL}
 
 The transformer model without pre-training produces state of the art results, similar to experiments with the \gls{lstm} model but  performs slightly worse: For 90\% of data for supervised training only 0.138\% and 0.187\% absolute difference for CIC-IDS2017 and UNSW-NB15 datasets respectively \ref{table:results:transformer:stats_flows_supervised}.
-For UNSW-NB15 for 10\% and 1\% finetuning no improvements were achieved, except for a 0.03\% plus in accuracy for 3.5.4 \ref{table:results:transformer:stats_flows15_1} which is most likely just variance. \par
+For UNSW-NB15 for 10\% and 1\% fine-tuning no improvements were achieved, except for a 0.03\% plus in accuracy for 3.5.4 \ref{table:results:transformer:stats_flows15_1} which is most likely just variance. \par
 
 \input{results/results/rn500/transformer/tables/flows15_supervised/stats_comparison_ALL}
 
@@ -89,6 +89,13 @@ Surprisingly, the MASK proxy task yielded the worst results overall when looking
 
 \FloatBarrier
 
+%\begin{itemize}
+%	\item different parameterization of LSTM
+%	\item two consecutive 3-layered LSTMs
+%	\item orthogonal initialization
+%	\item CrossEntropy Loss instead of BCE
+%\end{itemize}
+
 \section{Explainability} \label{sec:results:explainability}
 
 In this section we are trying to analyze the mechanisms involved in generating the results in the previous section and analyze the datasets used. As with machine learning in general, complete explainability is hard to achieve, hence the following attempts are our best efforts to make sense of the results. We try to answer the questions
@@ -102,7 +109,7 @@ In this section we are trying to analyze the mechanisms involved in generating t
 
 To answer these questions, we conducted a series of tests including plotting neuron activation data, a \gls{pd} analysis, and fitting a \gls{dtc} to discern the value thresholds of features which lead to correct classifications. 
 
-\subsection{Neuron Activation Plots}
+\subsection{Neuron Activation Plots} \label{sec:results:explainability:nap}
 
 To answer the question whether pre-training had any effect at all on the behavior of the \gls{lstm} model, we looked at neuron activations of the last stage of the \gls{lstm}, i.e. the hidden state of the last stage of the last layer of the model after having processed the whole data sequence, after pre-training and after fine-tuning. The assumption was, that if the information the model learned during pre-training proofed useful for classification the neurons which were activated after pre-training would still be activated after fine-tuning. The same neuron activations not being present after fine-tuning does however not mean, that pre-training had no positive effect on classification. As we are only looking at the last stage of the last layer of the \gls{lstm}, the learned information might have been used in a previous layer of the \gls{lstm} to influence later layers towards a more accurate classification which would not show in these results. To have some form of quantitative metric, we calculated the \gls{mae} between the activated neurons after pre-training, i.e. neurons unequal to zero, and the same neurons after fine-tuning. Instances where the neuron was not activated i.e. activation level $< 0.1$ in both cases are omitted from the plots (but not the MAE calculation) to increase readability.
 
@@ -122,7 +129,7 @@ To answer the question whether pre-training had any effect at all on the behavio
 
 \FloatBarrier
 
-\subsection{Partial Dependency Plots}
+\subsection{Partial Dependency Plots} \label{sec:results:explainability:pdp}
 
 We started with the \textbf{\gls{pd}} analysis on some of the features
 to discern their effect on the classification of each attack type in the dataset. 
@@ -150,7 +157,7 @@ What is immediately apparent from the the plots is that even though the final me
 
 \FloatBarrier
 
-\subsection{Decision Tree Classifier}
+\subsection{Decision Tree Classifier} \label{sec:results:explainability:dtc}
 
 Due to the high accuracy rates the models achieved with very little training data i.e. the specialized subsets as specified in section \ref{sec:methodology:subsets}, we suspected that the datasets might simply be easy to classify. To get additional information on how the models might classify the data and discern benign from attack traffic, we fitted a \gls{dtc} on both used datasets and plotted the resulting decision trees. In table \ref{fig:results:dtc:depth_analysis} we evaluated the accuracy of the decision tree classifier with different maximum depths when tasked with binary classification of the datasets. 
 

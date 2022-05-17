@@ -31,7 +31,7 @@ Experiments are numbered so they can be referenced in later sections. Experiment
 	\label{table:experiments:baseline}
 \end{table}
 
-As pretraining method we devised a list of proxy tasks which should challenge the model to build an abstract representation of the data within its hidden space or at least learn which features are more important than others and correct weights accordingly. A list of all proxy tasks can be seen in table \ref{table:experiments:proxy_tasks}. Each of them will be explained in detail in the sections below.
+As pre-training method we devised a list of proxy tasks which should challenge the model to build an abstract representation of the data within its hidden space or at least learn which features are more important than others and correct weights accordingly. A list of all proxy tasks can be seen in table \ref{table:experiments:proxy_tasks}. Each of them will be explained in detail in the sections below.
 
 \begin{table}[H]
 	\centering
@@ -44,7 +44,7 @@ As pretraining method we devised a list of proxy tasks which should challenge th
 		\ref{sec:experiments:lstm:auto_encoder}, \ref{sec:experiments:transformer:auto_encoder} & AUTO & Auto-Encoder & \makecell{Encode and decode input \\ with minimal loss} \\ \midrule\\
 		\ref{sec:experiments:lstm:composite} & COMPOSITE & Composite Task & \makecell{Combination of prediction \\ and auto-encoding} \\ \midrule\\
 	\end{tabular}
-	\caption{Devised proxy tasks for pretraining of \gls{dl} models.}
+	\caption{Devised proxy tasks for pre-training of \gls{dl} models.}
 	\label{table:experiments:proxy_tasks}
 \end{table}
 
@@ -93,16 +93,9 @@ For pre-training the \gls{lstm} we devised six different proxy tasks for the mod
 		2.6.5 \label{ex_2_6_5} & UNSW-NB15    & UNSW15\_10 & -           & 600           & IDENTITY   & 80        & 10          \\
 		2.6.6 \label{ex_2_6_6} & UNSW-NB15    & UNSW15\_10 & -           & 600           & COMPOSITE  & 80        & 10         
 	\end{tabular}}
-	\caption{Training and pretraining configurations for \gls{lstm} model with different proxy tasks.}
+	\caption{Training and pre-training configurations for \gls{lstm} model with different proxy tasks.}
 	\label{table:experiments:lstm:configurations}
 \end{table}
-
-%\begin{itemize}
-%	\item different parameterization of LSTM
-%	\item two consecutive 3-layered LSTMs
-%	\item orthogonal initialization
-%	\item CrossEntropy Loss instead of BCE
-%\end{itemize}
 
 \subsection{Identity Function (IDENTITY)} \label{sec:experiments:lstm:identity}
 
@@ -130,8 +123,6 @@ The encoder \gls{lstm} compresses the whole input sequence $x_e^{(t)} = x_e^{(1)
 \subsection{Composite model (COMPOSITE)} \label{sec:experiments:lstm:composite}
 
 For the composite model we recreated the network proposed by Nitish Srivastava et al. in their paper "Unsupervised Learning of Video Representations using LSTMs" \cite{unsupervised_learning_lstms} as summarized in section \ref{sec:stateofart:unsupervised_video_lstm}. As a self-supervised pre-training proxy task, the model is fed half the packet sequence of a flow and is tasked with both reconstructing the part of the sequence it had access to, and predicting the missing part of the flow which it had no access to. The output of the model is a sequence $\hat{y}^{(t)}$ of length equal to the original input sequence $x^{(t)}$ of which the first half is reconstructed and the second half is predicted by the model. The loss is again calculated as the \gls{mae} (\textit{L1Loss} with \textit{mean} reduction) between the original input and the output sequence of the model. The model consists of three \glspl{lstm} which can be labeled \textit{encoder}, \textit{decoder} and \textit{predictor} as can be seen in figure \ref{fig:experiments:unsupervised_lstm_composite}. The encoder processes the first half of the original input sequence, constructing an abstract representation in its hidden state. The hidden state of the last stage of the encoder \gls{lstm} is copied to both the decoder and predictor \glspl{lstm} as initial hidden state. Exactly like the Auto-Encoder from the previous section \ref{sec:experiments:lstm_composite} the decoder \gls{lstm} tries to recreate the input sequence. Initialized with the final hidden state of the encoder, the predictor \gls{lstm} tries foretell future packets of the flow. At every stage of the predictor \gls{lstm} (except the first), either the output $\hat{y^{(t-1)}}$ of the previous stage or the target token $x^{(t-1)}$ of the previous stage is used as input token for the next stage. The authors of \cite{unsupervised_learning_lstms} label those two methods \textit{conditioned} and \textit{uncondition} as is further explained in section \ref{sec:stateofart:unsupervised_video_lstm}.
-
-\todo{fix graphic. The output should be merged from output tokens of individual stages and not the last stage}
 
 \begin{figure}[h]
 	\centering
@@ -175,7 +166,7 @@ Like with the \gls{lstm} we devised a series of proxy tasks for pre-training the
 		3.6.3 & UNSW-NB15    & UNSW15\_10 & -           & 600           & OBSCURE      & 80        & 10          \\
 		3.6.4 & UNSW-NB15    & UNSW15\_10 & -           & 600           & MASK      & 80        & 10         
 	\end{tabular}}
-	\caption{Training and pretraining configurations for TransformerEncoder model with different proxy tasks.}
+	\caption{Training and pre-training configurations for TransformerEncoder model with different proxy tasks.}
 	\label{table:experiments:transformer:configurations}
 \end{table}
 

@@ -99,7 +99,7 @@ In the following section we are looking at some of the related papers on the top
 %	\begin{table}[h]
 	\scalebox{0.77}{
 		\begin{tabular}{c c c c c c}
-			\textbf{Paper} & \textbf{Model} & \textbf{Pretraining Task(s)} & \textbf{Downstream Task(s)} & \textbf{Val. Dataset(s)} & \textbf{Val. Value} \\ \hline
+			\textbf{Paper} & \textbf{Model} & \textbf{Pre-training Task(s)} & \textbf{Downstream Task(s)} & \textbf{Val. Dataset(s)} & \textbf{Val. Value} \\ \hline
 			\midrule
 			\cite{bert} \ref{sec:stateofart:bert} & Transformer Encoder & next sentence prediction, word masking & various NLP tasks & GLUE score & 80.5\% acc. \\
 			\midrule
@@ -133,8 +133,8 @@ The authors then proposed a composite model as can be seen in figure \ref{fig:st
 	\label{fig:stateofart:unsupervised_lstm_composite}
 \end{figure}
 
-The pre-trained models are then finetuned for their classification task on the mentioned training datasets.
-With the pre-trained + finetuned composite model, the authors achieved an absolute increase of 1.3\% accuracy for both the UCF-101 and the HMDB-51 datasets over a conventional \gls{lstm} classifier as can be seen in table \ref{table:stateofart:unsupervised_learning_results}.
+The pre-trained models are then fine-tuned for their classification task on the mentioned training datasets.
+With the pre-trained + fine-tuned composite model, the authors achieved an absolute increase of 1.3\% accuracy for both the UCF-101 and the HMDB-51 datasets over a conventional \gls{lstm} classifier as can be seen in table \ref{table:stateofart:unsupervised_learning_results}.
 
 \begin{table}[]
 	\begin{tabular}{l c c c}
@@ -147,7 +147,7 @@ RGB} \\ \hline
 		LSTM classifier & 74.5 & 74.3 & 42.8 \\
 		\midrule
 		Composite LSTM
-Model + Finetuning & 75.8 & 74.9 & 44.1 \\
+Model + fine-tuning & 75.8 & 74.9 & 44.1 \\
 	\end{tabular}
 	\caption{Summary of results on Action Recognition \cite{unsupervised_learning_lstms}}
 	\label{table:stateofart:unsupervised_learning_results}
@@ -157,7 +157,7 @@ For our thesis we used the same Auto-Encoder and composite model for pre-trainin
 
 \subsection{Unsupervised Pre-training of a Deep LSTM-based Stacked Autoencoder for Multivariate Time Series Forecasting Problems} \label{sec:stateofart:unsupervised_learning_lstms_timeseries}
 
-In their 2019 paper \cite{unsupervised_learning_lstms_timeseries} Alaa Sagheer et al. explore the benefits of unsupervised pre-training using stacked \gls{lstm} auto encoders with subsequent supervised finetuning. Their goal was to improve the prediction capabilities for \gls{mts} problems. In their previous paper \cite{dlstm_time_series_forecasting}, the authors showed the effectiveness of \gls{dlstm} based models for \gls{mts} prediction tasks. In their 2019 paper, they showed the improvements resulting from pre-training when compared to an initial random initialization of weights when working with \gls{dlstm} models. Compared to shallow \gls{lstm} networks, \gls{dlstm} networks contain multiple layers of \gls{lstm} cells stacked on each other. Information travels the network from left to right and from bottom to top as is depicted in figure \ref{fig:stateofart:unsupervised_learning_with_lstms_dlstm}. 
+In their 2019 paper \cite{unsupervised_learning_lstms_timeseries} Alaa Sagheer et al. explore the benefits of unsupervised pre-training using stacked \gls{lstm} auto encoders with subsequent supervised fine-tuning. Their goal was to improve the prediction capabilities for \gls{mts} problems. In their previous paper \cite{dlstm_time_series_forecasting}, the authors showed the effectiveness of \gls{dlstm} based models for \gls{mts} prediction tasks. In their 2019 paper, they showed the improvements resulting from pre-training when compared to an initial random initialization of weights when working with \gls{dlstm} models. Compared to shallow \gls{lstm} networks, \gls{dlstm} networks contain multiple layers of \gls{lstm} cells stacked on each other. Information travels the network from left to right and from bottom to top as is depicted in figure \ref{fig:stateofart:unsupervised_learning_with_lstms_dlstm}. 
 
 \begin{figure}[h]
 	\centering
@@ -175,7 +175,7 @@ For pre-training the network, the authors use a \gls{lstmsae} model. In contrast
 	\label{fig:stateofart:unsupervised_learning_dlstm_mts_lstmsae}
 \end{figure}
 
-To complete the training phase, the parameters of the pre-trained \gls{dlstm} are then finetuned in a supervised fashion. This is done by adding an output layer which produces values of the dimension of labels of the training set used and of the variables to be predicted. In the case of the authors, the output layer was a single neuron to predict a single variable. For supervised finetuning and validation they used two datasets:
+To complete the training phase, the parameters of the pre-trained \gls{dlstm} are then fine-tuned in a supervised fashion. This is done by adding an output layer which produces values of the dimension of labels of the training set used and of the variables to be predicted. In the case of the authors, the output layer was a single neuron to predict a single variable. For supervised fine-tuning and validation they used two datasets:
 
 \begin{enumerate}
 	\item \textit{The capital bike sharing dataset}
