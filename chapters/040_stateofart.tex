@@ -1,6 +1,6 @@
 \chapter{State of the art} \label{sec:stateofart}
 
-As the topic of this thesis is rather specific, comparable research is hard to find. Overall, the thesis works on the two subjects of unsupervised pre-training for \glspl{nn} and for \gls{ml} supported \gls{nids}. Here we are looking at state-of-the-art research of both aspects individually.
+As the topic of this thesis is rather specific, comparable research is hard to find. Overall, the thesis works on the two subjects of self-supervised pre-training for \glspl{nn} and for \gls{dl} supported \gls{nids}. Here we are looking at state-of-the-art research of both aspects individually. Special focus lays on achievements in machine learning based \gls{nlp} due to the similar structure in input data and semantic.
 
 \section{Machine Learning for Network Intrusion Detection}
 
@@ -23,7 +23,7 @@ Machine learning techniques have shown to be competitive to signature based expe
 
 Congruent with our assumptions, Hongyu Liu and Bo Lang deem a flow based detection to be a suitable way to structuring the raw network data, as it represents the whole network environment and retains a lot of contextual information but with the obvious drawback that package payload is being ignored. This leads to poor detection rates for \gls{u2r} and \gls{r2l} attacks like SQL injection or XSS attacks which our results confirm as can be seen in section \ref{sec:results}. \par
 
-Although the design space for \gls{ml} based is much greater, we are focusing on \gls{dl} based approaches which have shown to be superior to shallow networks in general. A good initial overview of state-of-the-art \gls{dl} techniques applied to \gls{nid} can be found in the 2020 paper "Fog-Based Attack Detection Framework for Internet of Things Using Deep Learning" \cite{fog_based_detection_survey_2020} by Ahmed Samy et al. Although their it has its focus on \glspl{ids} for resource and energy constrained \gls{iot} networks, the authors provides a comprehensive overview of the performance of different up-to-date \gls{dl} models applied to various \gls{nids} data sets. The goal of their research is to implement powerful \gls{dl} based \glspl{ids} in a resource constrained \gls{iot} network by outsourcing the processing to fog nodes which are capable of storing large amounts of data with low latency and are placed at the edge of the \gls{iot} network. In the context of their research, they implemented six state of the art \gls{dl} models:
+Although the design space for \gls{ml} based is much greater, we are focusing on \gls{dl} based approaches which have shown to be superior to shallow networks in general. A good initial overview of state-of-the-art \gls{dl} techniques applied to \gls{nid} can be found in the 2020 paper "Fog-Based Attack Detection Framework for Internet of Things Using Deep Learning" \cite{fog_based_detection_survey_2020} by Ahmed Samy et al. Although the paper focuses on \glspl{ids} for resource and energy constrained \gls{iot} networks, the authors provides a comprehensive overview of the performance of different up-to-date \gls{dl} models applied to various \gls{nids} data sets. The goal of their research is to implement powerful \gls{dl} based \glspl{ids} in a resource constrained \gls{iot} network by outsourcing the processing to fog nodes which are capable of storing large amounts of data with low latency and are placed at the edge of the \gls{iot} network. In the context of their research, they implemented six state of the art \gls{dl} models:
 
 \glsreset{dnn}
 \glsreset{lstm}
@@ -51,10 +51,7 @@ For multi-class classification the output layer is expanded to match the number 
 	\item NSL-KDD \cite{nsl_kdd}
 \end{itemize}
 
-They used a feature representation of the data comprised of 80 network traffic features extracted with CICFLOWMETER. The best results in training where achieved with a learning rate of 0.01, a batch size of 64 using the Adam optimization algorithm.
-They used accuracy, precision, recall, F1-measure, \gls{far}, \gls{dr} as metrics corresponding with the definitions in section \ref{sec:backgrund:metrics} to assess the performance of the different models. This research was especially relevant for as, because the authors 
-used similar models and the same datasets, so a direct comparison with our results can be made.
-An overview of the relevant results for binary classifications can be found in table \ref{fig:stateofart:fog_based_detection_survey_2020_results_binary} and for multi-class classification in table \ref{fig:stateofart:fog_based_detection_survey_2020_results_class}.
+They used a feature representation of the data comprised of 80 network traffic features extracted with CICFLOWMETER. The best results in training where achieved with a learning rate of 0.01, a batch size of 64 using the Adam optimization algorithm. They used accuracy, precision, recall, F1-measure, \gls{far}, \gls{dr} as metrics corresponding with the definitions in section \ref{sec:backgrund:metrics} to assess the performance of the different models. This research was especially relevant for us, because the authors used similar models and the same datasets, so a direct comparison with our results can be made. An overview of the relevant results for binary classifications can be found in table \ref{fig:stateofart:fog_based_detection_survey_2020_results_binary} and for multi-class classification in table \ref{fig:stateofart:fog_based_detection_survey_2020_results_class}.
 
 \begin{figure}[h]
 	\centering
@@ -70,11 +67,9 @@ An overview of the relevant results for binary classifications can be found in t
 	\label{fig:stateofart:fog_based_detection_survey_2020_results_class}
 \end{figure}
 
-As shown by the results and also stated in the paper: \gls{lstm} networks outperform other deep learning models consistently in attack detection and accuracy overall. This gives us confidence that our decision of working with \gls{lstm} networks was the right call as it adds to the real world relevance of our work. We also use a TransformerEncoder model for classification which was not included in the comparison done by Ahmed Samy et al. Furthermore, the models in their paper were trained fully supervised with at least 70\% of the data available in each data set which differs from our approach of using very little labeled data and relying on self-supervised pre-training.
+As shown by the results and also stated in the paper: \gls{lstm} networks outperform other deep learning models consistently in attack detection and accuracy overall. This gives us confidence that our decision of working with \gls{lstm} networks was the right call as it adds to the real world relevance of our work. Additionally, we use a transformer encoder model for classification which was not included in the comparison done by Ahmed Samy et al. Furthermore, the models in their paper were trained exclusively in a supervised manner with at least 70\% of the data available in each dataset which differs from our approach of using very little labeled data and relying on self-supervised pre-training. \par
 
-Compared to other machine learning models there is much less research published on transformer or attention based networks for \gls{ids}. In one of the few papers published on the topic by Mangxuan Tan et al. the authors constructed their own attention based model, similar to the classic transformer model \cite{attention_model_ids} which they coined "Attention for Network Intrusion
-Detection (ANID)". The model includes a \gls{ff}, an \gls{sda} and an \gls{sdsa} component which are the same as in the traditional transformer model by Vaswani et al. but combined differently. Like us, the authors used the CIC-IDS2017 dataset for their experiments but use a fundamentally different approach to data pre-processing and feature selection. For pre-processing, the authors constructed a sequenced of feature vectors by dividing the raw pcap traces into time slots of 0.5 seconds and labeling them as 1 (attack class) if an attack occurred in that time frame and 0 (benign class) otherwise. In the resulting pre-processed dataset, each record contains a sequence of 10 sequential time slots. As feature representation they use a selection of statistical features aggregated over each time slot resulting in 19 features \cite{attention_model_ids}.
-Furthermore, they removed 95\% of attack slots of each attack type to simulate a real world scenario where attacks are much rarer than they are in the dataset. They compared the performance of their model to a conventional \gls{bilstm} model and a \gls{clf}. Their results can be seen in table \ref{label}.
+Compared to other machine learning models there is much less research published on transformer or attention based networks for \gls{ids}. In one of the few papers published on the topic by Mangxuan Tan et al. the authors constructed their own attention based model, similar to the classic transformer model \cite{attention_model_ids} which they coined "Attention for Network Intrusion Detection (ANID)". The model includes a \gls{ff}, an \gls{sda} and an \gls{sdsa} component which are the same as in the traditional transformer model by Vaswani et al. but combined differently. Like us, the authors used the CIC-IDS2017 dataset for their experiments but use a fundamentally different approach to data pre-processing and feature selection. For pre-processing, the authors constructed a sequenced of feature vectors by dividing the raw pcap traces into time slots of 0.5 seconds and labeling them as 1 (attack class) if an attack occurred in that time frame and 0 (benign class) otherwise. In the resulting pre-processed dataset, each record contains a sequence of 10 sequential time slots. As feature representation they use a selection of statistical features aggregated over each time slot resulting in 19 features \cite{attention_model_ids}. Furthermore, they removed 95\% of attack slots of each attack type to simulate a real world scenario where attacks are much rarer than they are in the dataset. They compared the performance of their model to a conventional \gls{bilstm} model and a \gls{clf}. Their results can be seen in table \ref{label}.
 
 \begin{table}[]
 	\centering
@@ -95,27 +90,27 @@ Even though the authors used the same dataset as we did for our research, compar
 When it comes to machine learning, rapid progress has been made over the past years. Frameworks such as PyTorch \cite{pytorch} and Tensorflow \cite{tensorflow} have made the technology accessible to people without a background in computer science. More than 11 thousand papers in the category "Computer Science - Artificial Intelligence (cs.AI)" have been published on arXiv.org \cite{arxiv} within the last year. With steadily increasing processing capabilities, vast amounts of data can be used to train ever growing \glspl{nn} within an acceptable timeframe.  E.g. the largest variant of Google's \gls{bert} algorithm has 340 million parameters and was trained on a dataset of 3.3 billion words \cite{bert}. Today, the limiting factor is often the amount of labeled data available to train a network ok. Hence, the topic of unsupervised or self-supervised training is explored by researchers of different fields in hope of enhancing their models without the need for more labeled data.
 In the following section we are looking at some of the related papers on the topic of self-supervised  or unsupervised training. An overview of the methods and models used in these papers can be found in table \ref{table:stateofart:self_supervised_overview}. \par
 
-\begin{adjustbox}{angle=90}[h]
-%	\begin{table}[h]
-	\scalebox{0.77}{
-		\begin{tabular}{c c c c c c}
-			\textbf{Paper} & \textbf{Model} & \textbf{Pre-training Task(s)} & \textbf{Downstream Task(s)} & \textbf{Val. Dataset(s)} & \textbf{Val. Value} \\ \hline
-			\midrule
-			\cite{bert} \ref{sec:stateofart:bert} & Transformer Encoder & next sentence prediction, word masking & various NLP tasks & GLUE score & 80.5\% acc. \\
-			\midrule
-			\cite{unsupervised_learning_lstms} \ref{sec:stateofart:unsupervised_video_lstm} & \acrshort{dlstm} & auto-encoding, sequence prediction & human action recognition & UCF-101, HMDB-51 & 74.9\%, 44.1\% acc. \\
-			\midrule
-			\cite{unsupervised_learning_lstms} \ref{sec:stateofart:unsupervised_video_lstm} & \acrshort{dlstm} & stacked auto-encoding & \acrshort{mts} forecasting & \makecell{capital bike sharing \\ PM2.5 concentration in the air of CHINA}  & 11.646, 9.864 \acrshort{smape} \\
-		\end{tabular}
-		\label{table:stateofart:self_supervised_overview}
-	}
-%	\end{table}
-\end{adjustbox}
+%\begin{adjustbox}{angle=90}[h]
+%%	\begin{table}[h]
+%	\scalebox{0.77}{
+%		\begin{tabular}{c c c c c c}
+%			\textbf{Paper} & \textbf{Model} & \textbf{Pre-training Task(s)} & \textbf{Downstream Task(s)} & \textbf{Val. Dataset(s)} & \textbf{Val. Value} \\ \hline
+%			\midrule
+%			\cite{bert} \ref{sec:stateofart:bert} & Transformer Encoder & next sentence prediction, word masking & various NLP tasks & GLUE score & 80.5\% acc. \\
+%			\midrule
+%			\cite{unsupervised_learning_lstms} \ref{sec:stateofart:unsupervised_video_lstm} & \acrshort{dlstm} & auto-encoding, sequence prediction & human action recognition & UCF-101, HMDB-51 & 74.9\%, 44.1\% acc. \\
+%			\midrule
+%			\cite{unsupervised_learning_lstms} \ref{sec:stateofart:unsupervised_video_lstm} & \acrshort{dlstm} & stacked auto-encoding & \acrshort{mts} forecasting & \makecell{capital bike sharing \\ PM2.5 concentration in the air of CHINA}  & 11.646, 9.864 \acrshort{smape} \\
+%		\end{tabular}
+%		\label{table:stateofart:self_supervised_overview}
+%	}
+%%	\end{table}
+%\end{adjustbox}
 
 
 \subsection{BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding} \label{sec:stateofart:bert}
 
-Google's BERT \cite{bert} by Jacob Devlin et al. effectively uses a Deep Bidirectional Transformer model, often referred to as Transformer Encoder, for various \gls{nlp} tasks, both on sentence and word level, like question answering, natural language inference, sentiment analysis, paraphrasing and others. At the time it was published, it produced the highest recorded GLUE \cite{glue} score of 80.5\% advancing it by 7.7\% over the former top scorer. It uses the WordPiece \cite{wordpiece} embedding resulting in a 30,000 token vocabulary. It was pre-trained in a fully unsupervised fashion on all sentences in the English Wikipedia (2,5 Billion words) and the BooksCorpus \cite{books_corpus} containing 800 Million word. The pre-training consisted of two proxy tasks: \gls{nsp} and \gls{mlm}. For \gls{nsp}, two sections of text, A and B, separated by a [SEP] token are fed into the model at the same time. 50\% of the time, B is the next section that follows A in the original text. 50\% of the time it is a random sentence from the corpus. The model is tasked with predicting, if sentence B follows sentence A. For \gls{mlm}, 15\% of the input tokens are hidden from the model by replacing with a [MASK] tokens. The model is tasked with reconstructing the masked tokens. Both of those pre-training tasks are performed at the same time. The pre-trained model is then fine-tuned to perform a specific down-stream task. \par
+Google's BERT \cite{bert} by Jacob Devlin et al. effectively uses a deep bidirectional transformer model, often referred to as transformer encoder, for various \gls{nlp} tasks, both on sentence and word level, like question answering, natural language inference, sentiment analysis, paraphrasing and others. At the time it was published, it produced the highest recorded GLUE \cite{glue} score of 80.5\% advancing it by 7.7\% over the former top scorer. It uses the WordPiece \cite{wordpiece} embedding resulting in a 30,000 token vocabulary. It was pre-trained in a fully unsupervised fashion on all sentences in the English Wikipedia (2,5 Billion words) and the BooksCorpus \cite{books_corpus} containing 800 Million word. The pre-training consisted of two proxy tasks: \gls{nsp} and \gls{mlm}. For \gls{nsp}, two sections of text, A and B, separated by a [SEP] token are fed into the model at the same time. 50\% of the time, B is the next section that follows A in the original text. 50\% of the time it is a random sentence from the corpus. The model is tasked with predicting, if sentence B follows sentence A. For \gls{mlm}, 15\% of the input tokens are hidden from the model by replacing with a [MASK] tokens. The model is tasked with reconstructing the masked tokens. Both of those pre-training tasks are performed at the same time. The pre-trained model is then fine-tuned to perform a specific down-stream task. \par
 This two stage approach, pre-training and fine-tuning, produces a reusable pre-trained model which can then be fine-tuned relatively swiftly (Jacob Devlin et al. state that it takes at most an hour of fine-tuning on a \gls{gpu} to replicate all results in the paper) to solve various \gls{nlp} tasks. For this thesis, we use the same approach to pre-train our models in an unsupervised fashion and then fine-tune them with a small amount of labeled data to teach them the down-stream task of classifying network flows. We also use the pre-training task of masking parts of the input data for the model to reconstruct for both our \gls{lstm} and Transformer networks. The \gls{nsp} task is not feasible in our situation, as network flows don't have an order other than the time of occurrence, and therefore flows don't have a semantically identifiable successor or predecessor.
 
 \subsection{Unsupervised Learning of Video Representations using LSTMs} \label{sec:stateofart:unsupervised_video_lstm}
@@ -128,15 +123,15 @@ The authors then proposed a composite model as can be seen in figure \ref{fig:st
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{img/unsupervised_learning_with_lstms_composite.png}
+	\includegraphics[width=0.7\textwidth]{img/composite_model_original.png}
 	\caption{Composite model for input reconstruction and future prediction \cite{unsupervised_learning_lstms}}
 	\label{fig:stateofart:unsupervised_lstm_composite}
 \end{figure}
 
-The pre-trained models are then fine-tuned for their classification task on the mentioned training datasets.
-With the pre-trained + fine-tuned composite model, the authors achieved an absolute increase of 1.3\% accuracy for both the UCF-101 and the HMDB-51 datasets over a conventional \gls{lstm} classifier as can be seen in table \ref{table:stateofart:unsupervised_learning_results}.
+The pre-trained models are then fine-tuned for their classification task on the mentioned training datasets. With the pre-trained + fine-tuned composite model, the authors achieved an absolute increase of 1.3\% accuracy for both the UCF-101 and the HMDB-51 datasets over a conventional \gls{lstm} classifier as can be seen in table \ref{table:stateofart:unsupervised_learning_results}.
 
 \begin{table}[]
+	\centering
 	\begin{tabular}{l c c c}
 		\thead{Model} & \thead{UCF-101 \\ RGB} & \thead{UCF-101
 \\ 1-frame flow} & \thead{HMDB-51 \\
@@ -153,7 +148,7 @@ Model + fine-tuning & 75.8 & 74.9 & 44.1 \\
 	\label{table:stateofart:unsupervised_learning_results}
 \end{table}
 
-For our thesis we used the same Auto-Encoder and composite model for pre-training as explained in sections \ref{sec:experiments:lstm_auto_encoder} and \ref{sec:experiments:lstm_composite}. We tried with both conditioned and unconditioned models, comparing results in section \ref{sec:results}.
+For our thesis we used the same auto-encoder and composite model for pre-training as explained in sections \ref{sec:experiments:lstm_auto_encoder} and \ref{sec:experiments:lstm_composite}.
 
 \subsection{Unsupervised Pre-training of a Deep LSTM-based Stacked Autoencoder for Multivariate Time Series Forecasting Problems} \label{sec:stateofart:unsupervised_learning_lstms_timeseries}
 
@@ -170,7 +165,7 @@ For pre-training the network, the authors use a \gls{lstmsae} model. In contrast
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.9\textwidth]{img/unsupervised_learning_dlstm_mts_lstmsae.png}
+	\includegraphics[width=0.9\textwidth]{img/stacked_lstm_ae.png}
 	\caption{Layer-wise pre-training of \gls{lstmsae} model. \cite{unsupervised_learning_lstms_timeseries}}
 	\label{fig:stateofart:unsupervised_learning_dlstm_mts_lstmsae}
 \end{figure}

@@ -10,11 +10,11 @@ As the technologies mentioned above are fairly recent (Transformers Dec 2017, \g
 
 \section{Research Questions} \label{sect.research_questions}
 
-In this thesis we inspect if the flow classification performance of \glspl{lstm} and Transformer-Encoder networks can be improved with self-supervised pre-training in a scenario where only little labeled and a lot of labeled data is available. In our experiments we are looking at scenarios where the ratio of labeled to unlabeled data is 1:8, 1:80 and 1: for labeled to unlabeled data. For performance we are mainly looking at the accuracy of classification, but we are also keeping track of the \gls{far}. The problem to solve is a binary classification problem for which the model is to group flows into \textit{attack} and \textit{no-attack}. 
+In this thesis we inspect if the flow classification performance of \glspl{lstm} and transformer encoder networks can be improved with self-supervised pre-training in a scenario where only little labeled and a lot of labeled data is available. In our experiments we are looking at scenarios where the ratio of labeled to unlabeled data is 1:8, 1:80 and 1: for labeled to unlabeled data. For performance we are mainly looking at the accuracy of classification, but we are also keeping track of the \gls{far}. The problem to solve is a binary classification problem for which the model is to group flows into \textit{attack} and \textit{no-attack}. 
 
 \begin{itemize}
 	\item R1: Can self-supervised pre-training improve the flow classification capabilities of an \gls{lstm} model?
-	\item R2: Can self-supervised pre-training improve the flow classification capabilities of a Transformer-Encoder model?
+	\item R2: Can self-supervised pre-training improve the flow classification capabilities of a transformer encoder model?
 	\item R3: Which pre-training tasks improve accuracy and which do not?
 	\item R4: If improvement is possible, how can it be explained?
 \end{itemize}
@@ -22,20 +22,17 @@ In this thesis we inspect if the flow classification performance of \glspl{lstm}
 
 \section{Approach} \label{sect.approach}
 
-To answer these questions we conduct a series of experiments. In these experiments we devised different proxy tasks for the model to solve in a self-supervised fashion. Solving these proxy tasks serves as pre-training for the network during which it learns the structure of the data and to form abstract representations within its latent space. After the pre-training we train the network with very little labeled training data to teach it how it should classify the flows. These experiments show if pre-training can improve accuracy of the model when compared to only training it with the same amount of labeled data but no pre-training. They also show which pre-training methods are more and which are less beneficial for classification accuracy.
+To answer these questions we conduct a series of experiments. In these experiments we devised different proxy tasks for the models to solve in a self-supervised fashion. Solving these proxy tasks serves as pre-training for the network during which it learns the structure of the data and to form abstract representations within its latent space. After the pre-training we train the network with very little labeled training data to teach it how to classify the flows into benign and attack categories. These experiments show if pre-training can improve accuracy of the model when compared to only training it with the same amount of labeled data but no pre-training. They also show which pre-training methods are more and which are less beneficial for classification accuracy. We will then take a closer look into how and why classification behavior differs for the pre-trained models and the reasons might be for cases where pre-training did not improve performance.
 
 \section{Contribution} \label{sect.contribution}
 
 \begin{itemize}
-	\item Implementation of a pre-trainable \gls{lstm} model and training suite
-	\item Implementation of a pre-trainable Transformer-Encoder model and training suite
-	\item Inquiry into the benefits of pre-training for sequence-to-sequence models in the context of \glspl{nids}
-	\item Development of new pre-training methods for \glspl{lstm} and TransformerEncoder models in the context of \glspl{nids}
+	\item Implementation of a pre-trainable \gls{lstm} model and training suite.
+	\item Implementation of a pre-trainable transformer encoder model and training suite.
+	\item Inquiry into the benefits of pre-training for sequence-to-sequence models in the context of \glspl{nids}.
+	\item Development of new pre-training methods for \glspl{lstm} and transformer encoder models in the context of \glspl{nids}.
+	\item Close inspection of the used datasets.
 \end{itemize}
-
-Here provide a list of the contributions of your work.
-
-Suggestion (especially for dissertations): provide a table with research questions, methods used to answer each, and major findings and the section in which to find details.
 
 \section{Structure} \label{sect.structure}
 

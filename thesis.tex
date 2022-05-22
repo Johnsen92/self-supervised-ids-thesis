@@ -65,7 +65,7 @@ ntheorem
 
 % Define convenience functions to use the author name and the thesis title in the PDF document properties.
 \newcommand{\authorname}{Jonas Ferdigg} % The author name without titles.
-\newcommand{\thesistitle}{Self-supervised Pre-training on LSTM and Transformer models for Network Intrusion Detection} % The title of the thesis. The English version should be used, if it exists.
+\newcommand{\thesistitle}{Self-supervised Pre-training on LSTM and  models for Network Intrusion Detection} % The title of the thesis. The English version should be used, if it exists.
 
 % Set PDF document properties
 \hypersetup{
@@ -158,7 +158,18 @@ ntheorem
 \end{kurzfassung}
 
 \begin{abstract}
-
+Machine learning techniques and \glspl{dnn} have found their way into various disciplines and their possible 
+benefits are explored for a diverse range of application. The pattern matching capabilities of modern day machine learning models 
+have long surpassed expert systems or even humans in narrow applications. Their ability to accurately classify seemingly complex data
+makes them well suited to also be used in the context of \gls{nid}. While supervised learning is still most effective when
+training machine learning models, its feasibility is often stifled by a lack of expensive labeled data. For this and
+other reasons researchers at the forefront of machine learning development, especially in the field of \gls{nlp}, have began 
+to pre-train their models on large amounts of unlabeled data to overcome the scarcity of labeled data. A commonly used pattern e.g. used to train 
+Google's BERT model, is to pre-train large scale machine learning models in a self-supervised manner. This is done by tasking the model to either reconstruct omitted parts of information from the input data, predicting future input or asking other questions about the input data
+to which the answer is derivable from the unlabeled data. Only a small amount of labeled data is then used to fine-tune the model to perform 
+the target downstream task. Inspired by the achievements of models like \gls{bert} and its successors, predominantly trained with the pre-training - fine-tuning paradigm, we used the same methods to increase classification accuracy for deep learning based \gls{nids}.
+In our research we try to answer the question whether pre-training paradigms used in \gls{nlp} can improve classification accuracy for deep learning based \gls{nids}. We performed pre-training on \gls{lstm} and transformer models with a set of auto encoding and auto regression based self-supervised training methods to improve binary classification of network traffic records. After pre-training, supervised fine-tuning with a small amount of labeled data is performed to teach the model how to classify the data into attack and benign flows. As training data we used flow representations of the CIC-IDS2017 and UNSW-NB15 \gls{nid} datasets with the flow key <dstIp, srcIp, dstPort, srcPort, protocolId>. Our flows consist of a sequence of tensors containing packet and flow specific features. Our results show that classification accuracy can be improved through pre-training, but only in specific instances. 
+Further inquiry is needed to see if our results can be generalized. 
 \end{abstract}
 
 % Select the language of the thesis, e.g., english or naustrian.
