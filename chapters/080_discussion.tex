@@ -9,44 +9,8 @@ In this thesis we set out to inspect the possible benefits of pre-training on \g
 	\item R4: If improvement is possible, how can it be explained?
 \end{itemize}
 
-The results of our experiments appear to be inconclusive. Some experiments have shown minor improvements, but later experiments with the same proxy task and less data have shown either no improvement or worse performance. As can be seen in tables \ref{table:discussion:lstm:improvement_results} and \ref{table:discussion:transformer:improvement_results}, the \gls{lstm} model seems to be more receptive for pre-training but no clear pattern emerges which could point at a proxy-task that generally improves accuracy when used in pre-training. We could name the predict packet (PREDICT) and surprisingly the identity function (ID) proxy task as most likely to improve final accuracy of the \gls{lstm} model. In table \ref{table:discussion:lstm:accuracy_differences} we can see that the highest overall absolute increase in accuracy of 0.594\% was also achieved with pre-training with the ID proxy task in experiment 2.3.5 \ref{table:results:lstm:stats_flows_subset}. \par
+The results of our experiments appear to be inconclusive. Some experiments have shown minor improvements, but later experiments with the same proxy task and less data have shown either no improvement or worse performance. As can be seen in tables \ref{table:discussion:lstm:accuracy_differences} and \ref{table:discussion:transformer:accuracy_differences}, the \gls{lstm} model seems to be more receptive for pre-training but no clear pattern emerges which could point at a proxy-task that generally improves accuracy when used in pre-training. We could name the predict packet (PREDICT) and surprisingly the identity function (ID) proxy task as most likely to improve final accuracy of the \gls{lstm} model. In table \ref{table:discussion:lstm:accuracy_differences} we can see that the highest overall absolute increase in accuracy of 0.594\% was also achieved with pre-training with the ID proxy task in experiment 2.3.5 \ref{table:results:lstm:stats_flows_subset}. \par
 Referring to \ref{table:discussion:transformer:accuracy_differences} it can be seen that pre-training seems to have even less positive impact on the transformer model compared to the \gls{lstm} model in general, but still yielded some positive results for experiments with very little supervised data i.e. the dedicated subsets used for experiments 3.3.3 and 3.6.4 as can be seen in tables \ref{table:results:transformer:stats_flows_subset} and \ref{table:results:transformer:stats_flows15_subset}. The fact that any improvement was observable at all is already promising, when considering that the baseline results of exclusively supervised trained models are already very high when compared to other state-of-the-art results in contemporary research. Increasing accuracy ever so slightly without the need for more labeled data might make a \gls{ml} based \gls{ids} feasible in a real world scenario when before it was not. There could be several reasons why no conclusive pattern can be found in the results: \par
-
-\begin{table}[!h]
-	\centering
-	\begin{tabular}{rccccc}
-		\thead{Experiment \#} & \thead{PREDICT(2)} & \thead{OBSCURE(3)} & \thead{AUTO(4)}   & \thead{ID(5)}      & \thead{COMPOSITE(6)} \\ \midrule
-		\multicolumn{6}{c}{CIC-IDS2017} \\ \midrule
-		10\% (2.1.x) 		& Yes    & No   & No   & Yes    & Yes      \\ 
-		1\% (2.2.x) 		& Yes    & No   & No   & Yes    & Yes      \\ 
-		CIC2017\_10 (2.3.x) 	& No   	 & No   & No   & Yes    & No     \\ \\ \midrule
-		\multicolumn{6}{c}{UNSW-NB15} \\ \midrule
-		10\% (2.4.x) 		& Yes    & Yes    & Yes    & Yes    & Yes      \\ 
-		1\% (2.5.x) 		& Yes    & Yes    & Yes    & Yes    & Yes      \\ 
-		UNSW15\_10 (2.6.x) 		& Yes    & No   & Yes    & No   & No     \\ \midrule
-		\makecell{\# Cases in which \\ pre-training \\ improved accuracy} & 5/6 & 2/6 & 3/6 & 5/6 & 4/6  
-	\end{tabular}
-	\caption{Table of comparisons whether accuracy improved for pre-trained \gls{lstm} models when compared to supervised only trained baseline experiments.}
-	\label{table:discussion:lstm:improvement_results}
-\end{table}
-
-\begin{table}[!h]
-	\centering
-	\begin{tabular}{rccc}
-		\thead{Experiments (\#)} & \thead{MASK(2)} & \thead{OBSCURE(3)} & \thead{AUTO(4)} \\ \midrule
-		\multicolumn{4}{c}{CIC-IDS2017} \\ \midrule
-		10\% (3.1.x)   & No  & No   & No   \\
-		1\% (3.2.x)    & No  & No   & No   \\
-		CIC2017\_10 (3.3.x) & No  & Yes  & No   \\ \midrule
-		\multicolumn{4}{c}{UNSW-NB15} \\ \midrule
-		10\% (3.4.x)     & No  & No   & No   \\
-		1\% (3.5.x)      & No  & No   & Yes  \\
-		UNSW15\_10 (3.6.x)   & No  & No   & Yes  \\ \midrule
-		\makecell{\# Cases in which \\ pre-training \\ improved accuracy} & 0/6 & 1/6 & 2/6
-	\end{tabular}
-	\caption{Table of comparisons whether accuracy improved for pre-trained transformer models when compared to supervised only trained baseline experiments.}
-	\label{table:discussion:transformer:improvement_results}
-\end{table}
 
 \begin{table}[]
 	\centering
@@ -86,13 +50,14 @@ Referring to \ref{table:discussion:transformer:accuracy_differences} it can be s
 	\label{table:discussion:transformer:accuracy_differences}
 \end{table}
 
+
 The achieved accuracy scores by the models when fine-tuned with 90\% of data where in the high 99.x percent \ref{table:results:explainability:model_comparison} and even with only 1\% of data used for training, accuracy was still over 99\%. The flow representation used omits the packet payload, so payload based attacks like \textit{SQL Injection} or \textit{XSS} attacks are very hard, if not impossible, to detect. There might simply be very little room for improvement so even if pre-training where effective, it would not show up in our results. One approach to mitigate this effect would be to switch to multinomial classification of the exact attack type instead of binary classification. This approach increases fine-tuning training time, but since 
 unsupervised pre-training takes disproportionately longer than fine-tuning at the moment, overall training time would not increase significantly. \par
 
 In accordance with the last point, the datasets we used seem to be easy to classify. Even though not completely comparable, the results from the \gls{dtc} alone show that records in both datasets can be classified with high accuracy, i.e. about 97\% or more \ref{table:results:explainability:model_comparison} even without access to flow information.
 The lack of complexity of the data might be another reason why pre-training in this case showed no improvement as supervised training was always sufficient to extract all relevant information from the input data. To inspect this hypotheses, a more challenging dataset should be used or a combination of different datasets. Ideal would be actual captured traffic of a mid size company during a penetration test. \par
 
-Word embeddings are an integral part of model \gls{nlp} systems. This aspect is not included in our process since our feature vectors where already given. As our feature representation contains some qualitative features which are mapped to a mostly arbitrary number e.g. the IP protocol identifier, creating embeddings for qualitative features and tuning them to the task at hand might lead to improvement in overall accuracy, independent of whether pre-training is used or not. \par
+Word embeddings are an integral part of modern \gls{nlp} systems. This aspect is not included in our process since our feature vectors where already given. As our feature representation contains some qualitative features which are mapped to a mostly arbitrary number e.g. the IP protocol identifier and port numbers, creating embeddings for qualitative features and tuning them to the task at hand might lead to improvement in overall accuracy, independent of whether pre-training is used or not. \par
 	
 Insufficient data or model complexity might be another reason why pre-training has produced no consistent improvement. Google BERT \cite{bert} uses a model with 110 million parameters in its \textit{BASE} version and 340 million in for its \textit{LARGE} version. In comparison, our \gls{lstm} model consists of 5.3 million parameters and the transformer encoder model only contains 74 thousand parameters. In the original paper about BERT, google claims to have pre-trained their model on a corpus of about 3.3 billion words. During our work on this thesis many new \gls{nlp} models like Googles T5 \cite{google_t5}, Nvidias Megatron \cite{megatron} with the largest one being OpenAIs GPT-3 with 175 billion parameters, pre-trained on 410 billion tokens \cite{gpt3}. The datasets we are using contain around 25 million packets each which is two magnitudes smaller than the corpus Googles BERT was trained on. Larger models or significantly larger datasets would not have been feasible in our case due to lack of computational resources. One of these two reasons, i.e. either lack of model complexity or pre-training data, might be the cause of our inconclusive results. This hypotheses is of course not easily checked without the necessary resources. As already stated above, the dataset used for unsupervised pre-training could be magnified by merging multiple datasets together or even using available unlabeled network traffic data for pre-training. \par
 
@@ -106,7 +71,44 @@ An unsuited data representation might stifle the effectiveness of the used model
 Our analysis of the datasets in section \ref{sec:results:explainability:dtc}, in particular table \ref{table:results:expl:fimp_90_ds}, shows that a lot of importance is accumulated in a few features while others are mostly irrelevant which shows that the selection of the correct feature and data representation has a significant effect on the performance of the models. Omitting unused or irrelevant features from the data representation would drastically decrease training time, but it is of course impossible to tell \textit{a priori} if a feature is going to be relevant for classification of the data at hand. \par
 We used a flow representation of per-packet feature vectors instead of the often used approach of aggregating all packets of a flow into a single feature vector containing statistical data. This was, as already explained in earlier sections, to enable the use of machine learning techniques used in \gls{nlp} which almost exclusively expect a sequences of tokens as input. When considering the immense overhead of using sequences instead of a single vector and looking at the results of the \gls{dtc} which has no concept of flows but still performs reasonably well, there might be better ways to build meaningful sequences. A possible approach is to use a sequence constituting of aggregated data over specified consecutive time frames comes to mind, which has already been used in other papers like \cite{attention_model_ids}, \cite{kitsune}. \par
 
+\begin{table}[]
+	\centering
+	\begin{tabular}{rccccc}
+		\thead{Experiment \#} & \thead{PREDICT(2)} & \thead{OBSCURE(3)} & \thead{AUTO(4)}   & \thead{ID(5)}      & \thead{COMPOSITE(6)} \\ \midrule
+		\multicolumn{6}{c}{CIC-IDS2017} \\ \midrule
+		10\% (2.1.x) 		& Yes    & No   & No   & Yes    & Yes      \\ 
+		1\% (2.2.x) 		& Yes    & No   & No   & Yes    & Yes      \\ 
+		CIC2017\_10 (2.3.x) 	& No   	 & No   & No   & Yes    & No     \\ \\ \midrule
+		\multicolumn{6}{c}{UNSW-NB15} \\ \midrule
+		10\% (2.4.x) 		& Yes    & Yes    & Yes    & Yes    & Yes      \\ 
+		1\% (2.5.x) 		& Yes    & Yes    & Yes    & Yes    & Yes      \\ 
+		UNSW15\_10 (2.6.x) 		& Yes    & No   & Yes    & No   & No     \\ \midrule
+		\makecell{\# Cases in which \\ pre-training \\ improved accuracy} & 5/6 & 2/6 & 3/6 & 5/6 & 4/6  
+	\end{tabular}
+	\caption{Table of comparisons whether accuracy improved for pre-trained \gls{lstm} models when compared to supervised only trained baseline experiments.}
+	\label{table:discussion:lstm:improvement_results}
+\end{table}
+
+\begin{table}[]
+	\centering
+	\begin{tabular}{rccc}
+		\thead{Experiments (\#)} & \thead{MASK(2)} & \thead{OBSCURE(3)} & \thead{AUTO(4)} \\ \midrule
+		\multicolumn{4}{c}{CIC-IDS2017} \\ \midrule
+		10\% (3.1.x)   & No  & No   & No   \\
+		1\% (3.2.x)    & No  & No   & No   \\
+		CIC2017\_10 (3.3.x) & No  & Yes  & No   \\ \midrule
+		\multicolumn{4}{c}{UNSW-NB15} \\ \midrule
+		10\% (3.4.x)     & No  & No   & No   \\
+		1\% (3.5.x)      & No  & No   & Yes  \\
+		UNSW15\_10 (3.6.x)   & No  & No   & Yes  \\ \midrule
+		\makecell{\# Cases in which \\ pre-training \\ improved accuracy} & 0/6 & 1/6 & 2/6
+	\end{tabular}
+	\caption{Table of comparisons whether accuracy improved for pre-trained transformer models when compared to supervised only trained baseline experiments.}
+	\label{table:discussion:transformer:improvement_results}
+\end{table}
+
 While machine learning researchers in the realm of \gls{nlp} are already trying to move past the pre-training / fine-tuning paradigm \cite{gpt3}, it is yet to be explored in the context of \gls{nid}. We contributed by applying these established methods in an attempt to harness them for the very needed improvement of
-machine learning based \gls{nid}. Although by no means exhaustive, we managed to achieve a useful primer by using both state-of-the-art models and techniques combined with careful inspection of the obtained results and the used data. Considering the difficulties and shortcomings stated above, the fact that it was possible to improve classification accuracy in some instances remains an encouraging pointer towards the feasibility of the approach overall. Taking into account that the datasets used seem to be a mismatch for our experiments and the fact that results from experiments with the specialized subsets should be ignored due to the negative effects of over-fitting, the results become a lot more promising. The facts that improvements where only minor and that our experiments where quite narrow in the sense that we only performed them on two datasets and with the same random seed, remain. For these reasons further inquiry is needed, applying the lessons we learned during our research, to confirm that the results are generalizable for sequence2sequence models in the context of deep learning based \gls{nid}. \par
+machine learning based \gls{nid}. Although by no means exhaustive, we managed to achieve a useful primer by using both state-of-the-art models and techniques combined with careful inspection of the obtained results and the used data. The tables \ref{table:discussion:lstm:improvement_results} and \ref{table:discussion:transformer:improvement_results} serve as a final overview on the instances in which pre-training actually improved classification accuracy. Considering the difficulties and shortcomings stated above, the fact that it was possible to improve classification accuracy in some instances remains an encouraging pointer towards the feasibility of the approach overall. Taking into account that the datasets used seem to be a mismatch for our experiments and the fact that results from experiments with the specialized subsets should be ignored due to the negative effects of over-fitting, the results for the \gls{lstm} model become a lot more promising. 
+The facts that improvements where only minor and that our experiments where quite narrow in the sense that we only performed them on two datasets and with the same random seed, remain. For these reasons further inquiry is needed, applying the lessons we learned during our research, to confirm that the results are generalizable for sequence2sequence models in the context of deep learning based \gls{nid}. \par
 
 \newpage

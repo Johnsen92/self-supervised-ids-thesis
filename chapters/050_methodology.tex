@@ -6,7 +6,7 @@ Network communication is similar to natural language in the sense that it follow
 
 \section{Datasets} \label{sec:methodology:datasets}
 
-We used the two \gls{nids} datasets \textit{UNSW-NB15} \cite{unsw_nb15} and \textit{CIC-IDS-2017} \cite{cic_ids_2017}. \par
+We used the two \gls{nids} datasets \textit{UNSW-NB15} \cite{unsw_nb15} and \textit{CIC-IDS2017} \cite{cic_ids_2017}. \par
 
 The \textbf{UNSW-NB15} dataset \cite{unsw_nb15}, created by Nour Moustafa et al. from the School of Engineering and Information Technology, University of New South Wales at the Australian Defence Force Academy, Australia, was released as an update for the formerly frequently used but deprecated \cite{unsw_nb15} KDD dataset family. It was designed to reflect most known low foot print attacks at time of publication. The records are bidrectional flows extracted from the raw traffic data and grouped by the commonly used \textit{<srcIP, dstIP, srcPort, dstPort, protocol>} tuple. Each flow is described by 47 derived or measured features e.g. total duration, bytes transmitted, the mean of the flow packet size transmitted by destination IP, etc. After preprocessing where some incomplete records are removed, the dataset contains a total of 2.06 million records of which 1.99 million are normal transactions labeled as benign and 0.072 million attack records meaning 96.64\% of data is classified as benign and 3.36\% as attack. Attack records can be further divided into nine attack categories as listed in table \ref{table:methodology:datasets:unsw_nb15_categories}.
 
@@ -31,7 +31,7 @@ The \textbf{UNSW-NB15} dataset \cite{unsw_nb15}, created by Nour Moustafa et al.
 
 The dataset was generated from a synthetic environment comprised of 3 networks and 45 distinct IP addresses using the IXIA PerfectStorm (now keysight PerfectStorm) tool.
 
-The \textbf{CIC-IDS-2017} dataset \cite{cic_ids_2017}, created by Iman Sharafaldin et. al from Canadian Institute for Cybersecurity (CIC), University of New Brunswick (UNB), Canada constitutes another updated representation of known attack types at the time of publication. Compared to the UNSW-NB15 dataset it contains records of more modern cyber attacks like Heartbleed, HULK DoS but leaves out e.g. worm attacks. It contains a total of 2.31 million records of which 1.73 million are labeled as benign and 0.58 million are attack records. In other words, 74.72\% of the dataset are benign records and 25.28\% attack records. Attack records are further classified as shown in table \ref{table:methodology:datasets:cic_ids_2017_categories}.
+The \textbf{CIC-IDS2017} dataset \cite{cic_ids_2017}, created by Iman Sharafaldin et. al from Canadian Institute for Cybersecurity (CIC), University of New Brunswick (UNB), Canada constitutes another updated representation of known attack types at the time of publication. Compared to the UNSW-NB15 dataset it contains records of more modern cyber attacks like Heartbleed, HULK DoS but leaves out e.g. worm attacks. It contains a total of 2.31 million records of which 1.73 million are labeled as benign and 0.58 million are attack records. In other words, 74.72\% of the dataset are benign records and 25.28\% attack records. Attack records are further classified as shown in table \ref{table:methodology:datasets:cic_ids_2017_categories}.
 
 \begin{table}[H]
 	\centering
@@ -53,7 +53,7 @@ The \textbf{CIC-IDS-2017} dataset \cite{cic_ids_2017}, created by Iman Sharafald
 		13 & SQL Injection           & 13          & 0.00\%                 & 0.01\%                          & 0.00\%                    \\ \midrule
 		14 & XSS WebAttack           & 678         & 0.04\%                 & 0.29\%                          & 0.03\%                   
 	\end{tabular}
-	\caption{CIC-IDS-2017 dataset record distribution \cite{cic_ids_2017_analysis}.}
+	\caption{CIC-IDS2017 dataset record distribution \cite{cic_ids_2017_analysis}.}
 	\label{table:methodology:datasets:cic_ids_2017_categories}
 \end{table}
 
@@ -87,7 +87,7 @@ In hope of making any possible positive results more salient, we devised an extr
 		13 & SQL Injection           & 1   \\
 		14 & XSS WebAttack           & 10                    
 	\end{tabular}
-	\caption{Subset \textbf{CIC17\_10} devised for CIC-IDS-2017 to include a minimal amount of records amounting to approximately 0.023\% of the total dataset.}
+	\caption{Subset \textbf{CIC17\_10} devised for CIC-IDS2017 to include a minimal amount of records amounting to approximately 0.023\% of the total dataset.}
 	\label{table:methodology:datasets:cic17_subset}
 \end{table}
 
