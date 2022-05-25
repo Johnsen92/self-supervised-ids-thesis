@@ -119,21 +119,21 @@ Flows are loosely defined as sequences of packets that share a certain property 
 	\centering
 	\begin{tabular}{c c c c l}
 		\thead{\textbf{\#}} & \thead{\textbf{Name}} & \thead{\textbf{Type}} & \thead{\textbf{Constant} \\ \textbf{over flow}} & \thead{\textbf{Description}} \\ \hline \midrule
-		0 & srcPort & Int & yes & Source port number \\ \midrule
-		1 & dstPort & Int & yes & Destination port number \\ \midrule
-		2 & protocol & Int & yes & IP protocol identifier \\ \midrule
-		3 & pktLength & Int & no & Packet length in bytes \\ \midrule
-		4 & pktIat & Int & no & \gls{iat} \\ \midrule
-		5 & pktDirection & Bool & no & Sending direction of the packet \\ \midrule
-		6 & synFlag & Bool & no & TCP SYN Flag \\ \midrule
-		7 & finFlag & Bool & no & TCP FIN Flag \\ \midrule
-		8 & rstPort & Bool & no & TCP RST Flag \\ \midrule
-		9 & pshFlag & Bool & no & TCP PSH Flag \\ \midrule
-		10 & ackFlag & Bool & no & TCP ACK Flag \\ \midrule
-		11 & urgFlag & Bool & no & TCP URG Flag \\ \midrule
-		12 & eceFlag & Bool & no & TCP ECE Flag \\ \midrule
-		13 & cwrFlag & Bool & no & TCP CWR Flag \\ \midrule
-		14 & nsFlag & Bool & no & TCP NS Flag \\ \midrule
+		1 & srcPort & Int & yes & Source port number \\ \midrule
+		2 & dstPort & Int & yes & Destination port number \\ \midrule
+		3 & protocol & Int & yes & IP protocol identifier \\ \midrule
+		4 & pktLength & Int & no & Packet length in bytes \\ \midrule
+		5 & pktIat & Int & no & \gls{iat} \\ \midrule
+		6 & pktDirection & Bool & no & Sending direction of the packet \\ \midrule
+		7 & synFlag & Bool & no & TCP SYN Flag \\ \midrule
+		8 & finFlag & Bool & no & TCP FIN Flag \\ \midrule
+		9 & rstPort & Bool & no & TCP RST Flag \\ \midrule
+		10 & pshFlag & Bool & no & TCP PSH Flag \\ \midrule
+		11 & ackFlag & Bool & no & TCP ACK Flag \\ \midrule
+		12 & urgFlag & Bool & no & TCP URG Flag \\ \midrule
+		13 & eceFlag & Bool & no & TCP ECE Flag \\ \midrule
+		14 & cwrFlag & Bool & no & TCP CWR Flag \\ \midrule
+		15 & nsFlag & Bool & no & TCP NS Flag \\ \midrule
 	\end{tabular}
 	\caption{Packet features \cite{cic_ids_2017_analysis}.}
 	\label{table:methodology:data_representation:features}

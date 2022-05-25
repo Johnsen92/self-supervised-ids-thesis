@@ -102,22 +102,57 @@ The weights of each \gls{lstm} layer are initialized with a uniform random distr
 
 The simplest form of a proxy-task for pre-training is having the model learn the identity function. In practice this means that input sequence $x^{(t)}$ and target sequence $y^{(t)}$ are the same i.e. $x^{(t)} = y^{(t)}$ with the same sequence length. The model learns to convey the information through the network at each time step. For this task, the model does not need to derive any meaningful hidden representation of the data, but as our experiments show it still moves the weights of the model into a favorable direction in some instances when compared to the case where the model was not pre-trained, i.e. where weights are initialized randomly with a uniform distribution.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\textwidth]{img/lstm_proxy_task_id.png}
+	\caption{Depiction of data flow, input and output of the model during pre-training on the identity function proxy task (ID).}
+	\label{fig:experiments:lstm_proxy_task_id}
+\end{figure}
+
 \subsection{Predict Packet (PREDICT)} \label{sec:experiments:lstm:predict_packet}
 
 For this proxy task, the model has to predict the next packet in the flow. We started by predicting only the last packet in each flow but then moved to predicting all packets in a flow except the first. This means having a \textit{sequence-to-sequence} model where the inputs are all tokens in one flow with length $n$ except the last, because it has no successor: $x^{(t)} = x^{(1)}, x^{(2)}, ..., x^{(n-1)}$. The target data are all tokens in the same flow except the first, because it has no predecessor: $y^{(t)} = x^{(t+1)} : t = 1,..,n-1$. \glspl{lstm} process data in sequential order so at each time step, the model only has information of packets in the past and is to predict what the next packet in the flow will be. This results in two comparable tensors $y^{(t)}$ and the model output sequence $\hat{y}^{(t)} = \hat{y}^{(1)}, \hat{y}^{(2)}, ..., \hat{y}^{(n-1)}$ of equal length $n-1$ between which a differentiable loss can be calculated. This way, a lot of information is conveyed to the network when compared to only predicting the last packet in a flow. At first glance, this looks similar to the identity function in \ref{sec:experiments_lstm_identity}. The key difference however, is that the token which is to be predicted is not yet available as an input token to the model, meaning it has to derive the features by other means than conveying the requested input token to the output. The loss is calculated as the \gls{mae} (\textit{L1Loss} with \textit{mean} reduction) between the predicted logits and the target data sequences.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\textwidth]{img/lstm_proxy_task_predict.png}
+	\caption{Depiction of data flow, input and output of the model during pre-training on the prediction proxy task (PREDICT).}
+	\label{fig:experiments:lstm_proxy_task_predict}
+\end{figure}
 
 \subsection{Mask Packets (MASK)} \label{sec:experiments:lstm:mask_packet}
 
 Similar to the pre-training in \gls{bert}, all features of a random packet in the sequence is masked with a value of -1, i.e. the token is replaced with a feature vector $x_{mask} = [-1, ..., -1]^T$ containing $-1$ for each element and the model is to predict the masked token. Again, \gls{mae} is used as the loss function. Unlike to \gls{bert}, we don't only look at the masked tokens when calculating the loss but compare every feature of every packet, also the non-masked ones, which adds an auto-encoding property to the pre-training. We found this to have more beneficial effect on the results than only looking at the masked packets. This is possibly due to the model having to retain information to solve two different tasks, an approach also used by to pre-train Google's BERT,  which prevents the model from attuning itself to one specific task by losing generality.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\textwidth]{img/lstm_proxy_task_mask.png}
+	\caption{Depiction of data flow, input and output of the model during pre-training on the mask packet proxy task (MASK).}
+	\label{fig:experiments:lstm_proxy_task_mask}
+\end{figure}
+
 \subsection{Obscure Features (OBSCURE)} \label{sec:experiments:lstm:obscure}
 
 For this pre-training task, the model is to predict masked features of some packets in the sequence. We have tried multiple masking values but $-1$ produces the best results out of the values we tried. This proxy task in particular can be parameterized in different ways. E.g. the number of features and which features to mask, if always the same features are masked or if the selection is random for each packet or for each flow, if every packet in the sequence has some masked features or if there is only a chance that a packet is selected for masking. Those are only some examples of how this task can be set up in different ways. To be completely exhaustive was not possible, but we tried some of the most intuitive approaches. The task proved to be quite difficult for both models, so we decided to predict only the TCP SYN flag. For pre-training the model is provided masked data as input sequence and the unmasked data is the target. The loss is calculated as the \gls{mae} (\textit{L1Loss} with \textit{mean} reduction) between the obscured features of predicted \textit{logits} and the target data sequences.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\textwidth]{img/lstm_proxy_task_obscure.png}
+	\caption{Depiction of data flow, input and output of the model during pre-training on the obscure feature proxy task (OBSCURE).}
+	\label{fig:experiments:lstm_proxy_task_obscure}
+\end{figure}
+
 \subsection{Auto Encoder (AUTO)} \label{sec:experiments:lstm:auto_encoder}
 
 As explained in section \ref{sec:backgrund:autoencoder}, for the auto encoder the model is tasked with compressing and decompressing the data as lossless as possible. With an \gls{lstm} model, this means having two consecutive \gls{lstm} models where the first is to encode the sequence and the second is to decode the sequence. As template we used the model proposed by Nitish Srivastava et al. in their paper "Unsupervised Learning of Video Representations using LSTMs" \cite{unsupervised_learning_lstms}, but similar proposals for Auto-Encoders with \glspl{lstm} can be found in \cite{unsupervised_learning_lstms_timeseries} or \cite{lstm_anomaly_detection}. \par
-The encoder \gls{lstm} compresses the whole input sequence $x_e^{(t)} = x_e^{(1)}, x_e^{(2)}, ..., x_e^{(n)}$ into the hidden state of the last stage $h_e^{(n)}$ ($C_e^{(n)}$) where $n$ is the length of the input sequence. The decoder \gls{lstm} is then initialized with the hidden and cell state of the last stage from the encoder \gls{lstm} $h_d^{(1)} = h_e^{(n)}, C_d^{(1)} = C_e^{(n)}$ and is tasked with reconstructing the input sequence in reverse order. The reverse order is used to shorten the paths of the initial target tokens to their respecting input tokens. After every stage of the decoder, either the output of the current stage $\hat{y}^{(t)}$ or the target token of the current stage $x^{(t)}$, the ground truth, is then fed into the model as input token $x_d^{(t+1)} = \hat{x}^{(t)}$ for the next stage. The first method is also called \textit{autoregression}. The first input token for the decoder is a zero vector which functions as a start-of-sequence token $x_d^{(1)} = 0$. This way, the encoder is forced to store as much information about the sequence as possible in the hidden state and as the size of the hidden state is constrained, it has to find an abstract representation of the sequence. For supervised fine-tuning and validation, only the encoder part of the model is used. After trying both approaches, we decided to use teacher forcing as it produced slightly better results.
+The encoder \gls{lstm} compresses the whole input sequence $x_e^{(t)} = x_e^{(1)}, x_e^{(2)}, ..., x_e^{(n)}$ into the hidden state of the last stage $h_e^{(n)}$ ($C_e^{(n)}$) where $n$ is the length of the input sequence. The decoder \gls{lstm} is then initialized with the hidden and cell state of the last stage from the encoder \gls{lstm} $h_d^{(1)} = h_e^{(n)}, C_d^{(1)} = C_e^{(n)}$ and is tasked with reconstructing the input sequence in reverse order. The reverse order is used to shorten the paths of the initial target tokens to their respecting input tokens. After every stage of the decoder, either the output of the current stage $\hat{y}^{(t)}$ or the target token of the current stage $x^{(t)}$, the ground truth, is then fed into the model as input token $x_d^{(t+1)} = \hat{x}^{(t)}$ for the next stage. The first method is also called \textit{autoregression}. The first input token for the decoder is a zero vector which functions as a start-of-sequence token $x_{zero} = [0, ..., 0]^T$. This way, the encoder is forced to store as much information about the sequence as possible in the hidden state and as the size of the hidden state is constrained, it has to find an abstract representation of the sequence. For supervised fine-tuning and validation, only the encoder part of the model is used. After trying both approaches, we decided to use teacher forcing as it produced slightly better results.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\textwidth]{img/lstm_proxy_task_auto.png}
+	\caption{Depiction of data flow, input and output of the model during pre-training on auto encoder packet proxy task (AUTO).}
+	\label{fig:experiments:lstm_proxy_task_auto}
+\end{figure}
 
 \subsection{Composite Model (COMPOSITE)} \label{sec:experiments:lstm:composite}
 
