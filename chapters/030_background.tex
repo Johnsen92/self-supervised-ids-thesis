@@ -148,8 +148,7 @@ Supervised learning is most effective when teaching a \gls{nn} the desired proje
 
 \section{Auto Encoder} \label{sec:backgrund:autoencoder}
 
-The auto encoder is a popular tool for self-supervised learning. The model is composed of an \textit{encoder} and a \textit{decoder} stage as can be seen in figure \ref{fig:auto_encoder}. The encoder compresses the input data, artificially causing loss of information. In the next step the decoder tries to reconstruct the compressed data as accurately as possible. The loss $C(\hat{x},x)$ is then calculated as the difference between the original input and the reconstructed one. The aim of this seemingly nonsensical task is to force the model to form an abstract, more compact representation of 
-the input data in its restricted latent space. To compress data with minimal loss of relevant information the network has to find patterns in the input and ideally learns some semantic or context of the data. 
+The auto encoder is a popular tool for self-supervised learning. The model is composed of an \textit{encoder} and a \textit{decoder} stage as can be seen in figure \ref{fig:auto_encoder}. The encoder compresses the input data, artificially causing loss of information. In the next step the decoder tries to reconstruct the compressed data as accurately as possible. The loss $C(\hat{x},x)$ is then calculated as the difference between the original input and the reconstructed one. The aim of this seemingly nonsensical task is to force the model to form an abstract, more compact representation of the input data in its restricted latent space. To compress data with minimal loss of relevant information the network has to find patterns in the input and ideally learns some semantic or context of the data. 
 
 \begin{figure}[h]
 	\centering

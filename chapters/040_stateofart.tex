@@ -51,21 +51,52 @@ For multi-class classification the output layer is expanded to match the number 
 	\item NSL-KDD \cite{nsl_kdd}
 \end{itemize}
 
-They used a feature representation of the data comprised of 80 network traffic features extracted with CICFLOWMETER. The best results in training where achieved with a learning rate of 0.01, a batch size of 64 using the Adam optimization algorithm. They used accuracy, precision, recall, F1-measure, \gls{far}, \gls{dr} as metrics corresponding with the definitions in section \ref{sec:background:metrics} to assess the performance of the different models. This research was especially relevant for us, because the authors used similar models and the same datasets, so a direct comparison with our results can be made. An overview of the relevant results for binary classifications can be found in table \ref{fig:stateofart:fog_based_detection_survey_2020_results_binary} and for multi-class classification in table \ref{fig:stateofart:fog_based_detection_survey_2020_results_class}.
+They used a feature representation of the data comprised of 80 network traffic features extracted with CICFLOWMETER. The best results in training where achieved with a learning rate of 0.01, a batch size of 64 using the Adam optimization algorithm. They used accuracy, precision, recall, F1-measure, \gls{far}, \gls{dr} as metrics corresponding with the definitions in section \ref{sec:background:metrics} to assess the performance of the different models. This research was especially relevant for us, because the authors used similar models and the same datasets, so a direct comparison with our results can be made. An overview of the relevant results for binary classifications can be found in table \ref{table:stateofart:fog_based_detection_survey_2020_results_binary} and for multi-class classification in table \ref{table:stateofart:fog_based_detection_survey_2020_results_class}.
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1.0\textwidth]{img/fog_based_detection_survey_2020_results_binary.png}
+\begin{table}[]
+	\resizebox{\linewidth}{!}{\begin{tabular}{l|c|c|c|c|c|c|c}
+		\textbf{DataSet Name}                         & \textbf{DL Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Measure} & \textbf{FAR} & \textbf{DR} \\ \midrule
+		\multirow{6}{*}{\makecell{\textbf{UNSW-NB15} \\ \textbf{Dataset} }}   & \textbf{DNN}      & 99.67\%         & 99.79\%          & 99.87\%       & 99.83\%           & 6.23\%     & 99.87\%   \\
+		& \textbf{LSTM}     & 99.96\%         & 99.96\%          & 99.97\%       & 99.98\%           & 4.02\%     & 99.97\%   \\
+		& \textbf{Bi-LSTM}  & 99.67\%         & 99.82\%          & 99.83\%       & 99.83\%           & 5.35\%     & 99.83\%   \\
+		& \textbf{GRU}      & 99.58\%         & 99.79\%          & 99.77\%       & 99.78\%           & 6.21\%     & 99.77\%   \\
+		& \textbf{CNN}      & 99.66\%         & 99.86\%          & 99.78\%       & 99.82\%           & 4.24\%     & 99.78\%   \\
+		& \textbf{CNN-LSTM} & 98.95\%         & 99.96\%          & 98.97\%       & 99.46\%           & 1.2\%      & 98.97\%   \\ \midrule
+		\multirow{6}{*}{\makecell{\textbf{CIC-IDS2017} \\ \textbf{Dataset}}} & \textbf{DNN}      & 98.95\%         & 98.57\%          & 99.73\%       & 99.15\%           & 2.29\%     & 99.73\%   \\
+		& \textbf{LSTM}     & 99.37\%         & 99.28\%          & 99.67\%       & 99.49\%           & 1.15\%     & 99.67\%   \\
+		& \textbf{Bi-LSTM}  & 99.35\%         & 99.22\%          & 99.77\%       & 99.48\%           & 1.25\%     & 99.77\%   \\
+		& \textbf{GRU}      & 99.35\%         & 99.21\%          & 99.73\%       & 99.47\%           & 1.26\%     & 99.73\%   \\
+		& \textbf{CNN}      & 99.08\%         & 98.61\%          & 99.92\%       & 99.26\%           & 2.25\%     & 99.92\%   \\
+		& \textbf{CNN-LSTM} & 98.88\%         & 98.41\%          & 99.8\%        & 99.1\%            & 2.57\%     & 99.8\%   
+	\end{tabular}}
 	\caption{Evaluation metrics of \gls{dl} models with the five data sets in binary classification. \cite{fog_based_detection_survey_2020}}
-	\label{fig:stateofart:fog_based_detection_survey_2020_results_binary}
-\end{figure}
+	\label{table:stateofart:fog_based_detection_survey_2020_results_binary}
+\end{table}
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1.0\textwidth]{img/fog_based_detection_survey_2020_results_class.png}
-	\caption{Evaluation metrics of \gls{dl} models with the five data sets in binary classification. \cite{fog_based_detection_survey_2020}}
-	\label{fig:stateofart:fog_based_detection_survey_2020_results_class}
-\end{figure}
+\begin{table}[h]
+	\resizebox{\linewidth}{!}{\begin{tabular}{l|c|c|c|c|c|c|c|c|c}
+		& \multicolumn{3}{c}{\textbf{DNN}}     & \multicolumn{3}{c}{\textbf{LSTM}}    & \multicolumn{3}{c}{\textbf{Bi-LSTM}}  \\ \midrule
+		\textbf{Attacks} & \textbf{P} & \textbf{R} & \textbf{F1-M} & \textbf{P} & \textbf{R} & \textbf{F1-M} & \textbf{P}  & \textbf{R} & \textbf{F1-M} \\ \midrule
+		\textbf{Benign} & 98.41\%  & 99.71\%  & 99.06\%     & 99.48\%  & 99.15\%  & 99.31\%     & 99.04\%   &  99.24\%  & 99.14\%     \\
+		\textbf{DDoS} & 99.18\%  & 57.77\%  & 73.01\%     & 98.89\%  & 98.94\%  & 98.91\%     & 99.49\%   &  97.16\%  & 98.31\%     \\
+		\textbf{FTP-Patator} & 84.38\%  & 56.41\%  & 67.62\%     & 91.05\%  & 99.14\%  & 94.93\%     & 93.84\%   &  98.94\%  & 96.32\%     \\
+		\textbf{Port-Scan} & 47.66\%  & 74.78\%  & 58.21\%     & 99.42\%  & 99.91\%  & 99.66\%     & 99.21\%   &  99.97\%  & 99.59\%     \\
+		\textbf{SSH-Patator} & 39.31\%  & 29.27\%  & 33.56\%     & 100\%    & 70.68\%  & 82.82\%     & 93.73\%   &  79.03\%  & 85.75\%     \\
+		\textbf{Brute-Force} & 30.23\%  & 4.12\%   & 7.26\%      & 44.74\%  & 84.65\%  & 58.54\%     & 44.81\%   & 85.77\%  & 58.86\%     \\
+		\textbf{SQL-Injection} & 0\%      & 0\%      & 0\%         & 11.11\%  & 2.56\%   & 4.28\%      & 0\%       0\%      & 0\%         \\ \midrule
+		& \multicolumn{3}{c}{\textbf{GRU}}     & \multicolumn{3}{c}{\textbf{CNN}}     & \multicolumn{3}{c}{\textbf{CNN-LSTM}} \\ \midrule
+		\textbf{Attacks} & \textbf{P} & \textbf{R} & \textbf{F1-M} & \textbf{P} & \textbf{R} & \textbf{F1-M} & \textbf{P} & \textbf{R} & \textbf{F1-M} \\ \midrule
+		\textbf{Benign} & 99.81\%  & 98.86\%  & 99.33\%     & 95.78\%  & 99.94\%  & 97.82\%     & 74.5\%    & 99.89\%  & 85.35\%     \\
+		\textbf{DDoS} & 99.06\%  & 98.94\%  & 99        & 99.96\%  & 98.68\%  & 99.32\%     & 99.77\%   & 98.93\%  & 99.35\%     \\
+		\textbf{FTP-Patator} & 89.13\%  & 99.79\%  & 94.16\%     & 99.76\%  & 84.58\%  & 91.54\%     & 96.42\%   & 49.2\%   & 65.16\%     \\
+		\textbf{Port-Scan} & 99.79\%  & 99.93\%  & 99.86\%     & 99.96\%  & 91.28\%  & 85.42\%     & 91\%      & 0.57\%   & 1.13\%      \\
+		\textbf{SSH-Patator} & 74.04\%  & 98.76\%  & 84.63\%     & 98.57\%  & 50.64\%  & 66.91\%     & 99.56\%   & 50.98\%  & 67.43\%     \\
+		\textbf{Brute-Force} & 43.8\%   & 84.65\%  & 57.73\%     & 26.14\%  & 3.16\%   & 5.64\%      & 0\%       & 0\%      & 0\%         \\
+		\textbf{SQL-Injection} & 0\%      & 0\%      & 0\%         & 0\%      & 0\%      & 0\%         & 0\%       & 0\%      & 0\%        
+	\end{tabular}}
+	\caption{Evaluation metrics of \gls{dl} models with the five data sets in binary classification. P denotes precision, R recall and F1-M the F1 measure. \cite{fog_based_detection_survey_2020}}
+	\label{table:stateofart:fog_based_detection_survey_2020_results_class}
+\end{table}
 
 As shown by the results and also stated in the paper: \gls{lstm} networks outperform other deep learning models consistently in attack detection and accuracy overall. This gives us confidence that our decision of working with \gls{lstm} networks was the right call as it adds to the real world relevance of our work. Additionally, we use a transformer encoder model for classification which was not included in the comparison done by Ahmed Samy et al. Furthermore, the models in their paper were trained exclusively in a supervised manner with at least 70\% of the data available in each dataset which differs from our approach of using very little labeled data and relying on self-supervised pre-training. \par
 
@@ -155,7 +186,7 @@ For our thesis we used the same auto-encoder and composite model for pre-trainin
 
 In their 2019 paper \cite{unsupervised_learning_lstms_timeseries} Alaa Sagheer et al. explore the benefits of unsupervised pre-training using stacked \gls{lstm} auto encoders with subsequent supervised fine-tuning. Their goal was to improve the prediction capabilities for \gls{mts} problems. In their previous paper \cite{dlstm_time_series_forecasting}, the authors showed the effectiveness of \gls{dlstm} based models for \gls{mts} prediction tasks. In their 2019 paper, they showed the improvements resulting from pre-training when compared to an initial random initialization of weights when working with \gls{dlstm} models. Compared to shallow \gls{lstm} networks, \gls{dlstm} networks contain multiple layers of \gls{lstm} cells stacked on each other. Information travels the network from left to right and from bottom to top as is depicted in figure \ref{fig:stateofart:unsupervised_learning_with_lstms_dlstm}. 
 
-\begin{figure}[h]
+\begin{figure}[]
 	\centering
 	\includegraphics[width=1.0\textwidth]{img/multi_layer_lstm.png}
 	\caption{Data flow in a three layered \gls{lstm} network.}
@@ -164,7 +195,7 @@ In their 2019 paper \cite{unsupervised_learning_lstms_timeseries} Alaa Sagheer e
 
 For pre-training the network, the authors use a \gls{lstmsae} model. In contrast to a conventional auto encoder like described in \ref{sec:backgrund:autoencoder}, a stacked auto encoder model uses multiple encoder and decoder layers as can be seen in figure \ref{fig:stateofart:unsupervised_learning_dlstm_mts_lstmsae}. The different encoder layers are trained individually in a multi phased training procedure: Train the first auto encoder layer like a conventional \gls{lstmae} with the target being the original input data. Cut the decoder part of the first \gls{lstmae}. When training the second \gls{lstmae}, the input is encoded by both the encoder of the first and second \gls{lstmae} block and then decoded only by the decoder of the second \gls{lstmae}. The target data for training the second \gls{lstmae} is again the original input, and not the reconstructed input of the first \gls{lstmae}. The training process is depicted in figure \ref{fig:stateofart:unsupervised_learning_dlstm_mts_lstmsae}. This process is then repeated for arbitrarily many \gls{lstmae} layers. The authors tried both one and two stacked layers of \gls{lstmae}. The trained encoder blocks are then used to initialize a multi layered \gls{dlstm}.
 
-\begin{figure}[h]
+\begin{figure}[]
 	\centering
 	\includegraphics[width=0.9\textwidth]{img/stacked_lstm_ae.png}
 	\caption{Layer-wise pre-training of \gls{lstmsae} model. \cite{unsupervised_learning_lstms_timeseries}}
