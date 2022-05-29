@@ -65,7 +65,7 @@ ntheorem
 
 % Define convenience functions to use the author name and the thesis title in the PDF document properties.
 \newcommand{\authorname}{Jonas Ferdigg} % The author name without titles.
-\newcommand{\thesistitle}{Self-supervised Pre-training on LSTM and  models for Network Intrusion Detection} % The title of the thesis. The English version should be used, if it exists.
+\newcommand{\thesistitle}{Self-supervised Pre-training on LSTM and Transformer models for Network Intrusion Detection} % The title of the thesis. The English version should be used, if it exists.
 
 % Set PDF document properties
 \hypersetup{
@@ -95,7 +95,7 @@ ntheorem
 
 
 % For bachelor and master theses:
-\setfirstassistant{Univ.Ass. Dott.mag.}{Maximilian Bachl}{}{male}
+\setfirstassistant{Univ.Ass. Dipl.-Ing.}{Alexander Hartl}{}{male}
 
 % For dissertations:
 \setfirstreviewer{Pretitle}{Forename Surname}{Posttitle}{male}
@@ -106,7 +106,7 @@ ntheorem
 
 % Required data.
 \setregnumber{01226597}
-\setdate{01}{01}{2001} % Set date with 3 arguments: {day}{month}{year}.
+\setdate{29}{05}{2022} % Set date with 3 arguments: {day}{month}{year}.
 \settitle{\thesistitle}{Self-Supervised learning for Cyber Security Applications} % Sets English and German version of the title (both can be English or German). If your title contains commas, enclose it with additional curvy brackets (i.e., {{your title}}) or define it as a macro as done with \thesistitle.
 %\setsubtitle{Optional Subtitle of the Thesis}{Optionaler Untertitel der Arbeit} % Sets English and German version of the subtitle (both can be English or German).
 
@@ -146,29 +146,41 @@ ntheorem
 \addstatementpage
 
 \begin{danksagung*}
-\todo{Ihr Text hier.}
+An dieser Stelle möchte ich mich bei allen bedanken, die mich auf dem langen Weg zu diesem Abschluss begleitet haben. 
+
+Besonders möchte ich mich bei Frau Prof. Tanja Zseby und Herrn Dipl.-Ing. Alexander Hartl bedanken, die mich in den letzten Monaten vor dem Abschluss dieser Thesis mit sehr viel konstruktivem Feedback und Anregungen unterstützt haben und ohne die diese Arbeit zu diesem Zeitpunkt wohl noch längst nicht abgeschlossen wäre.
+
+Als nächstes möchte ich mich sehr herzlich bei meinen Eltern bedanken, die mir den nötigen finanziellen und mentalen Rückhalt gegeben haben und mich zu einem Menschen erzogen haben, der es fertig bringt, einen Master an der TU Wien abzuschließen.
+
+Bedanken möchte ich mich auch bei meiner Freundin, ohne die diese Arbeit wohl weit mehr Rechtschreibfehler enthalten würde und die es mir in turbulenten Zeiten ermöglicht hat, mich trotzdem auf den Abschluss dieser Arbeit zu konzentrieren.
+
+Ein dankendes Wort möchte ich auch an meine Studienkollegen richten dafür, dass sie die Freuden und manches Leiden des Studiums mit mir geteilt und mich stets motiviert haben, ein besserer Ingenieur zu werden.
+
+Besonders bedanken möchte ich mich auch bei all meinen Professorinnen und Professoren sowie Tutorinnen und Tutoren der TU Wien dafür, dass sie ihr Wissen mit mir geteilt haben und den doch oft sehr trockenen Stoff mit viel Humor etwas verdaulicher gemacht haben.
+
+Ein besonderer Dank gilt auch meiner WG aus der Schweglerstraße und all meinen Freunden, die dafür gesorgt haben, dass ich mich wärend des Studiums nicht nur fachlich, sondern auch menschlich weiterentwickelt habe und ohne die diese Arbeit schon vor Jahren fertig geworden wäre.
+
+%mir stets die Zuversicht gegeben haben, dass am Ende doch fast nichts unmöglich ist.
+
+
+
 \end{danksagung*}
 
 %\begin{acknowledgements*}
 %\todo{Enter your text here.}
 %\end{acknowledgements*}
 
+%Während überwachtes Lernen immer noch
+%am effektivsten beim Trainieren von Modellen des maschinellen Lernens ist, wird dessen Durchführbarkeit oft durch einen Mangel an teuren markierten Daten eingeschränkt. Aus diesem und anderen Gründen haben Forscher an der Spitze der Entwicklung des maschinellen Lernens, insbesondere im Bereich des Natural Language Processing (NLP), damit begonnen ihre Modelle mit großen Mengen nicht markierten Daten vorzutrainieren, um die Knappheit an markierten Daten zu überwinden. 
+
 \begin{kurzfassung}
-\todo{Ihr Text hier.}
+Techniken des Machine Learnings (ML) und Deep Neural Networks (DNNs) haben in verschiedene Disziplinen Einzug gehalten und ihre möglichen Vorteile werden für eine Vielzahl von Anwendungen untersucht. Die Fähigkeiten moderner ML Modelle in der Mustererkennung
+haben Expertensysteme oder sogar Menschen in speziellen Anwendungsbereichen längst überholt. Ihre Fähigkeit, scheinbar komplexe Daten genau zu klassifizieren, eignet sich auch für den Einsatz im Zusammenhang mit Network Intrusion Detection (NID). Ein häufig verwendetes Muster beim Trainieren von Neuronalen Netzen im Bereich des Natural Language Processing (NLP) ist, ein Modell mit vielen nicht-gelabelten Daten selbstüberwacht vorzutrainieren (to \textit{pre-train}) und dann nur noch mit einem kleinen markierten Datensatz zu verfeindern (\textit{fine-tuning}). Im Zuge des Vortrainierens kann ein Modell beauftragt werden, verhüllte Informationsteile aus den Eingabedaten zu rekonstruieren, künftige Eingaben vorherzusagen, oder andere Fragen zu den Eingabedaten zu stellen, deren Antwort aus den unmarkierten Daten ableitbar ist. Im nächsten Schritt wird eine kleine Menge von gekennzeichneten Daten zur Feinabstimmung des Modells verwendet, um die angestrebte eigentliche Aufgabe zu erfüllen. Inspiriert von den Erfolgen von Modellen wie BERT und seinen Nachfolgern haben wir die gleichen Methoden verwendet, um die Klassifizierungsgenauigkeit für Deep-Learning basierte Network Intrusion Detection Systeme (NIDS) zu erhöhen. In unserer Forschung beantworten wir die Frage, ob Pre-Training Paradigmen, die im NLP verwendet werden, auch im Kontext von Deep-Learning basierten NIDS anwendbar sind. Wir haben ein Vortraining für \textit{Long Short-Term Memory (LSTM)} und \textit{transformer encoder} Modellen mit einer Reihe von selbstüberwachten Trainingsmethoden auf Basis von Autocodierung und Autoregression durchgeführt, um die binäre Klassifizierung von Netzwerkverkehrsaufzeichnungen zu verbessern. Nach dem Vortraining verwenden wir eine überwachte Feinabstimmung mit einer kleinen Menge markierter Daten, um dem Modell beizubringen, wie es die Daten in angreifende und gutartige Datenströme einteilen kann. Als Trainingsdaten haben wir eine \textit{flow}-Darstellung der NID-Datensätze CIC-IDS2017 und UNSW-NB15 mit dem \textit{flow}-Schlüssel \textit{<dstIp, srcIp, dstPort, srcPort, protocolId>} verwendet. Unsere flows bestehen aus einer Folge von Tensoren, die paket- und flussspezifische Merkmale enthalten. Unsere Ergebnisse zeigen, dass die Klassifizierungsgenauigkeit durch Vortraining verbessert werden kann, aber nur in bestimmten Instanzen. Weitere Untersuchungen sind erforderlich, um zu sehen, ob unsere Ergebnisse verallgemeinert werden können.
 \end{kurzfassung}
 
 \begin{abstract}
-Machine learning techniques and \glspl{dnn} have found their way into various disciplines and their possible 
-benefits are explored for a diverse range of application. The pattern matching capabilities of modern day machine learning models 
-have long surpassed expert systems or even humans in narrow applications. Their ability to accurately classify seemingly complex data
-makes them well suited to also be used in the context of \gls{nid}. While supervised learning is still most effective when
-training machine learning models, its feasibility is often stifled by a lack of expensive labeled data. For this and
-other reasons researchers at the forefront of machine learning development, especially in the field of \gls{nlp}, have began 
-to pre-train their models on large amounts of unlabeled data to overcome the scarcity of labeled data. A commonly used pattern e.g. used to train 
-Google's \gls{bert} model, is to pre-train large scale machine learning models in a self-supervised manner. This is done by tasking the model to either reconstruct omitted parts of information from the input data, predicting future input or asking other questions about the input data
-to which the answer is derivable from the unlabeled data. Only a small amount of labeled data is then used to fine-tune the model to perform 
-the target downstream task. Inspired by the achievements of models like \gls{bert} and its successors we used the same methods to increase classification accuracy for deep learning based \gls{nids}.
-In our research we try to answer the question whether pre-training paradigms used in \gls{nlp} can improve classification accuracy for deep learning based \gls{nids}. We performed pre-training on \gls{lstm} and transformer encoder models with a set of devised auto encoding and auto regression based self-supervised training methods to improve binary classification of network traffic records. After pre-training we use supervised fine-tuning with a small amount of labeled data to teach the model how to classify the data into attack and benign flows. As training data we used a flow representations of the CIC-IDS2017 and UNSW-NB15 \gls{nid} datasets with the flow key <dstIp, srcIp, dstPort, srcPort, protocolId>. Our flows consist of a sequence of tensors containing packet and flow specific features. Our results show that classification accuracy can be improved through pre-training, but only in specific instances. Further inquiry is needed to see if our results can be generalized. 
+Machine learning techniques and \glspl{dnn} have found their way into various disciplines. Their possible benefits are explored for a diverse range of applications. The pattern matching capabilities of modern day machine learning models have long surpassed expert systems or even humans in narrow applications. Their ability to accurately classify seemingly complex data makes them well suited to also be used in the context of \gls{nid}. While supervised learning is still most effective when training machine learning models, its feasibility is often stifled by a lack of expensive labeled data. For this, among other reasons, researchers at the forefront of machine learning development, especially in the field of \gls{nlp}, have began to pre-train their models on large amounts of unlabeled data to overcome the scarcity of labeled data. A commonly used pattern e.g. used to train Google's \gls{bert} model, is to pre-train large scale machine learning models in a self-supervised manner. This is done by tasking the model to either reconstruct omitted parts of information from the input data, predicting future input or asking other questions about the input data to which the answer is derivable from the unlabeled data. Only a small amount of labeled data is then used to fine-tune the model to perform the target downstream task. Inspired by the achievements of models like \gls{bert} and its successors, we used the same methods to increase classification accuracy for deep learning based \gls{nids}.
+In our research we try to answer the question whether pre-training paradigms used in \gls{nlp} can improve classification accuracy for deep learning based \gls{nids}. We performed pre-training on \gls{lstm} and transformer encoder models with a set of devised auto encoding and auto regression based self-supervised training methods to improve binary classification of network traffic records. After pre-training we use supervised fine-tuning with a small amount of labeled data to teach the model how to classify the data into attack and benign flows. As training data we used flow representations of the CIC-IDS2017 and UNSW-NB15 \gls{nid} datasets with the flow key <dstIp, srcIp, dstPort, srcPort, protocolId>. Our flows consist of a sequence of tensors containing packet and flow specific features. Our results show that classification accuracy can be improved through pre-training, but only in specific instances. Further inquiry is needed to see if our results can be generalized. 
 \end{abstract}
 
 % Select the language of the thesis, e.g., english or naustrian.
@@ -215,7 +227,7 @@ In our research we try to answer the question whether pre-training paradigms use
 
 % Use an optional list of alogrithms.
 %\listofalgorithms
-\addcontentsline{toc}{chapter}{List of Algorithms}
+%\addcontentsline{toc}{chapter}{List of Algorithms}
 
 % Add an index.
 \printindex

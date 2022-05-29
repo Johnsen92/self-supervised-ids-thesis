@@ -1,12 +1,16 @@
 \chapter{Results} \label{sec:results}
 
-In this chapter, we present the results from experiments proposed in the previous chapter. Like with the experiments section, we will be looking at the results from \gls{lstm} and the transformer model independently. An in-depth look into the datasets and the workings of the differently trained models based on \gls{pd} plots, neuron data plots and the outputs of a fitted \gls{dtc} follow in the section \ref{sec:results:explainability}. For a complete list of parameters used during table we refer to tables \ref{table:experiments:baseline}, \ref{table:experiments:baseline}, \ref{table:experiments:lstm:configurations} and \ref{table:experiments:transformer:configurations} and the results section in general. To analyze experiment results, we devised two types of tables: In one we are analyzing all result metrics which are listed in section \ref{sec:background:metrics} together with some training metrics like to time it took the model to produce the best sampled results and in the other we are looking at attack category specific accuracy results. \textit{Epochs Supervised} states how many epochs the model was trained during fine-tuning i.e. on the amount of labeled data it was provided, denoted by \textit{Training percentage}. The label \textit{Best epoch} constitutes the training epoch in which the highest accuracy score was achieved by the model on the validation subset and \textit{Time to best epoch} constitutes the time it took during fine-tuning to achieve this result. To track in which epoch the model performed best, validation accuracy was tested every 6 epochs for trainings with 600 epochs, every 2 epochs for trainings with 200 epochs and every epoch for trainings with <100 epochs. This was done to keep training times reasonable, as, especially in the cases where only the specialized subsets where used for fine-tuning, validation takes longer than an epoch of training. Higher accuracy scores might have occurred during epochs in which validation accuracy was not tested. In the tables we are looking for cases where pre-training effected the classification behavior of the model i.e. where scores differ from the NONE baseline column. 
+In this chapter, we present the results from experiments proposed in the previous chapter. Like with the experiments section, we will be looking at the results from \gls{lstm} and the transformer model independently. An in-depth look into the datasets and the workings of the differently trained models based on \gls{pd} plots, neuron data plots and the outputs of a fitted \gls{dtc} follow in the section \ref{sec:results:explainability}. For a complete list of parameters used during training we refer to tables \ref{table:experiments:baseline}, \ref{table:experiments:baseline}, \ref{table:experiments:lstm:configurations} and \ref{table:experiments:transformer:configurations} and the experiments section in general. To analyze the results, we devised two types of tables: In one we are analyzing all result metrics which are listed in section \ref{sec:background:metrics} together with some training metrics like the time it took the model to produce the best sampled results and in the other we are looking at attack category specific accuracy results. \textit{Epochs Supervised} states how many epochs the model was trained during fine-tuning i.e. on the amount of labeled data it was provided, denoted by \textit{Training percentage}. The label \textit{Best epoch} constitutes the training epoch in which the highest accuracy score was achieved by the model on the validation subset and \textit{Time to best epoch} constitutes the time it took during fine-tuning to achieve this result. To track in which epoch the model performed best, validation accuracy was tested every 6 epochs for trainings with 600 epochs, every 2 epochs for trainings with 200 epochs and every epoch for trainings with <100 epochs. This was done to keep training times reasonable, as, especially in the cases where only the specialized subsets were used for fine-tuning, validation takes longer than an epoch of training. Higher accuracy scores might have occurred during epochs in which validation accuracy was not tested. In the tables we are looking for cases where pre-training affected the classification behavior of the model i.e. where scores differ from the NONE baseline column. 
 
 \FloatBarrier
+
+\clearpage
 
 \section{Long Short-Term Memory Model} \label{sec:results:lstm}
 
 As a baseline, we look at results where the model has been trained in a purely supervised fashion with different amounts of data of the two datasets. The results are comparable to previous experiments with deep neural networks on these datasets \cite{fog_based_detection_survey_2020} and even slightly better in some instances. Looking at tables \ref{table:results:lstm:stats_flows_supervised}, \ref{table:results:lstm:stats_flows15_supervised} we can already see that very little supervised data is needed to achieve fairly high accuracy. For the \gls{lstm} model, going from 90\% of training data (exp. 1.1.1 and 1.2.1) to 10\% (exp. 2.1.1 and 2.4.1) only amounts to an absolute drop of 0.164\% and 0.276\% accuracy for CIC-IDS2017 and UNSW-NB15 datasets respectively. Most astounding are also the results when dropping from millions of records when training with 90\% of the datasets to just the specialized subsets containing a couple of hundred entries in total and only 10 records of each attack class. Withholding most of labeled data in the datasets, this constraint only amounts to an absolute accuracy decrease of 4.114\% and 1.176\% for datasets CIC-IDS2017 and UNSW-NB15 respectively. While this is fairly pleasant in general, it means that results will be harder to improve as any benefit pre-training provides might be overshadowed by the effectiveness of supervised training, even with very little data. \par
+
+\FloatBarrier
 
 \input{results/results/rn500/lstm/tables/flows_supervised/stats_comparison_ALL}
 
@@ -34,7 +38,7 @@ Looking at table \ref{table:results:lstm:stats_flows_1} we can inspect for which
 
 \input{results/results/rn500/lstm/tables/flows_1/class_comparison_ALL}
 
-Looking at results for experiments 2.2.1-6 \ref{table:results:lstm:stats_flows_1} fine-tuned with 1\% of the CICIDS-2017 dataset - \textit{ceteris paribus} - the maximum delta in accuracy increased to 0.178\%, which in this iteration is observed after pre-training with the PREDICT proxy task \ref{sec:experiments:lstm:predict_packet}. The positive delta for the COMPOSITE proxy tasks increased to 0.136\% and the delta for the ID proxy task remained almost the same at 0.094\%. PREDICT, ID and COMPOSITE proxy tasks have shown improvements in accuracy and performance overall for experiments 2.1.1-6 and 2.2.1-6, but the pattern breaks down when looking at experiments 2.3.1-6 with fine-tuning performed with subset CIC17\_10 where improvement is now only present for pre-training with the ID proxy task where the positive deltas in accuracy and detection rate have increased to 0.594\% and 3.602\% respectively. All other pre-training resulted in strongly reduced performance most salient with the OBSCURE proxy task with a negative delta in accuracy of -2.327\%. \par 
+Looking at results for experiments 2.2.1-6 (table \ref{table:results:lstm:stats_flows_1}) fine-tuned with 1\% of the CICIDS-2017 dataset - \textit{ceteris paribus} - the maximum delta in accuracy increased to 0.178\%, which in this iteration is observed after pre-training with the PREDICT proxy task \ref{sec:experiments:lstm:predict_packet}. The positive delta for the COMPOSITE proxy tasks increased to 0.136\% and the delta for the ID proxy task remained almost the same at 0.094\%. PREDICT, ID and COMPOSITE proxy tasks have shown improvements in accuracy and performance overall for experiments 2.1.1-6 and 2.2.1-6, but the pattern breaks down when looking at experiments 2.3.1-6 with fine-tuning performed with subset CIC17\_10 where improvement is now only present for pre-training with the ID proxy task where the positive deltas in accuracy and detection rate have increased to 0.594\% and 3.602\% respectively. All other pre-training resulted in strongly reduced performance most salient with the OBSCURE proxy task with a negative delta in accuracy of -2.327\%. \par 
 
 \input{results/results/rn500/lstm/tables/flows_subset/stats_comparison_ALL}
 
@@ -65,7 +69,7 @@ It also shall be noted that for training with the CIC17\_10 and UNSW15\_10 the r
 
 \subsection{Pre-training of the LSTM model with UNSW-NB15 Dataset}
 
-A similar pattern emerges from the results of tests on the UNSW-NB15 dataset. For experiments 2.4.1-6 in table \ref{table:results:lstm:stats_flows15_10} fine-tuned with 10\% of the dataset minor improvement can again be observed for the pre-trained models. The highest positive delta of 0.086\% occurred after pre-training with de identity function proxy task in experiment 2.4.5 when comparing to the purely supvervised training in experiment 2.4.1. Training with other proxy tasks shows comparably minor improvements to accuracy. \par
+A similar pattern emerges from the results of tests on the UNSW-NB15 dataset. For experiments 2.4.1-6 in table \ref{table:results:lstm:stats_flows15_10} fine-tuned with 10\% of the dataset minor improvement can again be observed for the pre-trained models. The highest positive delta of 0.086\% occurred after pre-training with de identity function proxy task in experiment 2.4.5 when comparing to the purely supervised training in experiment 2.4.1. Training with other proxy tasks shows comparably minor improvements to accuracy. \par
 
 \input{results/results/rn500/lstm/tables/flows15_10/stats_comparison_ALL}
 
@@ -88,19 +92,21 @@ The pattern of improved accuracy breaks again when looking at fine-tuning with t
 
 \FloatBarrier
 
+\clearpage
+
 \section{Transformer Model} \label{sec:results:transformer}
 
-\input{results/results/rn500/transformer/tables/flows_supervised/stats_comparison_ALL}
-
 The transformer model without pre-training produces state of the art results, similar to experiments with the \gls{lstm} model but  performs slightly worse: For 90\% of data for supervised training only 0.138\% and 0.187\% absolute difference for CIC-IDS2017 and UNSW-NB15 datasets respectively \ref{table:results:transformer:stats_flows_supervised}.
-For UNSW-NB15 for 10\% and 1\% fine-tuning no improvements were achieved, except for a 0.03\% plus in accuracy for 3.5.4 \ref{table:results:transformer:stats_flows15_1} which is most likely just variance. \par
+For UNSW-NB15 for 10\% and 1\% fine-tuning no improvements were achieved, except for a 0.03\% plus in accuracy for 3.5.4 (table \ref{table:results:transformer:stats_flows15_1}) which is most likely just variance. \par
+
+\input{results/results/rn500/transformer/tables/flows_supervised/stats_comparison_ALL}
 
 \input{results/results/rn500/transformer/tables/flows15_supervised/stats_comparison_ALL}
 
 \subsection{Pre-training of the transformer model with CIC-IDS2017 Dataset}
 
-For experiments 3.6.1-4 \ref{table:results:transformer:stats_flows15_subset} on dataset UNSW-NB15 with subset UNSW15\_10 both the AUTO proxy task yielded minor improvements of 0.295\% accuracy but with the MASK proxy task the model accuracy fell by 1.213\% as the model defaulted to guessing negative i.e. detection rate: 0\%. The accuracy improvements in experiment 3.6.4 stems from a major increase in detection rate of an absolute 29.424\% when compared to experiment 3.6.1 i.e. performance of the model without pre-training. \par
-Surprisingly, the MASK proxy task yielded the worst results overall when looking at accuracy as it dropped for 4/6 experiment series even though it is the most similar proxy task used compared to the one used in Google BERT. To avoid cluttering this section with tables we moved the per category results for the transformer model to the appendix.
+In experiments with the CIC-IDS2017 dataset and increase in classification accuracy was only achieved in experiment 
+3.3.3 (table \ref{table:results:transformer:stats_flows_subset}) for pre-training with the OBSCURE proxy task and fine-tuning with the specialized subset CIC17\_10. Results for pre-training with 10 an 1 percent of the dataset can be seen in tables \ref{table:results:transformer:stats_flows10} and \ref{table:results:transformer:stats_flows_1} respectively. Results for training with specialized subset CIC17\_10 can be found in table \ref{table:results:transformer:stats_flows_subset}.
 
 \input{results/results/rn500/transformer/tables/flows_10/stats_comparison_ALL}
 
@@ -108,9 +114,10 @@ Surprisingly, the MASK proxy task yielded the worst results overall when looking
 
 \input{results/results/rn500/transformer/tables/flows_subset/stats_comparison_ALL}
 
-\FloatBarrier
-
 \subsection{Pre-training of the transformer model with UNSW-NB15 Dataset}
+
+For experiments 3.6.1-4 \ref{table:results:transformer:stats_flows15_subset} on dataset UNSW-NB15 with subset UNSW15\_10 both the AUTO proxy task yielded minor improvements of 0.295\% accuracy but with the MASK proxy task the model accuracy fell by 1.213\% as the model defaulted to guessing negative i.e. detection rate: 0\%. The accuracy improvements in experiment 3.6.4 stems from a major increase in detection rate of an absolute 29.424\% when compared to experiment 3.6.1 i.e. performance of the model without pre-training. \par
+Surprisingly, the MASK proxy task yielded the worst results overall when looking at accuracy as it dropped for 4/6 experiment series even though it is the most similar proxy task used compared to the one used in Google BERT. To avoid cluttering this section with tables we moved the per category results for the transformer model to the appendix.
 
 \input{results/results/rn500/transformer/tables/flows15_10/stats_comparison_ALL}
 
@@ -118,17 +125,15 @@ Surprisingly, the MASK proxy task yielded the worst results overall when looking
 
 \input{results/results/rn500/transformer/tables/flows15_subset/stats_comparison_ALL}
 
-\FloatBarrier
-
 \section{Explainability} \label{sec:results:explainability}
 
 In this section we are trying to analyze the mechanisms involved in generating the results in the previous section and analyze the datasets used. As with machine learning in general, complete explainability is hard to achieve, hence the following attempts are our best efforts to make sense of the results. We try to answer the questions
 
 \begin{itemize}
 	\item Did the pre-training have any effect on the model behavior and if yes: how did predictions change?
-	\item Which features where relevant for classification? 
+	\item Which features were relevant for classification? 
 	\item Why did the model perform so well, even with very little training data?
-	\item Where the datasets suited to be used for the conducted experiments?
+	\item Were the datasets suited to be used for the conducted experiments?
 \end{itemize}
 
 To answer these questions, we conducted a series of tests including plotting neuron activation data, a \gls{pd} analysis, and fitting a \gls{dtc} to discern the value thresholds of features which lead to correct classifications. 
@@ -136,11 +141,11 @@ To answer these questions, we conducted a series of tests including plotting neu
 \subsection{Neuron Activation Plots} \label{sec:results:explainability:nap}
 
 To answer the question whether pre-training had any effect at all on the behavior of the \gls{lstm} model, we looked at neuron activations of the last stage of the \gls{lstm}, i.e. the hidden state of the last stage of the last layer of the model after having processed the whole data sequence, after pre-training and after fine-tuning. The plots are category specific and where generated by processing all records of the stated attack category in the respective dataset. The plot is then the average of all obtained values and describes the mean neuron activation response of the model to this category. \par
-The assumption was, that if the information the model learned during pre-training proofed useful for classification the neurons which were activated after pre-training would still be activated after fine-tuning. The same neuron activations not being present after fine-tuning does however not mean, that pre-training had no positive effect on classification. As we are only looking at the last stage of the last layer of the \gls{lstm}, the learned information might have been used in a previous layer of the \gls{lstm} to influence later layers towards a more accurate classification which would not show in these results. To have some form of quantitative metric, we calculated the L1 loss, also called the \gls{lad}, as a measurement of difference between the neurons activation after pre-training and the same neurons after fine-tuning. Instances where the neurons where not activated in either tensor, i.e. activation level $< 0.1$, are omitted from the plots (but not the L1 loss calculation) to increase readability. L1 or \gls{lad} is defined as $LAD = L1 = mean(|h_{pretraining} - h_{supervised}|)$.
+The assumption was, that if the information the model learned during pre-training proved useful for classification the neurons which were activated after pre-training would still be activated after fine-tuning. The same neuron activations not being present after fine-tuning does however not mean, that pre-training had no positive effect on classification. As we are only looking at the last stage of the last layer of the \gls{lstm}, the learned information might have been used in a previous layer of the \gls{lstm} to influence later layers towards a more accurate classification which would not show in these results. To have some form of quantitative metric, we calculated the $L1$ loss, as a measurement of difference between the neurons activation after pre-training and the same neurons after fine-tuning. Instances where the neurons were not activated in either tensor, i.e. activation level $< 0.1$, are omitted from the plots (but not the L1 loss calculation) to increase readability. $L1$ is defined as $L1 = mean(|h_{pretraining} - h_{supervised}|)$.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1.1\linewidth]{results/results/rn500//lstm/plots/neuron/flows_ID/latest/11_PortScan_-_Firewall_off.png}
+	\includegraphics[width=\linewidth]{results/results/rn500//lstm/plots/neuron/flows_ID/latest/11_PortScan_-_Firewall_off.png}
 	\caption{Neuron comparison plot of the average neuron activation level of the latest stage of the \gls{lstm} model after processing all 
 	flows of category \textit{PortScan - Firewall off} in dataset CIC-IDS2017. The model was pre-trained with the ID proxy task and afterwards fine-tuning 
 	with specialized subset CIC17\_10.}
@@ -149,7 +154,7 @@ The assumption was, that if the information the model learned during pre-trainin
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1.1\linewidth]{results/results/rn500//lstm/plots/neuron/flows_ID/latest/9_Infiltration.png}
+	\includegraphics[width=\linewidth]{results/results/rn500//lstm/plots/neuron/flows_ID/latest/9_Infiltration.png}
 	\caption{Neuron comparison plot of the average neuron activation level of the latest stage of the \gls{lstm} model after processing all flows of category \textit{Infiltration} in dataset CIC-IDS2017. The model was pre-trained with the ID proxy task and afterwards fine-tuning 
 	with specialized subset CIC17\_10.}
 	\label{fig:results:lstm:neuron:cic17_id_infiltration}
@@ -164,26 +169,26 @@ As we can see in figures \ref{fig:results:lstm:neuron:cic17_id_port_scan_firewal
 We started with the \textbf{\gls{pd}} analysis on some of the features
 to discern their effect on the classification of each attack type in the dataset. 
 The resulting \glspl{pdp} were generated with the models from experiments \ref{table:results:lstm:stats_flows_subset},
-\ref{table:results:lstm:stats_flows15_subset}, \ref{table:results:transformer:stats_flows_subset}, \ref{table:results:transformer:stats_flows15_subset} because we assumed that pre-training has the most impact on models trained on very little labeled training data. The features we looked at where \textit{source port number}, \textit{destination port number}, \textit{protocol identifier} and \textit{packet length}. \par
-For both datasets, we generated plots to inspect how the predictions of the model change after altering the value of the feature - \textit{ceteris paribus}. The value range of each feature was withing the highest and lowest occurring value of said feature in the dataset. The colored graph lines represent the predictions, i.e. the activation level of the output neuron of the model trained with the respective proxy task denoted in the graph legend in the top left corner. The histogram depicted in gray together with the right-hand side vertical axis describes the number of flows in the used testset with this feature value. 
+\ref{table:results:lstm:stats_flows15_subset}, \ref{table:results:transformer:stats_flows_subset}, \ref{table:results:transformer:stats_flows15_subset} because we assumed that pre-training has the most impact on models trained on very little labeled training data. The features we looked at were \textit{source port number}, \textit{destination port number}, \textit{protocol identifier} and \textit{packet length}. \par
+For both datasets, we generated plots to inspect how the predictions of the model change after altering the value of the feature - \textit{ceteris paribus}. The value range of each feature was within the highest and lowest occurring value of said feature in the dataset. The colored graph lines represent the predictions, i.e. the activation level of the output neuron of the model trained with the respective proxy task denoted in the graph legend in the top left corner. The histogram depicted in gray together with the right-hand side vertical axis describes the number of flows in the used testset with this feature value. 
 The testset used to generate each plot contained all records of the specified category contained in the dataset. Examples of these plots can be seen in figures \ref{fig:results:lstm:pdp:cic17_packet_length_ssh_patator} and \ref{fig:results:lstm:pdp:cic17_source_port_ssh_patator}. After we generated the data for each tuple of ($dataset$ x $model$ x $feature$ x $attack type$) we generated plots to compare the results of the different models yielding a total of 160 plots. Most of them are of little interest as often the inspected feature had no or very little impact on the classification of the attack type. A full list of all generated \gls{pd} plots can be found in the appendix. \par 
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1.1\linewidth]{results/results/rn500/lstm/plots/pdp/flows_NONE_PREDICT_OBSCURE_AUTO_ID_COMPOSITE/Packet_Length_2_SSH-Patator_3}
+	\includegraphics[width=\linewidth]{results/results/rn500/lstm/plots/pdp/flows_NONE_PREDICT_OBSCURE_AUTO_ID_COMPOSITE/Packet_Length_2_SSH-Patator_3}
 	\caption{Partial dependency plot between feature \textit{packet length} and classification of \textit{SSH Patator} attacks in the CIC-IDS2017 dataset. The histogram describes the distribution of occurring values for feature \textit{packet length} in flows of type \textit{SSH Patator}.}
 	\label{fig:results:lstm:pdp:cic17_packet_length_ssh_patator}
 \end{figure}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1.1\linewidth]{results/results/rn500/lstm/plots/pdp/flows_NONE_PREDICT_OBSCURE_AUTO_ID_COMPOSITE/Source_port_2_SSH-Patator_0.png}
+	\includegraphics[width=\linewidth]{results/results/rn500/lstm/plots/pdp/flows_NONE_PREDICT_OBSCURE_AUTO_ID_COMPOSITE/Source_port_2_SSH-Patator_0.png}
 	\caption{Partial dependency plot between feature \textit{source port} and classification of \textit{SSH Patator} attacks in the CIC-IDS2017 dataset. The histogram describes the distribution of occurring values for feature \textit{source port} in flows of type \textit{SSH Patator}.}
 	\label{fig:results:lstm:pdp:cic17_source_port_ssh_patator}
 \end{figure}
 
 
-What is immediately apparent from the the plots is that even though the final metrics of the experiments with different proxy tasks where similar, the general behavior of the models trained with different proxy tasks is effected by pre-training. In the range where the actual feature values relevant for classification of specific attack categories lay the models behave very similar which leads to correct classification. An example of this can be seen in figure \ref{fig:results:lstm:pdp:cic17_source_port_ssh_patator} where, deducing from the plots and from a later inspection of the decision tree thresholds of the fitted \gls{dtc}, the source port is an important feature when it comes to classifying \textit{SSH Patator} attacks. Varying this feature leads to different behavior of the differently trained models, but in the value range the feature actually takes on in the dataset, i.e. the relevant section, the models behave very similar. We will take a deeper look into this issue later in the section when we look at the structure of the decision tree used to classify each attack category. If no such clear pattern in the plot emerges like e.g. in plot \ref{fig:results:lstm:pdp:cic17_packet_length_ssh_patator}, it means that there the value of the feature has little impact on the classification of the attack type which is also congruent with the results generated by the \gls{dtc} which can be found later in this chapter.
+What is immediately apparent from the the plots is that even though the final metrics of the experiments with different proxy tasks were similar, the general behavior of the models trained with different proxy tasks is affected by pre-training. In the range where the actual feature values relevant for classification of specific attack categories lay, the models behave very similar which leads to correct classification. An example of this can be seen in figure \ref{fig:results:lstm:pdp:cic17_source_port_ssh_patator} where, deducing from the plots and from a later inspection of the decision tree thresholds of the fitted \gls{dtc}, the source port is an important feature when it comes to classifying \textit{SSH Patator} attacks. Varying this feature leads to different behavior of the differently trained models, but in the value range the feature actually takes on in the dataset, i.e. the relevant section, the models behave very similar. We will take a deeper look into this issue later in the section when we look at the structure of the decision tree used to classify each attack category. If no such clear pattern in the plot emerges like e.g. in plot \ref{fig:results:lstm:pdp:cic17_packet_length_ssh_patator}, it means that there the value of the feature has little impact on the classification of the attack type which is also congruent with the results generated by the \gls{dtc} which can be found later in this chapter.
 
 \FloatBarrier
 
@@ -195,7 +200,7 @@ Due to the high accuracy rates the models achieved with very little training dat
 
 \input{results/results/rn500/dt/tables/flows15_depth16/stats_comparison_ALL.tex}
 
-The accuracy scores listed in tables \ref{table:results:dt:stats_flows_depth20} and \ref{table:results:dt:stats_flows15_depth16} are based on per packet classification so they are not completely comparable to the results from the \gls{dnn} models as their validation metrics are based on the classification of the extracted flows and not packets. The results where generated with the exact same stratified training and validation splits as were used for training the \gls{dl} models to keep some comparability. The results where generated with a maximum depth of 20 and 16 for datasets CIC-IDS2017 and UNSW-NB15 respectively. With these parameters the \gls{dtc} achieves peak performance before it starts to overfit as depicted in table \ref{table:results:explainability:model_comparison}. This indicates that records of CIC-IDS2017 dataset might be slightly harder to classify. The high accuracy achieved by the \gls{dtc} on a packet basis without having any concept of flows or sequences might indicate that the datasets indeed might be simply very easy to classify. 
+The accuracy scores listed in tables \ref{table:results:dt:stats_flows_depth20} and \ref{table:results:dt:stats_flows15_depth16} are based on per packet classification so they are not completely comparable to the results from the \gls{dnn} models as their validation metrics are based on the classification of the extracted flows and not packets. The results were generated with the exact same stratified training and validation splits as were used for training the \gls{dl} models to keep some comparability. The results were generated with a maximum depth of 20 and 16 for datasets CIC-IDS2017 and UNSW-NB15 respectively. With these parameters the \gls{dtc} achieves peak performance before it starts to overfit as depicted in table \ref{table:results:explainability:model_comparison}. This indicates that records of CIC-IDS2017 dataset might be slightly harder to classify. The high accuracy achieved by the \gls{dtc} on a packet basis without having any concept of flows or sequences might indicate that the datasets indeed might be simply very easy to classify. 
 
 \begin{table}[!h]
 	\centering
@@ -285,7 +290,7 @@ The resulting trees can be inspected to discern which features are important for
 
 Tables \ref{table:results:expl:fimp_90_ds}, \ref{table:results:dtc:fimp_flows} and \ref{table:results:dtc:fimp_flows15} constitute a closer look at the importance of different features for binary classification. The values in the tables constitute the \textit{Gini importance} or \textit{mean decrease impurity} which are defined as the total decrease in node impurity i.e. the Gini impurity in our case \cite{sklearn}. \par
 
-In table \ref{table:results:expl:fimp_90_ds} the importances of the different features from both datasets are compared. The destination port and the packet length where the most valuable features for binary classification for the CIC-IDS2017 and UNSW-NB15 datasets respectively. The URG, ECE, CWR and NS flags seem to be of no importance to classification, but that is probably due to the fact that they are rarely used. Noteworthy is that for the two datasets different features are of high importance which suggests the conclusion that they are easy to classify due to different reasons. \par
+In table \ref{table:results:expl:fimp_90_ds} the importances of the different features from both datasets are compared. The destination port and the packet length were the most valuable features for binary classification for the CIC-IDS2017 and UNSW-NB15 datasets respectively. The URG, ECE, CWR and NS flags seem to be of no importance to classification, but that is probably due to the fact that they are rarely used. Noteworthy is that for the two datasets different features are of high importance which suggests the conclusion that they are easy to classify due to different reasons. \par
 
 \begin{table}[htbp]
 	\centering

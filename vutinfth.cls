@@ -439,15 +439,15 @@ naustrian=an der Fakult\"at f\"ur für Elektrotechnik und Informationstechnik]{f
 %    to other works or to the internet, literally or extracted, by
 %    referencing the source as borrowed.},
 english={I hereby declare that this thesis is in accordance with the Code of Conduct rules for good scientific practice (in the current version of the respective newsletter of the TU Wien). In particular it was made without the unauthorized assistance of third parties and without the use of other than the specified aids. Data and concepts directly or indirectly acquired from other sources are marked with the source. The work has not been submitted in the same or in a similar form to any other academic institutions.},
-naustrian={Hiermit erkläre ich, dass die vorliegende Arbeit gemäß dem Code of Conduct – Regeln zur Sicherung guter wissenschaftlicher Praxis (in der aktuellen Fassung des jeweiligen Mitteilungsblattes der TU Wien), insbesondere ohne unzulässige Hilfe Dritter und ohne Benutzung anderer als der angegebenen Hilfsmittel, angefertigt wurde. Die aus anderen Quellen direkt oder indirekt übernommenen Daten und Konzepte sind unter Angabe der Quelle gekennzeichnet.
-Die Arbeit wurde bisher weder im In– noch im Ausland in gleicher oder in ähnlicher Form in anderen Prüfungsverfahren vorgelegt.}]{Statement}%
-%  naustrian={Hiermit erkl\"are ich, dass ich diese Arbeit
-%    selbst\"andig verfasst habe, dass ich die verwendeten Quellen
-%    und Hilfsmittel vollst\"andig angegeben habe und dass ich die
-%    Stellen der Arbeit -- einschlie{\ss}lich Tabellen, Karten und
-%    Abbildungen --, die anderen Werken oder dem Internet im Wortlaut
-%    oder dem Sinn nach entnommen sind, auf jeden Fall unter Angabe
-%    der Quelle als Entlehnung kenntlich gemacht habe.}]{Statement}%
+%naustrian={Hiermit erkläre ich, dass die vorliegende Arbeit gemäß dem Code of Conduct – Regeln zur Sicherung guter wissenschaftlicher Praxis (in der aktuellen Fassung des jeweiligen Mitteilungsblattes der TU Wien), insbesondere ohne unzulässige Hilfe Dritter und ohne Benutzung anderer als der angegebenen Hilfsmittel, angefertigt wurde. Die aus anderen Quellen direkt oder indirekt übernommenen Daten und Konzepte sind unter Angabe der Quelle gekennzeichnet.
+%Die Arbeit wurde bisher weder im In– noch im Ausland in gleicher oder in ähnlicher Form in anderen Prüfungsverfahren vorgelegt.}]{Statement}%
+naustrian={Hiermit erkl\"are ich, dass ich diese Arbeit
+    selbst\"andig verfasst habe, dass ich die verwendeten Quellen
+    und Hilfsmittel vollst\"andig angegeben habe und dass ich die
+    Stellen der Arbeit -- einschlie{\ss}lich Tabellen, Karten und
+    Abbildungen --, die anderen Werken oder dem Internet im Wortlaut
+    oder dem Sinn nach entnommen sind, auf jeden Fall unter Angabe
+    der Quelle als Entlehnung kenntlich gemacht habe.}]{Statement}%
 \CreatePolylingual[
   english=Bachelor of Science,
   naustrian=Bachelor of Science]{Bdeg}%
