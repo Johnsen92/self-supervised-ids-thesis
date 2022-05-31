@@ -57,6 +57,10 @@ ntheorem
 \usepackage{natbib}
 \nobibliography*
 
+\usepackage{tocbasic}
+\DeclareTOCStyleEntry[dynnumwidth]{tocline}{figure}% for figure entries
+\DeclareTOCStyleEntry[dynnumwidth]{tocline}{table}% for table entries
+
 % stop ADDED
 \input{glossary}
 \makeindex      % Use an optional index.
